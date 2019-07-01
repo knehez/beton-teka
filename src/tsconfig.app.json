@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "types": [],
+    "paths": {
+      "typeorm": ["node_modules/typeorm/typeorm-model-shim.js"]
+    }
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts",
+    "backend/*.ts",
+    "backend/controllers/*.ts",
+    "backend/migration/*.ts"
+  ]
+}

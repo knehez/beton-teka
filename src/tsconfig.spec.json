@@ -1,0 +1,27 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/spec",
+    "types": [
+      "jasmine",
+      "node"
+    ],
+    "paths": {
+      "typeorm": ["node_modules/typeorm/typeorm-model-shim.js"],
+    }
+  },
+  "files": [
+    "test.ts",
+    "polyfills.ts"
+  ],
+  "include": [
+    "**/*.spec.ts",
+    "**/*.d.ts",
+    "../projects/crud-table-lib/src/**/*.spec.ts"
+  ],
+  "exclude": [
+    "backend/*.ts",
+    "backend/controllers/*.ts",
+    "backend/migration/*.ts"
+  ]
+}

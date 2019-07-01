@@ -1,0 +1,41 @@
+<div class="container">
+  <nav class="navbar navbar-expand-lg navbar-light m-1" style="border:1px solid #3097D1; border-radius: 5px;">
+    <img class="mr-2" src="assets/logo.png">
+    <a class="navbar-brand" href="#">Beton Téka</a>
+    <button class="navbar-toggler" type="button" (click)="isNavbarCollapsed = !isNavbarCollapsed" data-toggle="collapse"
+      data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <div class="btn-group btn-group-toggle" ngbRadioGroup [(ngModel)]="currentSelection">
+          <label *ngIf="canReadEntity(userEntity)" ngbButtonLabel class="btn-outline-primary btn-sm">
+            <input ngbButton type="radio" value="user">User
+          </label>
+        
+        </div>
+      </ul>
+      <div class="float-right">
+        <button id="logout-button" class="btn btn-sm btn-outline-primary" (click)="onLogoutClicked()">Logout
+          <span class="pi pi-sign-out align-middle" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <p-card *ngIf="currentSelection == 'user'">
+    <lib-crud-table-lib class="crud-table" 
+      [entityName]="'users'" [entity]="userEntity"
+      [permissions]="actualPermissions"
+      [itemsPerPage]="5" [filter]="userFilter" 
+      (cellSelect)="userCellSelected($event)" (operationResult)="handleResult($event)" (backClicked)="goBack()">
+    </lib-crud-table-lib>
+  </p-card>
+
+  <div class="toast-message">
+    <p-toast></p-toast>
+  </div>
+
+</div>
