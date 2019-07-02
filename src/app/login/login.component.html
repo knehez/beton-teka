@@ -1,15 +1,21 @@
 <div class="jumbotron d-flex align-items-center h-100">
-  <div class="container d-flex h-100">
-    <p-card>
-      <p-header>
-        <img src="assets/login_top.jpg">
-      </p-header>
-      <div class="d-flex flex-column justify-content-center align-items-center">
-        <h3>TimeSolware</h3>
-        <h4 class="align-self-center">Manufacturing Execution Planning & Simulation</h4>
+    <p-card class="container d-flex h-100">
+
+      <ngb-carousel *ngIf="carousel.images" [interval]="carousel.speed"
+        [showNavigationArrows]="false" [showNavigationIndicators]="false">
+        <ng-template ngbSlide *ngFor="let image of carousel.images" class="p-0">
+          <img [src]="image" alt="Concrete Database">
+        </ng-template>
+      </ngb-carousel>
+
+      <div class="d-flex justify-content-center align-items-center">
+        <h3>Beton Téka</h3>
+        <h4 class="align-self-center">Concrete Database for Civil Engineers</h4>
+        
       </div>
-      <div class="row">
-        <div class="col-4 offset-4">
+
+      <div class="row mr-2 ml-2">
+        <div class="col-md-4 offset-md-4">
           <hr />
           <div *ngIf="!loginSuccess" class="alert alert-danger">
             You have entered an invalid username or password.
@@ -49,5 +55,4 @@
         </div>
       </div>
     </p-card>
-  </div>
 </div>

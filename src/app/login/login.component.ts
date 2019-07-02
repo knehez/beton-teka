@@ -8,7 +8,13 @@ import { AuthenticationService } from '../_services/authentication.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  carousel = {
+    images: [ 'assets/login_top_1.jpg', 'assets/login_top_2.jpg', 'assets/login_top_3.jpg' ],
+    speed: 3000
+  };
+
   loginSuccess: Boolean = true;
+
   user = {
     name: '',
     password: ''

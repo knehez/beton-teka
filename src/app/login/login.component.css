@@ -1,0 +1,17 @@
+.d-flex {
+    flex-direction: column;
+}
+
+.jumbotron {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+ngb-carousel {
+    padding-bottom: 1rem;
+}
+
+p-card {
+    max-width: 1024px;
+}

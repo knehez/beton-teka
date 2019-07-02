@@ -2,3 +2,7 @@
 body {
     background-color: #e9ecef;
 }
+
+.ui-card-body {
+    padding: 0;
+}
