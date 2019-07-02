@@ -3,6 +3,6 @@ body {
     background-color: #e9ecef;
 }
 
-.ui-card-body {
+.login-card .ui-card-body {
     padding: 0;
 }
