@@ -3,6 +3,7 @@ Beton Teka
 
 ## Prerequistences
 - mySQL server
+- node >= 10.x
 
 ## Installation steps
 - clone repository
