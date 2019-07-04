@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ import { haveIntersection } from 'src/utils/array';
   templateUrl: './administration.component.html',
   styleUrls: ['./administration.component.css']
 })
-export class AdministrationComponent {
+export class AdministrationComponent implements OnInit {
 
   displayMenu = false;
 
@@ -71,6 +71,14 @@ export class AdministrationComponent {
     public authService: AuthenticationService,
     private inputService: InputService,
     public router: Router) { }
+
+  ngOnInit () {
+    const accessToken = this.authService.getToken();
+
+    if (!accessToken) {
+      this.router.navigate(['/login']);
+    }
+  }
 
   onLogoutClicked() {
     this.authService.logout();
