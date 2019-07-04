@@ -47,7 +47,7 @@
             </div>
 
             <div class="form-group">
-              <button type="submit" class="btn btn-outline-primary col-12">Login</button>
+              <button type="submit" [disabled]="!username.valid" class="btn btn-outline-primary col-12">Login</button>
             </div>
           </form>
 

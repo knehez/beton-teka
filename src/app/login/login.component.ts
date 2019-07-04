@@ -9,7 +9,7 @@ import { AuthenticationService } from '../_services/authentication.service';
 })
 export class LoginComponent {
   carousel = {
-    images: [ 'assets/login_top_1.jpg', 'assets/login_top_2.jpg', 'assets/login_top_3.jpg' ],
+    images: ['assets/login_top_1.jpg', 'assets/login_top_2.jpg', 'assets/login_top_3.jpg'],
     speed: 3000
   };
 
@@ -29,7 +29,7 @@ export class LoginComponent {
     }
   }
 
-  onSubmit () {
+  onSubmit() {
     this.authenticationService.login(this.user.name, this.user.password)
       .then(() => {
         this.router.navigate(['/']);
