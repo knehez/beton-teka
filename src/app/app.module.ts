@@ -8,6 +8,9 @@ import { PanelModule } from 'primeng/panel';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
+import { MenubarModule } from 'primeng/menubar';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { SidebarModule } from 'primeng/sidebar';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -32,12 +35,24 @@ import { CrudTableLibModule } from 'projects/crud-table-lib/src/public_api';
 import { CalendarModule } from 'primeng/calendar';
 import { FullCalendarModule } from 'primeng/fullcalendar';
 import { StepsModule } from 'primeng/steps';
+import { UserManagementComponent } from './administration/user-management/user-management.component';
+import { ConcreteSearchComponent } from './administration/concrete-search/concrete-search.component';
 
 
 const routes: Routes = [
   {
     path: '',
-    component: AdministrationComponent
+    component: AdministrationComponent,
+    children: [
+      {
+        path: 'users',
+        component: UserManagementComponent
+      },
+      {
+        path: 'search',
+        component: ConcreteSearchComponent
+      }
+    ]
   },
   {
     path: 'login',
@@ -49,7 +64,9 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    AdministrationComponent
+    AdministrationComponent,
+    UserManagementComponent,
+    ConcreteSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -70,14 +87,16 @@ const routes: Routes = [
     SliderModule,
     CardModule,
     NgbModule,
+    MenubarModule,
     ChartModule,
     CheckboxModule,
     CalendarModule,
     FullCalendarModule,
+    PanelMenuModule,
     StepsModule,
+    SidebarModule,
     RouterModule.forRoot(routes, { enableTracing: !environment.production })
   ],
-
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

@@ -1,0 +1,8 @@
+<p-card>
+    <lib-crud-table-lib class="crud-table" 
+        [entityName]="'users'" [entity]="userEntity"
+        [permissions]="actualPermissions"
+        [itemsPerPage]="5" [filter]="userFilter"
+        (operationResult)="handleResult($event)">
+    </lib-crud-table-lib>
+</p-card>

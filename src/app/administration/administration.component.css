@@ -1,0 +1,16 @@
+.ui-menubar-root-list {
+    padding-left: 32px;
+}
+
+#menu-icon {
+    position: absolute;
+    left: 12pt;
+}
+
+#menu-brand {
+    line-height: 1.5 !important;
+    margin-top: 0.25rem;
+    vertical-align: middle;
+    position: absolute;
+    left: 48pt;
+}

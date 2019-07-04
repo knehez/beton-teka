@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-
-import { User } from 'src/backend/entities/user';
-import { AuthenticationService } from '../_services/authentication.service';
+import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
-import { haveIntersection } from 'src/utils/array';
-import { Role } from 'src/backend/entities/role';
-import { MessageService } from 'primeng/api';
+
 import { InputService, ANY_ROLE_ACCESS_KEY } from 'projects/crud-table-lib/src/public_api';
+
+import { AuthenticationService } from '../_services/authentication.service';
+import { haveIntersection } from 'src/utils/array';
 
 @Component({
   selector: 'app-administration',
@@ -14,42 +13,64 @@ import { InputService, ANY_ROLE_ACCESS_KEY } from 'projects/crud-table-lib/src/p
   styleUrls: ['./administration.component.css']
 })
 export class AdministrationComponent {
-  title = 'crud';
 
-  actualPermissions = [];
+  displayMenu = false;
 
-  userEntity: any;
-  roleEntity: any;
-
-  private _opened = false;
-  cols: any[];
-  isNavbarCollapsed = true;
-  currentSelection = 'user';
-  allEntities: any[] = [];
-
-  userFilter = {};
-  backList = [];
+  panelMenu: MenuItem[] = [
+    {
+      label: 'Beton téka',
+      icon: 'pi pi-pw pi-copy',
+      items: [
+        {
+          label: 'Kategóriák',
+          icon: 'pi pi-fw pi-folder-open',
+          command: this.closePanelMenu.bind(this)
+        },
+        {
+          label: 'Keresés',
+          icon: 'pi pi-fw pi-search',
+          routerLink: '/search',
+          command: this.closePanelMenu.bind(this)
+        }
+      ]
+    },
+    {
+      label: '... ... ...',
+      icon: 'pi pi-pw pi-copy',
+      items: [
+        {
+          label: '.. ..',
+          icon: 'pi pi-fw pi-folder-open',
+          items: [
+            {
+              label: '.. ............'
+            }
+          ]
+        },
+        {
+          label: '.. .. .. ..',
+          icon: 'pi pi-fw pi-search'
+        }
+      ]
+    },
+    {
+      label: 'Admin',
+      icon: 'pi pi-pw pi-key',
+      items: [
+        {
+          label: 'Felhasználók',
+          icon: 'pi pi-fw pi-users',
+          routerLink: '/users',
+          command: this.closePanelMenu.bind(this)
+        }
+      ]
+    }
+  ];
 
   constructor(
-    private messageService: MessageService,
     public authService: AuthenticationService,
     private inputService: InputService,
-    public router: Router) {
-
-    this.actualPermissions = this.authService.getRoles();
-
-    this.userEntity = new User;
-    this.roleEntity = new Role;
-
-    this.allEntities.push({ name: 'User', entity: this.inputService.getFormElements(this.userEntity) });
-    this.allEntities.push({ name: 'Role', entity: this.inputService.getFormElements(this.roleEntity) });
-  }
-
-  goBack() {
-    if (this.backList.length !== 0) {
-      this.currentSelection = this.backList.pop();
-    }
-  }
+    public router: Router) { }
 
   onLogoutClicked() {
     this.authService.logout();
@@ -67,20 +88,7 @@ export class AdministrationComponent {
     return haveIntersection(actualRoles, allowedRoles);
   }
 
-  userCellSelected(obj: any) {
-    this.backList.push(this.currentSelection);
-    this.currentSelection = 'task';
-  }
-
-  showToastMessage(isSuccess: boolean, title: string, message: string) {
-    this.messageService.add({
-      severity: isSuccess ? 'success' : 'error',
-      summary: title,
-      detail: message
-    });
-  }
-
-  handleResult(result) {
-    this.showToastMessage(result.success, result.title, result.message);
+  closePanelMenu () {
+    this.displayMenu = false;
   }
 }
