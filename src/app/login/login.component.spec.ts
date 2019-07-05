@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -24,7 +25,8 @@ describe('LoginComponent', () => {
         ReactiveFormsModule,
         CardModule,
         RouterTestingModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        NgbModule
       ]
     })
     .compileComponents();
@@ -38,5 +40,32 @@ describe('LoginComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should disable Login button when no email and password are given', () => {
+    component.user.name = '';
+    component.user.password = '';
+    const loginBtn = fixture.nativeElement.querySelector('#login-btn');
+
+    fixture.detectChanges();
+    expect(loginBtn.disabled).toBeTruthy();
+  });
+
+  it('should disable Login Button when email is not given', () => {
+    component.user.name = '';
+    component.user.password = 'someSoStrongPswd';
+    const loginBtn = fixture.nativeElement.querySelector('#login-btn');
+
+    fixture.detectChanges();
+    expect(loginBtn.disabled).toBeTruthy();
+  });
+
+  it('should disable Login button when password is not given', () => {
+    component.user.name = 'user@example.com';
+    component.user.password = '';
+    const loginBtn = fixture.nativeElement.querySelector('#login-btn');
+
+    fixture.detectChanges();
+    expect(loginBtn.disabled).toBeTruthy();
   });
 });
