@@ -8,14 +8,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
-import { TypeormERDComponent } from '../typeorm-erd/typeorm-erd.component';
-import { ScheduleSelectorComponent } from '../scheduler/schedule-selector/schedule-selector.component';
-import { GanttChartComponent } from '../scheduler/gantt-chart/gantt-chart.component';
-import { PlannerComponent } from '../scheduler/planner/planner.component';
-import { CalendarComponent } from '../scheduler/calendar/calendar.component';
 import { ToastModule } from 'primeng/toast';
 import { CheckboxModule } from 'primeng/checkbox';
-import { JobEditorComponent } from '../scheduler/job-editor/job-editor.component';
 import { StepsModule } from 'primeng/steps';
 import { PickListModule } from 'primeng/picklist';
 import { SliderModule } from 'primeng/slider';
@@ -28,7 +22,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { FullCalendarModule } from 'primeng/fullcalendar';
-import { SchedulerService } from '../scheduler/schedulerService';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DropdownModule } from 'primeng/dropdown';
 import { By } from '@angular/platform-browser';
@@ -73,13 +66,7 @@ describe('AdministrationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AdministrationComponent,
-        TypeormERDComponent,
-        ScheduleSelectorComponent,
-        GanttChartComponent,
-        PlannerComponent,
-        CalendarComponent,
-        JobEditorComponent
+        AdministrationComponent
       ],
       imports: [
         RouterTestingModule.withRoutes([{ path: 'login', component: AdministrationComponent }]),
@@ -108,7 +95,6 @@ describe('AdministrationComponent', () => {
         MessageService,
         AuthenticationService,
         InputService,
-        SchedulerService,
         ConfirmationService
       ]
     })
@@ -121,7 +107,6 @@ describe('AdministrationComponent', () => {
           },
           MessageService,
           InputService,
-          SchedulerService,
           ConfirmationService
         ]
       }

@@ -30,8 +30,7 @@ describe('AppComponent', () => {
         RouterTestingModule
       ],
       declarations: [
-        AppComponent,
-        TypeormERDComponent,
+        AppComponent
       ],
     }).compileComponents();
   }));
