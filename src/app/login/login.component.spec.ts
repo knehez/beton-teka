@@ -68,4 +68,19 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
     expect(loginBtn.disabled).toBeTruthy();
   });
+  it('should display h3 properly', () => {
+    const login = fixture.debugElement.componentInstance;
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('h3').textContent).toContain('Beton Téka');
+   });
+
+   it('should display h4 properly', () => {
+     const login = fixture.debugElement.componentInstance;
+     fixture.detectChanges();
+     const compiled = fixture.debugElement.nativeElement;
+     expect(compiled.querySelector('h4').textContent).toContain('Concrete Database for Civil Engineers');
+    });
+
+
 });
