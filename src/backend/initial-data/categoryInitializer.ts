@@ -125,6 +125,62 @@ export default class CategoryInitializer extends Initializer {
         await this.repository.save(c223category);
 
 
+
+        const bcategory1 = new Category();
+        bcategory1.label = 'Beton alkotók';
+        bcategory1.parent = bcategory;
+        await this.repository.save(bcategory1);
+
+        const bcategory2 = new Category();
+        bcategory2.label = 'Beton szilárdsági osztályok';
+        bcategory2.parent = bcategory;
+        await this.repository.save(bcategory2);
+
+        const bcategory3 = new Category();
+        bcategory3.label = 'Kitéti osztályok';
+        bcategory3.parent = bcategory;
+        await this.repository.save(bcategory3);
+
+        const bcategory11 = new Category();
+        bcategory11.label = 'Adalékanyagok';
+        bcategory11.parent = bcategory1;
+        await this.repository.save(bcategory11);
+
+        const bcategory12 = new Category();
+        bcategory12.label = 'Kötőanyag';
+        bcategory12.parent = bcategory1;
+        await this.repository.save(bcategory12);
+
+        const bcategory13 = new Category();
+        bcategory13.label = 'Adalékrészek';
+        bcategory13.parent = bcategory1;
+        await this.repository.save(bcategory13);
+
+        const bcategory14 = new Category();
+        bcategory14.label = 'Építési víz, keverővíz';
+        bcategory14.parent = bcategory1;
+        await this.repository.save(bcategory14);
+
+        const bcategory15 = new Category();
+        bcategory15.label = 'Kiegészítő anyagok';
+        bcategory15.parent = bcategory1;
+        await this.repository.save(bcategory15);
+
+        const bcategory21 = new Category();
+        bcategory21.label = 'Nehéz betonok';
+        bcategory21.parent = bcategory2;
+        await this.repository.save(bcategory21);
+
+        const bcategory22 = new Category();
+        bcategory22.label = 'Normál betonok';
+        bcategory22.parent = bcategory2;
+        await this.repository.save(bcategory22);
+
+        const bcategory23 = new Category();
+        bcategory23.label = 'Könnyű betonok';
+        bcategory23.parent = bcategory2;
+        await this.repository.save(bcategory23);
+
         this.entities.push(root);
     }
 }
