@@ -1,13 +1,17 @@
 import * as express from 'express';
 import UserCtrl from './controllers/user.controller';
 import BaseCtrl from './controllers/base.controller';
+import ConcreteCtrl from './controllers/concrete.controller';
 import AuthenticationCtrl from './controllers/authentication.controller';
 import RoleCtrl from './controllers/role.controller';
 import { CLASS_PERMISSION_METADATA_KEY, ANY_ROLE_ACCESS_KEY } from '../../projects/crud-table-lib/src/public_api';
 import { User } from './entities/user';
 import { Role } from './entities/role';
+import { Concrete } from './entities/concrete';
 import errorCodes from '../utils/error.codes';
 import { haveIntersection } from '../utils/array';
+import { Category } from './entities/category';
+import CategoryCtrl from './controllers/category.controller';
 
 export default function setRoutes(app) {
 
@@ -27,6 +31,22 @@ export default function setRoutes(app) {
     entityName: 'roles',
     entity: new Role,
     ctrl: new RoleCtrl
+  });
+
+  // Category
+  getGeneralRoutes({
+    router,
+    entityName: 'categories',
+    entity: new Category,
+    ctrl: new CategoryCtrl
+  });
+
+  // Concrete
+  getGeneralRoutes({
+    router,
+    entityName: 'concretes',
+    entity: new Concrete,
+    ctrl: new ConcreteCtrl
   });
 
   // Authentication

@@ -1,0 +1,26 @@
+<p-card>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-10">
+        <p-tree
+            [value]="concreteTree"
+            [(selection)]="selectedNode"
+            [loading]="loading"
+            draggableNodes="true"
+            droppableNodes="true"
+            selectionMode="single"
+            styleClass="w-100"
+            (onNodeExpand)="loadNode($event)">
+        </p-tree>
+      </div>
+      <div class="col-md-2">
+        <div class="controls">
+          <button type="button" class="btn btn-info">Adatlap</button>
+          <button type="button" class="btn btn-warning">Kategória hozzáadás</button>
+          <button type="button" class="btn btn-warning">Beton hozzáadás</button>
+          <button type="button" class="btn btn-danger">Törlés</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-card>

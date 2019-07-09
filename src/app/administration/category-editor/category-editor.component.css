@@ -1,0 +1,9 @@
+button {
+    margin-bottom: 2pt;
+    width: 100%;
+}
+
+.controls {
+    position: sticky;
+    top: 15pt;
+}

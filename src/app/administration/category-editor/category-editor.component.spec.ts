@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConcreteSearchComponent } from './concrete-search.component';
+import { CategoryEditorComponent } from './category-editor.component';
 
-describe('ConcreteSearchComponent', () => {
-  let component: ConcreteSearchComponent;
-  let fixture: ComponentFixture<ConcreteSearchComponent>;
+describe('CategoryEditorComponent', () => {
+  let component: CategoryEditorComponent;
+  let fixture: ComponentFixture<CategoryEditorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConcreteSearchComponent ]
+      declarations: [ CategoryEditorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ConcreteSearchComponent);
+    fixture = TestBed.createComponent(CategoryEditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

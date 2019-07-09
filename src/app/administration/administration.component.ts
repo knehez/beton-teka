@@ -24,12 +24,12 @@ export class AdministrationComponent implements OnInit {
         {
           label: 'Kategóriák',
           icon: 'pi pi-fw pi-folder-open',
+          routerLink: '/categories',
           command: this.closePanelMenu.bind(this)
         },
         {
           label: 'Keresés',
           icon: 'pi pi-fw pi-search',
-          routerLink: '/search',
           command: this.closePanelMenu.bind(this)
         }
       ]

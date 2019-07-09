@@ -13,6 +13,8 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { SidebarModule } from 'primeng/sidebar';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TreeModule } from 'primeng/tree';
+import { TreeDragDropService } from 'primeng/api';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -26,6 +28,7 @@ import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { ContextMenuModule } from 'primeng/contextmenu';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -36,7 +39,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { FullCalendarModule } from 'primeng/fullcalendar';
 import { StepsModule } from 'primeng/steps';
 import { UserManagementComponent } from './administration/user-management/user-management.component';
-import { ConcreteSearchComponent } from './administration/concrete-search/concrete-search.component';
+import { CategoryEditorComponent } from './administration/category-editor/category-editor.component';
+import { GeneralRestService } from './_services/general-rest.service';
 
 
 const routes: Routes = [
@@ -49,8 +53,8 @@ const routes: Routes = [
         component: UserManagementComponent
       },
       {
-        path: 'search',
-        component: ConcreteSearchComponent
+        path: 'categories',
+        component: CategoryEditorComponent
       }
     ]
   },
@@ -66,12 +70,13 @@ const routes: Routes = [
     LoginComponent,
     AdministrationComponent,
     UserManagementComponent,
-    ConcreteSearchComponent
+    CategoryEditorComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     CrudTableLibModule,
+    ContextMenuModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
@@ -85,6 +90,7 @@ const routes: Routes = [
     PickListModule,
     ListboxModule,
     SliderModule,
+    TreeModule,
     CardModule,
     NgbModule,
     MenubarModule,
@@ -104,7 +110,9 @@ const routes: Routes = [
       multi: true
     },
     ConfirmationService,
-    MessageService
+    GeneralRestService,
+    MessageService,
+    TreeDragDropService
   ],
   bootstrap: [AppComponent]
 })
