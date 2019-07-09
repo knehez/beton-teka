@@ -33,6 +33,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 import { CrudTableLibModule } from 'projects/crud-table-lib/src/public_api';
 import { CalendarModule } from 'primeng/calendar';
@@ -89,6 +90,7 @@ const routes: Routes = [
     ToastModule,
     PickListModule,
     ListboxModule,
+    InputSwitchModule,
     SliderModule,
     TreeModule,
     CardModule,

@@ -10,15 +10,33 @@
             droppableNodes="true"
             selectionMode="single"
             styleClass="w-100"
-            (onNodeExpand)="loadNode($event)">
+            (onNodeExpand)="loadConcretes($event)">
         </p-tree>
       </div>
       <div class="col-md-2">
-        <div class="controls">
-          <button type="button" class="btn btn-info">Adatlap</button>
-          <button type="button" class="btn btn-warning">Kategória hozzáadás</button>
-          <button type="button" class="btn btn-warning">Beton hozzáadás</button>
-          <button type="button" class="btn btn-danger">Törlés</button>
+        <div class="controls" *ngIf="selectedNode && selectedNode['isConcrete']">
+          <h5 class="text-center">Beton</h5>
+          <hr>
+          <button type="button" class="btn btn-primary">Adatlap</button>
+          <button type="button" class="btn btn-warning">Beton módosítás</button>
+          <button type="button" class="btn btn-danger" (click)="deleteSelectedConcrete()">Beton törlés</button>
+        </div>
+        <div class="controls" *ngIf="selectedNode && !selectedNode['isConcrete']">
+          <h5 class="text-center">Kategória</h5>
+          <hr>
+          <button type="button" class="btn btn-primary">Új alkategória</button>
+          <button type="button" class="btn btn-primary">Új beton</button>
+          <button type="button" class="btn btn-warning">Kategória módosítás</button>
+
+          <div class="row mt-1">
+            <p-inputSwitch styleClass="ml-3 align-middle"></p-inputSwitch>
+            <span class="ml-1 align-middle">Áthelyezhető</span>
+          </div>
+          <div class="row mt-1 mb-2">
+            <p-inputSwitch styleClass="ml-3 align-middle"></p-inputSwitch>
+            <span class="ml-1 align-middle">Droppable (fordítás?)</span>
+          </div>
+          <button type="button" class="btn btn-danger" (click)="deleteSelectedCategory()">Kategória törlés</button>
         </div>
       </div>
     </div>

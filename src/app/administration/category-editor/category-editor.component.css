@@ -3,6 +3,10 @@ button {
     width: 100%;
 }
 
+hr {
+    margin: 0.5rem;
+}
+
 .controls {
     position: sticky;
     top: 15pt;
