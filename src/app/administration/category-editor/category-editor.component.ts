@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TreeDragDropService } from 'primeng/api';
+import { TreeDragDropService, MessageService } from 'primeng/api';
 import { TreeNode } from 'primeng/api';
 import { GeneralRestService } from 'src/app/_services/general-rest.service';
 
@@ -12,12 +12,13 @@ export class CategoryEditorComponent implements OnInit {
 
   concreteTree: TreeNode[];
 
-  selectedNode: TreeNode;
+  selectedNode: TreeNode[];
 
   loading: boolean;
 
   constructor(
     public treeDragDrop: TreeDragDropService,
+    public messageService: MessageService,
     public restService: GeneralRestService) { }
 
   ngOnInit() {
@@ -33,8 +34,7 @@ export class CategoryEditorComponent implements OnInit {
       });
   }
 
-  loadNode(event) {
-
+  loadConcretes(event) {
     if (!event.node) {
       return;
     }
@@ -69,4 +69,62 @@ export class CategoryEditorComponent implements OnInit {
     return array.filter(elem => !elem.isConcrete);
   }
 
+  deleteSelectedCategory () {
+    const category = this.selectedNode;
+
+    this.restService.objectName = 'categories';
+    this.restService.delete(category)
+      .then(res => {
+        if (res['success']) {
+          const parentNode = category['parent'];
+          const index = parentNode.children.indexOf(category);
+
+          if (index > -1) {
+            // delete category from tree
+            parentNode.children.splice(index, 1);
+          }
+
+          this.messageService.add({
+              severity: 'success',
+              summary: 'Sikeres törlés',
+              detail: 'A kategória törlésre került.'
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Sikertelen törlés',
+          detail: 'A kategória törlése nem sikerült.'
+        });
+      });
+  }
+
+  deleteSelectedConcrete () {
+    const concrete = this.selectedNode;
+
+    this.restService.objectName = 'concretes';
+    this.restService.delete(concrete)
+      .then(res => {
+
+        if (res['success']) {
+          const parentNode = concrete['parent'];
+          this.loadConcretes({ node: parentNode });
+
+          this.messageService.add({
+              severity: 'success',
+              summary: 'Sikeres törlés',
+              detail: 'A beton törlésre került.'
+          });
+        }
+      })
+      .catch(err => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Sikertelen törlés',
+          detail: 'A beton törlése nem sikerült.'
+        });
+      });
+  }
 }
