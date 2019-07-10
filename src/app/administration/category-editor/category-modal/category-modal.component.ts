@@ -19,9 +19,12 @@ export class CategoryModalComponent {
     public restService: GeneralRestService) {}
 
   editCategoryName () {
+    const categoryToSave = Object.assign({}, this.category); // copy object
+    delete categoryToSave.children;
+
     this.restService.objectName = 'categories';
 
-    this.restService.update(this.category)
+    this.restService.update(categoryToSave)
       .then(res => {
         if (!res['success']) {
           this.category.label = this.originalName;
@@ -38,6 +41,8 @@ export class CategoryModalComponent {
       })
       .catch(err => {
         this.category.label = this.originalName;
+
+        this.activeModal.close();
 
         this.messageService.add({
           severity: 'error',
