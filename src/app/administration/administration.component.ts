@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { InputService, ANY_ROLE_ACCESS_KEY } from 'projects/crud-table-lib/src/public_api';
 
@@ -35,20 +35,33 @@ export class AdministrationComponent implements OnInit {
       ]
     },
     {
-      label: '... ... ...',
+      label: 'Kísérletek',
       icon: 'pi pi-pw pi-copy',
       items: [
         {
-          label: '.. ..',
-          icon: 'pi pi-fw pi-folder-open',
-          items: [
-            {
-              label: '.. ............'
-            }
-          ]
+          label: 'Új kísérlet',
+          icon: 'pi pi-plus',
+          routerLink: '/newExperiment',
+          command: this.closePanelMenu.bind(this)
         },
         {
-          label: '.. .. .. ..',
+          label: 'Keresés',
+          icon: 'pi pi-fw pi-search',
+          routerLink: '/searchExperiment',
+          command: this.closePanelMenu.bind(this)
+        }
+      ]
+    },
+    {
+      label: 'Mérések',
+      icon: 'pi pi-pw pi-copy',
+      items: [
+        {
+          label: 'Új mérés',
+          icon: 'pi pi-fw pi-folder-open',
+        },
+        {
+          label: 'Keresés',
           icon: 'pi pi-fw pi-search'
         }
       ]

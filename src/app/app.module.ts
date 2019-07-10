@@ -42,6 +42,8 @@ import { StepsModule } from 'primeng/steps';
 import { UserManagementComponent } from './administration/user-management/user-management.component';
 import { CategoryEditorComponent } from './administration/category-editor/category-editor.component';
 import { GeneralRestService } from './_services/general-rest.service';
+import { NewExperimentComponent } from './administration/new-experiment/new-experiment.component';
+import { SearchExperimentComponent } from './administration/search-experiment/search-experiment.component';
 
 
 const routes: Routes = [
@@ -56,6 +58,14 @@ const routes: Routes = [
       {
         path: 'categories',
         component: CategoryEditorComponent
+      },
+      {
+        path: 'newExperiment',
+        component: NewExperimentComponent
+      },
+      {
+        path: 'searchExperiment',
+        component: SearchExperimentComponent
       }
     ]
   },
@@ -71,7 +81,9 @@ const routes: Routes = [
     LoginComponent,
     AdministrationComponent,
     UserManagementComponent,
-    CategoryEditorComponent
+    CategoryEditorComponent,
+    NewExperimentComponent,
+    SearchExperimentComponent
   ],
   imports: [
     BrowserModule,
