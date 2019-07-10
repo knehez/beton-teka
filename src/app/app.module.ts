@@ -46,6 +46,8 @@ import { NewExperimentComponent } from './administration/new-experiment/new-expe
 import { SearchExperimentComponent } from './administration/search-experiment/search-experiment.component';
 import { NewMeasurementComponent } from './administration/new-measurement/new-measurement.component';
 import { SearchMeasurementComponent } from './administration/search-measurement/search-measurement.component';
+import { CategoryModalComponent } from './administration/category-editor/category-modal/category-modal.component';
+
 
 
 const routes: Routes = [
@@ -95,7 +97,8 @@ const routes: Routes = [
     NewExperimentComponent,
     SearchExperimentComponent,
     NewMeasurementComponent,
-    SearchMeasurementComponent
+    SearchMeasurementComponent,
+    CategoryModalComponent
   ],
   imports: [
     BrowserModule,
@@ -139,6 +142,9 @@ const routes: Routes = [
     GeneralRestService,
     MessageService,
     TreeDragDropService
+  ],
+  entryComponents: [
+    CategoryModalComponent
   ],
   bootstrap: [AppComponent]
 })

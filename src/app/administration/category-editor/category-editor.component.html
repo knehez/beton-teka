@@ -26,16 +26,14 @@
           <hr>
           <button type="button" class="btn btn-primary">Új alkategória</button>
           <button type="button" class="btn btn-primary">Új beton</button>
-          <button type="button" class="btn btn-warning">Kategória módosítás</button>
+          <button type="button" class="btn btn-warning" (click)="editSelectedCategory()">Kategória módosítás</button>
 
-          <div class="row mt-1">
-            <p-inputSwitch styleClass="ml-3 align-middle"></p-inputSwitch>
-            <span class="ml-1 align-middle">Áthelyezhető</span>
+          <div class="row ml-1 mt-2 mb-2">
+            <p-inputSwitch styleClass="align-middle"></p-inputSwitch>
+            <!-- droppable -->
+            <span class="align-middle ml-1">Bővíthető</span>
           </div>
-          <div class="row mt-1 mb-2">
-            <p-inputSwitch styleClass="ml-3 align-middle"></p-inputSwitch>
-            <span class="ml-1 align-middle">Droppable (fordítás?)</span>
-          </div>
+
           <button type="button" class="btn btn-danger" (click)="deleteSelectedCategory()">Kategória törlés</button>
         </div>
       </div>
