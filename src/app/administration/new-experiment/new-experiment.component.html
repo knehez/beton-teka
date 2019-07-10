@@ -1,3 +1,44 @@
-<p>
-  new-experiment works!
-</p>
+<p-card>
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+
+    <h3>Új kísérlet betonokkal:</h3>
+    <h4>Az új beton:<br /></h4>
+
+    <div class="form-inline">
+      Az új beton neve:
+      <input type="text" class="form-control" formControlName="newname">
+      Létrehozandó mennyiség:
+      <input type="number" class="form-control" formControlName="quantity">
+    </div>
+
+
+
+    <div formArrayName="exp">
+
+
+
+      <button type="button" class="btn btn-outline-primary" (click)="addItem()">Új adalék</button>
+      <div><br /> </div>
+      <div class="form-inline" *ngFor="let exp of exp.controls; let i=index" [formGroupName]="i">
+        <label>
+          Adalék Név:
+          <input type="text" class="form-control" formControlName="name">
+          Adalék tömege:
+          <input type="number" class="form-control" formControlName="weight">
+          Azonosító:
+          <input type="text" class="form-control" formControlName="id">
+
+          <button class="btn btn-outline-success" (click)="onItemDeleted(i)">-</button>
+
+        </label>
+
+
+      </div>
+
+      <div>
+        <button type="submit" class="btn btn-outline-primary" [disabled]="!profileForm.valid">Létrehoz</button>
+      </div>
+
+    </div>
+  </form>
+</p-card>
