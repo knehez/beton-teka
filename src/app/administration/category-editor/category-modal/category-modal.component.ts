@@ -21,6 +21,7 @@ export class CategoryModalComponent {
   editCategoryName () {
     const categoryToSave = Object.assign({}, this.category); // copy object
     delete categoryToSave.children;
+    delete categoryToSave.parent;
 
     this.restService.objectName = 'categories';
 
