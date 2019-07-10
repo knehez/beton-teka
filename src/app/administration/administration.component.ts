@@ -58,11 +58,15 @@ export class AdministrationComponent implements OnInit {
       items: [
         {
           label: 'Új mérés',
-          icon: 'pi pi-fw pi-folder-open',
+          icon: 'pi pi-plus',
+          routerLink: '/newMeasurement',
+          command: this.closePanelMenu.bind(this)
         },
         {
           label: 'Keresés',
-          icon: 'pi pi-fw pi-search'
+          icon: 'pi pi-fw pi-search',
+          routerLink: '/searchMeasurement',
+          command: this.closePanelMenu.bind(this)
         }
       ]
     },

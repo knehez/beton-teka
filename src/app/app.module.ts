@@ -44,6 +44,8 @@ import { CategoryEditorComponent } from './administration/category-editor/catego
 import { GeneralRestService } from './_services/general-rest.service';
 import { NewExperimentComponent } from './administration/new-experiment/new-experiment.component';
 import { SearchExperimentComponent } from './administration/search-experiment/search-experiment.component';
+import { NewMeasurementComponent } from './administration/new-measurement/new-measurement.component';
+import { SearchMeasurementComponent } from './administration/search-measurement/search-measurement.component';
 
 
 const routes: Routes = [
@@ -66,6 +68,14 @@ const routes: Routes = [
       {
         path: 'searchExperiment',
         component: SearchExperimentComponent
+      },
+      {
+        path: 'newMeasurement',
+        component: NewMeasurementComponent
+      },
+      {
+        path: 'searchMeasurement',
+        component: SearchMeasurementComponent
       }
     ]
   },
@@ -83,7 +93,9 @@ const routes: Routes = [
     UserManagementComponent,
     CategoryEditorComponent,
     NewExperimentComponent,
-    SearchExperimentComponent
+    SearchExperimentComponent,
+    NewMeasurementComponent,
+    SearchMeasurementComponent
   ],
   imports: [
     BrowserModule,
