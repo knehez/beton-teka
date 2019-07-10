@@ -50,6 +50,7 @@ export class CategoryEditorComponent implements OnInit {
         concretes.forEach(concrete => {
           concrete.isConcrete = true;
           concrete.icon = 'pi pi-info-circle';
+          concrete.droppable = false;
         });
 
         if (Array.isArray(concretes) && concretes.length > 0) {
