@@ -1,13 +1,15 @@
 <div class="modal-header">
-  <h4 class="modal-title">Kategória módosítás</h4>
+  <h4 class="modal-title" *ngIf="!isNewCategory">Kategória módosítás</h4>
+  <h4 class="modal-title" *ngIf="isNewCategory">Kategória hozzáadás</h4>
   <button type="button" class="close" aria-label="Close" (click)="closeModal()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="modal-body">
-  <input [(ngModel)]="category.label" class="form-control" #ctrl="ngModel" required>
+  <input [(ngModel)]="category.label" *ngIf="!isNewCategory" class="form-control" #ctrl="ngModel" required>
+  <input [(ngModel)]="newCategoryName" *ngIf="isNewCategory" class="form-control" #ctrl="ngModel" required>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-success" (click)="editCategoryName()">Módosítás</button>
-  <button type="button" class="btn btn-outline-dark" (click)="closeModal()">Mégse</button>
+  <button type="button" class="btn btn-outline-success" *ngIf="!isNewCategory" (click)="editCategoryName()">Módosítás</button>
+  <button type="button" class="btn btn-outline-success" *ngIf="isNewCategory" (click)="createCategory()">Hozzáadás</button>
 </div>

@@ -33,6 +33,11 @@ export class Category {
     })
     label: string;
 
+    @Column({
+        default: true
+    })
+    droppable: boolean;
+
     @ManyToMany(type => Concrete, concrete => concrete.categories)
     concretes: Concrete[];
 

@@ -135,6 +135,7 @@ export class CategoryEditorComponent implements OnInit {
   editSelectedCategory () {
     const category = this.selectedNode;
     const modal = this.modalService.open(CategoryModalComponent);
+    modal.componentInstance.isNewCategory = false;
     modal.componentInstance.originalName = category['label'];
     modal.componentInstance.category = category;
   }
@@ -144,5 +145,47 @@ export class CategoryEditorComponent implements OnInit {
     const modal = this.modalService.open(ConcreteModalComponent);
     modal.componentInstance.originalName = concrete['label'];
     modal.componentInstance.concrete = concrete;
+  }
+
+  createNewCategory () {
+    const parent = this.selectedNode;
+    const modal = this.modalService.open(CategoryModalComponent);
+    modal.componentInstance.category = parent;
+    modal.componentInstance.isNewCategory = true;
+  }
+
+  switchDroppable (event) {
+    const category = Object.assign({}, this.selectedNode);
+    delete category['parent'];
+    delete category['children'];
+    category['droppable'] = event.checked;
+
+    this.restService.objectName = 'categories';
+    this.restService.update(category)
+      .then(res => {
+        if (!res['success']) {
+          return;
+        }
+
+        this.selectedNode['droppable'] = category['droppable'];
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sikeres módosítás',
+          detail: 'A kategória módosításra került.'
+        });
+      })
+      .catch(err => {
+        console.log(err);
+
+        // switch back, if error occured
+        this.selectedNode['droppable'] = !this.selectedNode['droppable'];
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Sikertelen módosítás',
+          detail: 'A kategória módosítása nem sikerült.'
+        });
+      });
   }
 }
