@@ -4,6 +4,7 @@ import { TreeNode } from 'primeng/api';
 import { GeneralRestService } from 'src/app/_services/general-rest.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryModalComponent } from './category-modal/category-modal.component';
+import { ConcreteModalComponent } from './concrete-modal/concrete-modal.component';
 
 @Component({
   selector: 'app-category-editor',
@@ -136,5 +137,12 @@ export class CategoryEditorComponent implements OnInit {
     const modal = this.modalService.open(CategoryModalComponent);
     modal.componentInstance.originalName = category['label'];
     modal.componentInstance.category = category;
+  }
+
+  editSelectedConcrete () {
+    const concrete = this.selectedNode;
+    const modal = this.modalService.open(ConcreteModalComponent);
+    modal.componentInstance.originalName = concrete['label'];
+    modal.componentInstance.concrete = concrete;
   }
 }

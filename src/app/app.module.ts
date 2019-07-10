@@ -47,7 +47,7 @@ import { SearchExperimentComponent } from './administration/search-experiment/se
 import { NewMeasurementComponent } from './administration/new-measurement/new-measurement.component';
 import { SearchMeasurementComponent } from './administration/search-measurement/search-measurement.component';
 import { CategoryModalComponent } from './administration/category-editor/category-modal/category-modal.component';
-
+import { ConcreteModalComponent } from './administration/category-editor/concrete-modal/concrete-modal.component';
 
 
 const routes: Routes = [
@@ -98,7 +98,8 @@ const routes: Routes = [
     SearchExperimentComponent,
     NewMeasurementComponent,
     SearchMeasurementComponent,
-    CategoryModalComponent
+    CategoryModalComponent,
+    ConcreteModalComponent
   ],
   imports: [
     BrowserModule,
@@ -144,7 +145,8 @@ const routes: Routes = [
     TreeDragDropService
   ],
   entryComponents: [
-    CategoryModalComponent
+    CategoryModalComponent,
+    ConcreteModalComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -18,7 +18,7 @@
           <h5 class="text-center">Beton</h5>
           <hr>
           <button type="button" class="btn btn-primary">Adatlap</button>
-          <button type="button" class="btn btn-warning">Beton módosítás</button>
+          <button type="button" class="btn btn-warning" (click)="editSelectedConcrete()">Beton módosítás</button>
           <button type="button" class="btn btn-danger" (click)="deleteSelectedConcrete()">Beton törlés</button>
         </div>
         <div class="controls" *ngIf="selectedNode && !selectedNode['isConcrete']">
