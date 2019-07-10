@@ -1,0 +1,13 @@
+<div class="modal-header">
+  <h4 class="modal-title">Beton módosítás</h4>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <input [(ngModel)]="concrete.label" class="form-control" #ctrl="ngModel" required>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-success" (click)="editConcreteName()">Módosítás</button>
+  <button type="button" class="btn btn-outline-dark" (click)="closeModal()">Mégse</button>
+</div>

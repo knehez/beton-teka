@@ -124,8 +124,6 @@ export default class CategoryInitializer extends Initializer {
         c223category.parent = c22category;
         await this.repository.save(c223category);
 
-
-
         const bcategory1 = new Category();
         bcategory1.label = 'Beton alkotók';
         bcategory1.parent = bcategory;
