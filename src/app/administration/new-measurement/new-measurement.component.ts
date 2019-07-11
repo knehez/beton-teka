@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+import { Validators } from '@angular/forms';
+import { FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-new-measurement',
@@ -7,9 +11,41 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewMeasurementComponent implements OnInit {
 
-  constructor() { }
+  neLatszodjon = false;
+
+  profileForm = this.fb.group({
+    mes: this.fb.array([this.createMesItem()])
+  });
+
+  constructor(private fb: FormBuilder) { }
+
+  createMesItem(): FormGroup {
+    return this.fb.group({
+      name: [''],
+      value: [''],
+      unit: [''],
+      note: [''],
+    });
+  }
+
+  get mes() {
+    return this.profileForm.get('mes') as FormArray;
+  }
+
+  addItem() {
+    this.mes.push(this.createMesItem());
+  }
+
+  onItemDeleted(index) {
+    this.mes.removeAt(index);
+  }
 
   ngOnInit() {
   }
+
+  keresesClick() {
+    this.neLatszodjon = true;
+  }
+
 
 }

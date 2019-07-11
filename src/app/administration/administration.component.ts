@@ -61,12 +61,6 @@ export class AdministrationComponent implements OnInit {
           icon: 'pi pi-plus',
           routerLink: '/newMeasurement',
           command: this.closePanelMenu.bind(this)
-        },
-        {
-          label: 'Keresés',
-          icon: 'pi pi-fw pi-search',
-          routerLink: '/searchMeasurement',
-          command: this.closePanelMenu.bind(this)
         }
       ]
     },
