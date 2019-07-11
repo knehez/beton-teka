@@ -15,7 +15,7 @@ export class CategoryEditorComponent implements OnInit {
 
   concreteTree: TreeNode[];
 
-  selectedNode: TreeNode[];
+  selectedNode: TreeNode;
 
   loading: boolean;
 
@@ -50,6 +50,7 @@ export class CategoryEditorComponent implements OnInit {
         concretes.forEach(concrete => {
           concrete.isConcrete = true;
           concrete.icon = 'pi pi-info-circle';
+          concrete.droppable = false;
         });
 
         if (Array.isArray(concretes) && concretes.length > 0) {
@@ -80,7 +81,7 @@ export class CategoryEditorComponent implements OnInit {
     this.restService.delete(category)
       .then(res => {
         if (res['success']) {
-          const parentNode = category['parent'];
+          const parentNode = category.parent;
           const index = parentNode.children.indexOf(category);
 
           if (index > -1) {
@@ -113,7 +114,7 @@ export class CategoryEditorComponent implements OnInit {
       .then(res => {
 
         if (res['success']) {
-          const parentNode = concrete['parent'];
+          const parentNode = concrete.parent;
           this.loadConcretes({ node: parentNode });
 
           this.messageService.add({
@@ -135,14 +136,57 @@ export class CategoryEditorComponent implements OnInit {
   editSelectedCategory () {
     const category = this.selectedNode;
     const modal = this.modalService.open(CategoryModalComponent);
-    modal.componentInstance.originalName = category['label'];
+    modal.componentInstance.isNewCategory = false;
+    modal.componentInstance.originalName = category.label;
     modal.componentInstance.category = category;
   }
 
   editSelectedConcrete () {
     const concrete = this.selectedNode;
     const modal = this.modalService.open(ConcreteModalComponent);
-    modal.componentInstance.originalName = concrete['label'];
+    modal.componentInstance.originalName = concrete.label;
     modal.componentInstance.concrete = concrete;
+  }
+
+  createNewCategory () {
+    const parent = this.selectedNode;
+    const modal = this.modalService.open(CategoryModalComponent);
+    modal.componentInstance.category = parent;
+    modal.componentInstance.isNewCategory = true;
+  }
+
+  switchDroppable (event) {
+    const category = Object.assign({}, this.selectedNode);
+    delete category.parent;
+    delete category.children;
+    category.droppable = event.checked;
+
+    this.restService.objectName = 'categories';
+    this.restService.update(category)
+      .then(res => {
+        if (!res['success']) {
+          return;
+        }
+
+        this.selectedNode.droppable = category.droppable;
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sikeres módosítás',
+          detail: 'A kategória módosításra került.'
+        });
+      })
+      .catch(err => {
+        console.log(err);
+
+        // switch back, if error occured
+        this.selectedNode.droppable = !this.selectedNode.droppable;
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Sikertelen módosítás',
+          detail: 'A kategória módosítása nem sikerült.'
+        });
+      });
   }
 }
