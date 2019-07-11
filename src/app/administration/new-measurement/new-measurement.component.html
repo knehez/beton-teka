@@ -1,3 +1,52 @@
-<p>
-  new-measurement works!
-</p>
+<p-card>
+	<h3>
+	  Mérés keresése
+	</h3>
+	Írja be a keresni kívánt mérést:
+  
+  
+	<div class="input-group mb-3">
+	  <div class="input-group-prepend">
+		<span class="input-group-text" id="inputGroup-sizing-default">Keresés</span>
+	  </div>
+	  <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+	</div>
+	<button type="button" class="btn btn-outline-primary" (click)=" keresesClick()">Keresés</button>
+  </p-card>
+  <br/>
+  <p-card *ngIf=neLatszodjon>  
+
+		<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+	  
+
+	  <div formArrayName="mes">
+				
+	  
+	  
+			<button type="button" class="btn btn-outline-primary" (click)="addItem()">Hozzáadás</button>
+			<div><br /> </div>
+			<div class="form-inline" *ngFor="let mes of mes.controls; let i=index" [formGroupName]="i">
+			  <label>
+				Név:
+				<input type="text" class="form-control" formControlName="name">
+				Érték:
+				<input type="number" class="form-control" formControlName="value">
+				Egység:
+				<input type="text" class="form-control" formControlName="unit">
+				Megjegyzés:
+				<input type="text" class="form-control" formControlName="note">
+	  
+				<button class="btn btn-outline-success" (click)="onItemDeleted(i)">-</button>
+	  
+			  </label>
+	  
+	  
+			</div>
+			<br/>
+			<div>
+			  <button type="submit" class="btn btn-outline-primary">Létrehoz</button>
+			</div>
+		
+		  </div>
+		</form>
+	  </p-card>
