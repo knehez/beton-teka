@@ -1,9 +1,11 @@
 <p-card>
-	<h3>
-	  Mérés keresése
-	</h3>
-	Írja be a keresni kívánt mérést:
+	
+		<h3>
+	 		 Mérés keresése
+		</h3>
+		<h4>Írja be a keresni kívánt mérést:</h4>
   
+		
   
 	<div class="input-group mb-3">
 	  <div class="input-group-prepend">
@@ -14,12 +16,11 @@
 	<button type="button" class="btn btn-outline-primary" (click)=" keresesClick()">Keresés</button>
   </p-card>
   <br/>
+  
   <p-card *ngIf=neLatszodjon>  
 
-		<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-	  
-
-	  <div formArrayName="mes">
+	<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+	 	<div formArrayName="mes">
 				
 	  
 	  
