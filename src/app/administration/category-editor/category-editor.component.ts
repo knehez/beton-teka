@@ -15,7 +15,7 @@ export class CategoryEditorComponent implements OnInit {
 
   concreteTree: TreeNode[];
 
-  selectedNode: TreeNode[];
+  selectedNode: TreeNode;
 
   loading: boolean;
 
@@ -81,7 +81,7 @@ export class CategoryEditorComponent implements OnInit {
     this.restService.delete(category)
       .then(res => {
         if (res['success']) {
-          const parentNode = category['parent'];
+          const parentNode = category.parent;
           const index = parentNode.children.indexOf(category);
 
           if (index > -1) {
@@ -114,7 +114,7 @@ export class CategoryEditorComponent implements OnInit {
       .then(res => {
 
         if (res['success']) {
-          const parentNode = concrete['parent'];
+          const parentNode = concrete.parent;
           this.loadConcretes({ node: parentNode });
 
           this.messageService.add({
@@ -137,14 +137,14 @@ export class CategoryEditorComponent implements OnInit {
     const category = this.selectedNode;
     const modal = this.modalService.open(CategoryModalComponent);
     modal.componentInstance.isNewCategory = false;
-    modal.componentInstance.originalName = category['label'];
+    modal.componentInstance.originalName = category.label;
     modal.componentInstance.category = category;
   }
 
   editSelectedConcrete () {
     const concrete = this.selectedNode;
     const modal = this.modalService.open(ConcreteModalComponent);
-    modal.componentInstance.originalName = concrete['label'];
+    modal.componentInstance.originalName = concrete.label;
     modal.componentInstance.concrete = concrete;
   }
 
@@ -157,9 +157,9 @@ export class CategoryEditorComponent implements OnInit {
 
   switchDroppable (event) {
     const category = Object.assign({}, this.selectedNode);
-    delete category['parent'];
-    delete category['children'];
-    category['droppable'] = event.checked;
+    delete category.parent;
+    delete category.children;
+    category.droppable = event.checked;
 
     this.restService.objectName = 'categories';
     this.restService.update(category)
@@ -168,7 +168,7 @@ export class CategoryEditorComponent implements OnInit {
           return;
         }
 
-        this.selectedNode['droppable'] = category['droppable'];
+        this.selectedNode.droppable = category.droppable;
 
         this.messageService.add({
           severity: 'success',
@@ -180,7 +180,7 @@ export class CategoryEditorComponent implements OnInit {
         console.log(err);
 
         // switch back, if error occured
-        this.selectedNode['droppable'] = !this.selectedNode['droppable'];
+        this.selectedNode.droppable = !this.selectedNode.droppable;
 
         this.messageService.add({
           severity: 'error',
