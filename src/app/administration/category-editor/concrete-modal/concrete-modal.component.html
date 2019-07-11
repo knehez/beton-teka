@@ -1,13 +1,23 @@
 <div class="modal-header">
-  <h4 class="modal-title">Beton módosítás</h4>
+  <h4 class="modal-title" *ngIf="!isNewConcrete && readOnly">Beton adatlap</h4>
+  <h4 class="modal-title" *ngIf="!isNewConcrete && !readOnly">Beton módosítás</h4>
+  <h4 class="modal-title" *ngIf="isNewConcrete && !readOnly">Beton hozzáadás</h4>
   <button type="button" class="close" aria-label="Close" (click)="closeModal()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="modal-body">
-  <input [(ngModel)]="concrete.label" class="form-control" #ctrl="ngModel" required>
+  <label for="label">Név:</label>
+  <input [(ngModel)]="concrete.label" type="text" id="label" class="form-control" #ctrl="ngModel" [disabled]="readOnly" required>
+
+  <label for="description">Leírás:</label>
+  <input [(ngModel)]="concrete.description" type="text" id="description" class="form-control" #ctrl="ngModel" [disabled]="readOnly" required>
+  
+  <label for="description">Tulajdonságok (JSON):</label>
+  <input [(ngModel)]="concrete.properties" type="text" id="properties" class="form-control" #ctrl="ngModel" [disabled]="readOnly" required>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-success" (click)="editConcreteName()">Módosítás</button>
+  <button type="button" class="btn btn-outline-success" *ngIf="!isNewConcrete && !readOnly" (click)="editConcrete()">Módosítás</button>
+  <button type="button" class="btn btn-outline-success" *ngIf="isNewConcrete && !readOnly" (click)="createConcrete()">Hozzáadás</button>
   <button type="button" class="btn btn-outline-dark" (click)="closeModal()">Mégse</button>
 </div>
