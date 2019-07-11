@@ -6,9 +6,9 @@ Beton Teka
 - node >= 10.x
 
 ## Installation steps
-- clone repository
-- ``npm install``
-- Check ormconfig.json and set your DB connections details
-- Run db migration ``.\node_modules\.bin\typeorm migration:run``
-- start client: ``npm run start``
-- start (second time) backend: ``npm run gulp backend``
+- Clone repository
+- Install dependencies: ``npm install``
+- Check ``ormconfig.json`` and set your DB connections details
+- Run DB migration ``npm run migration``
+- Start client: ``npm run start``
+- Start backend: ``npm run gulp backend``
