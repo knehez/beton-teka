@@ -53,7 +53,7 @@ export class CategoryEditorComponent implements OnInit {
           concrete.droppable = false;
         });
 
-        if (Array.isArray(concretes) && concretes.length > 0) {
+        if (Array.isArray(concretes)) {
           event.node.children = this.removeConcretes(event.node.children);
           event.node.children.push(...concretes);
           return;
@@ -112,17 +112,18 @@ export class CategoryEditorComponent implements OnInit {
     this.restService.objectName = 'concretes';
     this.restService.delete(concrete)
       .then(res => {
-
-        if (res['success']) {
-          const parentNode = concrete.parent;
-          this.loadConcretes({ node: parentNode });
-
-          this.messageService.add({
-              severity: 'success',
-              summary: 'Sikeres törlés',
-              detail: 'A beton törlésre került.'
-          });
+        if (!res['success']) {
+          return;
         }
+
+        const parentNode = concrete.parent;
+        this.loadConcretes({ node: parentNode });
+
+        this.messageService.add({
+            severity: 'success',
+            summary: 'Sikeres törlés',
+            detail: 'A beton törlésre került.'
+        });
       })
       .catch(err => {
         this.messageService.add({
