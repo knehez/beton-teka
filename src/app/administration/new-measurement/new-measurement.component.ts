@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
-import { Validators } from '@angular/forms';
 import { FormArray } from '@angular/forms';
 
 @Component({
@@ -11,7 +10,7 @@ import { FormArray } from '@angular/forms';
 })
 export class NewMeasurementComponent implements OnInit {
 
-  neLatszodjon = false;
+  showResult = false;
 
   profileForm = this.fb.group({
     mes: this.fb.array([this.createMesItem()])
@@ -43,9 +42,8 @@ export class NewMeasurementComponent implements OnInit {
   ngOnInit() {
   }
 
-  keresesClick() {
-    this.neLatszodjon = true;
+  searchClick() {
+    this.showResult = true;
   }
-
 
 }
