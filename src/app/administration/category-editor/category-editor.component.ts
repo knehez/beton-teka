@@ -155,6 +155,21 @@ export class CategoryEditorComponent implements OnInit {
     modal.componentInstance.isNewCategory = true;
   }
 
+  createNewConcrete () {
+    const parent = this.selectedNode;
+    const modal = this.modalService.open(ConcreteModalComponent);
+    modal.componentInstance.parentCategory = parent;
+    modal.componentInstance.isNewConcrete = true;
+  }
+
+  readConcreteProfile () {
+    const concrete = this.selectedNode;
+    const modal = this.modalService.open(ConcreteModalComponent);
+    modal.componentInstance.concrete = concrete;
+    modal.componentInstance.readOnly = true;
+    modal.componentInstance.isNewConcrete = false;
+  }
+
   switchDroppable (event) {
     const category = Object.assign({}, this.selectedNode);
     delete category.parent;
