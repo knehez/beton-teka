@@ -14,6 +14,8 @@ import { Category } from './entities/category';
 import CategoryCtrl from './controllers/category.controller';
 import { Experiment } from './entities/experiment';
 import ExperimentCtrl from './controllers/experiment.controller';
+import { Measurement } from './entities/measurement';
+import MeasurementCtrl from './controllers/measurement.controller';
 
 export default function setRoutes(app) {
 
@@ -57,6 +59,14 @@ export default function setRoutes(app) {
     entityName: 'experiments',
     entity: new Experiment,
     ctrl: new ExperimentCtrl
+  });
+
+  // Measurement
+  getGeneralRoutes({
+    router,
+    entityName: 'measurements',
+    entity: new Measurement,
+    ctrl: new MeasurementCtrl
   });
 
 
