@@ -12,6 +12,8 @@ import errorCodes from '../utils/error.codes';
 import { haveIntersection } from '../utils/array';
 import { Category } from './entities/category';
 import CategoryCtrl from './controllers/category.controller';
+import { Experiment } from './entities/experiment';
+import ExperimentCtrl from './controllers/experiment.controller';
 
 export default function setRoutes(app) {
 
@@ -48,6 +50,15 @@ export default function setRoutes(app) {
     entity: new Concrete,
     ctrl: new ConcreteCtrl
   });
+
+  // Experiment
+  getGeneralRoutes({
+    router,
+    entityName: 'experiments',
+    entity: new Experiment,
+    ctrl: new ExperimentCtrl
+  });
+
 
   // Authentication
   const authenticationCtrl = new AuthenticationCtrl();
