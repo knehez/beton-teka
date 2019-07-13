@@ -33,7 +33,7 @@ export class CategoryEditorComponent implements OnInit {
 
     this.restService.getAll('')
       .then(res => {
-        this.concreteTree = [ res.data ];
+        this.concreteTree = [res.data];
         this.loading = false;
       });
   }
@@ -56,7 +56,6 @@ export class CategoryEditorComponent implements OnInit {
         if (Array.isArray(concretes)) {
           event.node.children = this.removeConcretes(event.node.children);
           event.node.children.push(...concretes);
-          return;
         }
 
         if (Array.isArray(event.node.children) && event.node.children.length === 0) {
@@ -70,11 +69,11 @@ export class CategoryEditorComponent implements OnInit {
       });
   }
 
-  removeConcretes (array) {
+  removeConcretes(array) {
     return array.filter(elem => !elem.isConcrete);
   }
 
-  deleteSelectedCategory () {
+  deleteSelectedCategory() {
     const category = this.selectedNode;
 
     this.restService.objectName = 'categories';
@@ -90,9 +89,9 @@ export class CategoryEditorComponent implements OnInit {
           }
 
           this.messageService.add({
-              severity: 'success',
-              summary: 'Sikeres törlés',
-              detail: 'A kategória törlésre került.'
+            severity: 'success',
+            summary: 'Sikeres törlés',
+            detail: 'A kategória törlésre került.'
           });
         }
       })
@@ -106,7 +105,7 @@ export class CategoryEditorComponent implements OnInit {
       });
   }
 
-  deleteSelectedConcrete () {
+  deleteSelectedConcrete() {
     const concrete = this.selectedNode;
 
     this.restService.objectName = 'concretes';
@@ -120,9 +119,9 @@ export class CategoryEditorComponent implements OnInit {
         this.loadConcretes({ node: parentNode });
 
         this.messageService.add({
-            severity: 'success',
-            summary: 'Sikeres törlés',
-            detail: 'A beton törlésre került.'
+          severity: 'success',
+          summary: 'Sikeres törlés',
+          detail: 'A beton törlésre került.'
         });
       })
       .catch(err => {
@@ -134,7 +133,7 @@ export class CategoryEditorComponent implements OnInit {
       });
   }
 
-  editSelectedCategory () {
+  editSelectedCategory() {
     const category = this.selectedNode;
     const modal = this.modalService.open(CategoryModalComponent);
     modal.componentInstance.isNewCategory = false;
@@ -142,28 +141,28 @@ export class CategoryEditorComponent implements OnInit {
     modal.componentInstance.category = category;
   }
 
-  editSelectedConcrete () {
+  editSelectedConcrete() {
     const concrete = this.selectedNode;
     const modal = this.modalService.open(ConcreteModalComponent);
     modal.componentInstance.originalName = concrete.label;
     modal.componentInstance.concrete = concrete;
   }
 
-  createNewCategory () {
+  createNewCategory() {
     const parent = this.selectedNode;
     const modal = this.modalService.open(CategoryModalComponent);
     modal.componentInstance.category = parent;
     modal.componentInstance.isNewCategory = true;
   }
 
-  createNewConcrete () {
+  createNewConcrete() {
     const parent = this.selectedNode;
     const modal = this.modalService.open(ConcreteModalComponent);
     modal.componentInstance.parentCategory = parent;
     modal.componentInstance.isNewConcrete = true;
   }
 
-  readConcreteProfile () {
+  readConcreteProfile() {
     const concrete = this.selectedNode;
     const modal = this.modalService.open(ConcreteModalComponent);
     modal.componentInstance.concrete = concrete;
@@ -171,7 +170,7 @@ export class CategoryEditorComponent implements OnInit {
     modal.componentInstance.isNewConcrete = false;
   }
 
-  switchDroppable (event) {
+  switchDroppable(event) {
     const category = Object.assign({}, this.selectedNode);
     delete category.parent;
     delete category.children;
@@ -204,5 +203,64 @@ export class CategoryEditorComponent implements OnInit {
           detail: 'A kategória módosítása nem sikerült.'
         });
       });
+  }
+
+  dropConcreteUnderCategory(concrete, category) {
+    const concreteToSave = Object.assign({}, concrete);
+    const categoryToSave = Object.assign({}, category);
+
+    delete concreteToSave.parent;
+    delete concreteToSave.children;
+    delete categoryToSave.parent;
+    delete categoryToSave.children;
+
+    concreteToSave.categories = [categoryToSave];
+
+    this.restService.objectName = 'concretes';
+    return this.restService.update(concreteToSave);
+  }
+
+  validateNodeDrop(event) {
+    const { dragNode } = event;
+    let { dropNode } = event;
+    const previousParent = dragNode.parent; // for rollback
+
+    if (dropNode.isConcrete) {
+      dropNode = dropNode.parent;
+    }
+
+    event.accept();
+
+    // put concrete under category
+    if (!dropNode.isConcrete && dragNode.isConcrete) {
+      this.dropConcreteUnderCategory(dragNode, dropNode)
+        .then(res => {
+          if (!res['success']) {
+            return;
+          }
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Sikeres módosítás',
+            detail: 'A módosítás sikerült.'
+          });
+        })
+        .catch(err => {
+
+          // rollback operation on frontend
+          const droppedNodeIndex = dropNode.children.indexOf(dragNode);
+          if (droppedNodeIndex > -1 ) {
+            dropNode.children.splice(droppedNodeIndex, 1);
+          }
+
+          previousParent.children.push(dragNode);
+
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Sikertelen módosítás',
+            detail: 'A módosítás mentése nem sikerült, ezért a korábbi állapot került visszaállításra.'
+          });
+        });
+    }
   }
 }

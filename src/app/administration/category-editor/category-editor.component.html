@@ -6,11 +6,13 @@
             [value]="concreteTree"
             [(selection)]="selectedNode"
             [loading]="loading"
+            [validateDrop]="true"
             draggableNodes="true"
             droppableNodes="true"
             selectionMode="single"
             styleClass="w-100"
-            (onNodeExpand)="loadConcretes($event)">
+            (onNodeExpand)="loadConcretes($event)"
+            (onNodeDrop)="validateNodeDrop($event)">
         </p-tree>
       </div>
       <div class="col-md-2">
