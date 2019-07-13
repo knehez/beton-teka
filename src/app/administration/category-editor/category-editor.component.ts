@@ -220,16 +220,72 @@ export class CategoryEditorComponent implements OnInit {
     return this.restService.update(concreteToSave);
   }
 
+  dropCategoryUnderCategory(dragCategory, dropCategory) {
+    const categoryToUpdate = Object.assign({}, dragCategory);
+    const newParent = Object.assign({}, dropCategory);
+
+    delete categoryToUpdate.parent;
+    delete categoryToUpdate.children;
+    delete newParent.parent;
+    delete newParent.children;
+
+    categoryToUpdate.parent = newParent;
+
+    this.restService.objectName = 'categories';
+    return this.restService.update(categoryToUpdate);
+  }
+
   validateNodeDrop(event) {
     const { dragNode } = event;
     let { dropNode } = event;
     const previousParent = dragNode.parent; // for rollback
+
+    if (!dropNode.parent) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Sikertelen módosítás',
+        detail: 'Új gyökérelem nem adható a fához, ezért a korábbi állapot került visszaállításra.'
+      });
+      return;
+    }
 
     if (dropNode.isConcrete) {
       dropNode = dropNode.parent;
     }
 
     event.accept();
+
+    // put category under category
+    if (!dropNode.isConcrete && !dragNode.isConcrete) {
+      this.dropCategoryUnderCategory(dragNode, dropNode)
+        .then(res => {
+          if (!res['success']) {
+            return;
+          }
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Sikeres módosítás',
+            detail: 'A módosítás sikerült.'
+          });
+        })
+        .catch(err => {
+
+          // rollback operation on frontend
+          const droppedNodeIndex = dropNode.children.indexOf(dragNode);
+          if (droppedNodeIndex > -1) {
+            dropNode.children.splice(droppedNodeIndex, 1);
+          }
+
+          previousParent.children.push(dragNode);
+
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Sikertelen módosítás',
+            detail: 'A módosítás mentése nem sikerült, ezért a korábbi állapot került visszaállításra.'
+          });
+        });
+    }
 
     // put concrete under category
     if (!dropNode.isConcrete && dragNode.isConcrete) {
@@ -249,7 +305,7 @@ export class CategoryEditorComponent implements OnInit {
 
           // rollback operation on frontend
           const droppedNodeIndex = dropNode.children.indexOf(dragNode);
-          if (droppedNodeIndex > -1 ) {
+          if (droppedNodeIndex > -1) {
             dropNode.children.splice(droppedNodeIndex, 1);
           }
 

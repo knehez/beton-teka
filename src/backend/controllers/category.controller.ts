@@ -60,4 +60,24 @@ export default class CategoryCtrl extends BaseCtrl {
             return super.handleError(res);
         }
     }
+
+    update = async (req, res) => {
+        try {
+            const entity = this.model.create(req.body);
+            const rootCategories = await this.model.findRoots();
+            const root = rootCategories[0];
+
+            if (!req.body.parent || !req.body.parent.id) {
+                entity['parent'] = root;
+            }
+
+            const result = await this.model.save(entity);
+            return res.json({
+                success: true,
+                id: result['id']
+            });
+        } catch (err) {
+            return super.handleError(res);
+        }
+    }
 }
