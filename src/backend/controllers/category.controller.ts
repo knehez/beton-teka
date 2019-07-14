@@ -21,7 +21,7 @@ export default class CategoryCtrl extends BaseCtrl {
         try {
             const category = await getRepository(Category)
                 .findOne({
-                    relations: [ 'concretes' ],
+                    relations: ['concretes'],
                     where: {
                         id: req.params.id
                     }
@@ -67,7 +67,8 @@ export default class CategoryCtrl extends BaseCtrl {
             const rootCategories = await this.model.findRoots();
             const root = rootCategories[0];
 
-            if (!req.body.parent || !req.body.parent.id) {
+            if (entity['id'] !== root.id
+                && (!req.body.parent || !req.body.parent.id)) {
                 entity['parent'] = root;
             }
 
@@ -78,6 +79,26 @@ export default class CategoryCtrl extends BaseCtrl {
             });
         } catch (err) {
             return super.handleError(res);
+        }
+    }
+
+    delete = async (req, res) => {
+        try {
+            const entity = await this.model.findOne(req.params.id);
+            const rootCategories = await this.model.findRoots();
+            const root = rootCategories[0];
+
+            if (entity['id'] === root.id) {
+                return this.handleError(res, 'Can not delete root category.');
+            }
+
+            await this.model.remove(entity);
+
+            res.json({
+                success: true
+            });
+        } catch (err) {
+            return this.handleError(res);
         }
     }
 }
