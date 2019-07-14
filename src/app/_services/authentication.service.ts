@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  constructor(private http: HttpClient) { }
+  jwtHelper: JwtHelperService;
 
-  login (username: string, password: string) {
+  constructor(private http: HttpClient) {
+    this.jwtHelper = new JwtHelperService();
+  }
+
+  login(username: string, password: string) {
     return new Promise((resolve, reject) => {
       this.http.post('/backend/login', { username, password })
         .subscribe(data => {
@@ -23,16 +28,30 @@ export class AuthenticationService {
     });
   }
 
-  logout () {
+  logout() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('roles');
   }
 
-  getToken () {
+  getToken() {
     return localStorage.getItem('accessToken');
   }
 
-  getRoles () {
+  getRoles() {
     return JSON.parse(localStorage.getItem('roles'));
+  }
+
+  isAuthenticated() {
+    const accessToken = this.getToken();
+
+    if (!accessToken) {
+      return false;
+    }
+
+    try {
+      return !(this.jwtHelper.isTokenExpired(accessToken));
+    } catch (err) {
+      return false; // invalid JWT access token
+    }
   }
 }

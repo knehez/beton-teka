@@ -47,12 +47,16 @@ import { SearchExperimentComponent } from './administration/search-experiment/se
 import { NewMeasurementComponent } from './administration/new-measurement/new-measurement.component';
 import { CategoryModalComponent } from './administration/category-editor/category-modal/category-modal.component';
 import { ConcreteModalComponent } from './administration/category-editor/concrete-modal/concrete-modal.component';
+import { AuthGuard } from './auth.guard';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 
 const routes: Routes = [
   {
     path: '',
     component: AdministrationComponent,
+    canActivate: [ AuthGuard ],
+    canActivateChild: [ AuthGuard ],
     children: [
       {
         path: 'users',
@@ -136,7 +140,8 @@ const routes: Routes = [
     ConfirmationService,
     GeneralRestService,
     MessageService,
-    TreeDragDropService
+    TreeDragDropService,
+    JwtHelperService
   ],
   entryComponents: [
     CategoryModalComponent,
