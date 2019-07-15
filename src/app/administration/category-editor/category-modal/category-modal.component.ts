@@ -108,6 +108,6 @@ export class CategoryModalComponent implements OnInit {
       this.category.label = this.originalName;
     }
 
-    this.closeModal();
+    this.activeModal.close();
   }
 }
