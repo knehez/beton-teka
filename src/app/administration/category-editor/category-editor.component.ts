@@ -76,7 +76,9 @@ export class CategoryEditorComponent implements OnInit {
   }
 
   private expandRecursive(node: TreeNode, isExpand: boolean) {
+    this.loadConcretes({ node });
     node.expanded = isExpand;
+
     if (node.children) {
       node.children.forEach(childNode => {
         this.expandRecursive(childNode, isExpand);
@@ -86,7 +88,6 @@ export class CategoryEditorComponent implements OnInit {
 
   expandAll() {
     this.concreteTree.forEach(node => {
-      this.loadConcretes({ node });
       this.expandRecursive(node, true);
     });
   }
@@ -97,10 +98,13 @@ export class CategoryEditorComponent implements OnInit {
     });
   }
 
-  do() {
+  toggleTree () {
     if (this.opened) {
       this.collapseAll();
-    } else { this.expandAll(); }
+    } else {
+      this.expandAll();
+    }
+
     this.opened = !this.opened;
   }
 
