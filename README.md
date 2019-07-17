@@ -12,3 +12,8 @@ Beton Teka
 - Run DB migration ``npm run migration``
 - Start client: ``npm run start``
 - Start backend: ``npm run gulp backend``
+
+## Database migration scripts
+- Generate new migration: ``npm run generate-migration -- -n <migration_name>``
+- Run migrations: ``npm run migration``
+- Revert the last migration: ``npm run revert-migration``
