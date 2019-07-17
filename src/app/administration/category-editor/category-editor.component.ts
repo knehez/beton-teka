@@ -19,6 +19,8 @@ export class CategoryEditorComponent implements OnInit {
 
   loading: boolean;
 
+  opened = false;
+
   constructor(
     public treeDragDrop: TreeDragDropService,
     public messageService: MessageService,
@@ -71,6 +73,35 @@ export class CategoryEditorComponent implements OnInit {
 
   removeConcretes(array) {
     return array.filter(elem => !elem.isConcrete);
+  }
+
+  private expandRecursive(node: TreeNode, isExpand: boolean) {
+    node.expanded = isExpand;
+    if (node.children) {
+      node.children.forEach(childNode => {
+        this.expandRecursive(childNode, isExpand);
+      });
+    }
+  }
+
+  expandAll() {
+    this.concreteTree.forEach(node => {
+      this.loadConcretes({ node });
+      this.expandRecursive(node, true);
+    });
+  }
+
+  collapseAll() {
+    this.concreteTree.forEach(node => {
+      this.expandRecursive(node, false);
+    });
+  }
+
+  do() {
+    if (this.opened) {
+      this.collapseAll();
+    } else { this.expandAll(); }
+    this.opened = !this.opened;
   }
 
   deleteSelectedCategory() {
