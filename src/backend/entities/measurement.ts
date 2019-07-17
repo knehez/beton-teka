@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne } from 'typeorm';
 import { Permissions } from '../../../projects/crud-table-lib/src/public_api';
 import { RoleName } from './shared/roleName';
+import { Experiment } from './experiment';
 
 
 @Permissions({
@@ -17,12 +18,8 @@ export class Measurement {
     name: string;
 
     @Column()
-    value: number;
+    standard: string;
 
-    @Column()
-    unit: number;
-
-    @Column()
-    note: string;
-
+    @ManyToOne(type => Experiment, experiment => experiment.measurements)
+    experiment: Experiment;
 }
