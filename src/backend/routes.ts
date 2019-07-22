@@ -74,15 +74,19 @@ export default function setRoutes(app) {
   const authenticationCtrl = new AuthenticationCtrl();
   router.post('/login', authenticationCtrl.login);
 
+  // GetConcreteNames
+  const concreteNames = new ConcreteCtrl();
+  router.get('/concrete/getAllNames', concreteNames.getAllNames);
+
   app.use('/backend', router);
 }
 
 function getGeneralRoutes(routingInfo: {
-    router: any,
-    entity: any,
-    entityName: string,
-    ctrl: BaseCtrl
-  }) {
+  router: any,
+  entity: any,
+  entityName: string,
+  ctrl: BaseCtrl
+}) {
 
   const router = routingInfo.router;
   const entity = routingInfo.entity;
@@ -90,22 +94,22 @@ function getGeneralRoutes(routingInfo: {
   const ctrl = routingInfo.ctrl;
   const permissions = Reflect.getMetadata(CLASS_PERMISSION_METADATA_KEY, entity.constructor) || {};
 
-  router.get   (`/${entityName}`,     getRoleChecker(permissions.read),   ctrl.getAll);
-  router.get   (`/${entityName}/:id`, getRoleChecker(permissions.read),   ctrl.get);
-  router.post  (`/${entityName}`,     getRoleChecker(permissions.create), ctrl.insert);
-  router.put   (`/${entityName}/:id`, getRoleChecker(permissions.update), ctrl.update);
+  router.get(`/${entityName}`, getRoleChecker(permissions.read), ctrl.getAll);
+  router.get(`/${entityName}/:id`, getRoleChecker(permissions.read), ctrl.get);
+  router.post(`/${entityName}`, getRoleChecker(permissions.create), ctrl.insert);
+  router.put(`/${entityName}/:id`, getRoleChecker(permissions.update), ctrl.update);
   router.delete(`/${entityName}/:id`, getRoleChecker(permissions.delete), ctrl.delete);
-  router.post  (`/${entityName}/file`, getRoleChecker(permissions.read), ctrl.file);
+  router.post(`/${entityName}/file`, getRoleChecker(permissions.read), ctrl.file);
 
 }
 
-function getRoleChecker (allowedRoles) {
+function getRoleChecker(allowedRoles) {
   return (req, res, next) => {
     const userRoles = req.user.roles || [];
     allowedRoles = allowedRoles || [];
 
     if (!haveIntersection(userRoles, allowedRoles) &&
-          !allowedRoles.includes(ANY_ROLE_ACCESS_KEY)) {
+      !allowedRoles.includes(ANY_ROLE_ACCESS_KEY)) {
       return res.status(401).json({
         success: false,
         errcode: errorCodes.noAppropriateRoles,

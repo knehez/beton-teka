@@ -30,6 +30,7 @@ export class AdministrationComponent {
         {
           label: 'Keresés',
           icon: 'pi pi-fw pi-search',
+          routerLink: '/concreteManagement',
           command: this.closePanelMenu.bind(this)
         }
       ]

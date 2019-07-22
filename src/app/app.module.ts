@@ -34,6 +34,7 @@ import { MessageService } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 import { CrudTableLibModule } from 'projects/crud-table-lib/src/public_api';
 import { CalendarModule } from 'primeng/calendar';
@@ -49,14 +50,16 @@ import { CategoryModalComponent } from './administration/category-editor/categor
 import { ConcreteModalComponent } from './administration/category-editor/concrete-modal/concrete-modal.component';
 import { AuthGuard } from './auth.guard';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ConcreteManagementComponent } from './administration/concrete-management/concrete-management.component';
+import { ConcreteService } from './_services/concrete.service';
 
 
 const routes: Routes = [
   {
     path: '',
     component: AdministrationComponent,
-    canActivate: [ AuthGuard ],
-    canActivateChild: [ AuthGuard ],
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: 'users',
@@ -77,6 +80,10 @@ const routes: Routes = [
       {
         path: 'newMeasurement',
         component: NewMeasurementComponent
+      },
+      {
+        path: 'concreteManagement',
+        component: ConcreteManagementComponent
       }
     ]
   },
@@ -97,7 +104,8 @@ const routes: Routes = [
     SearchExperimentComponent,
     NewMeasurementComponent,
     CategoryModalComponent,
-    ConcreteModalComponent
+    ConcreteModalComponent,
+    ConcreteManagementComponent
   ],
   imports: [
     BrowserModule,
@@ -129,6 +137,7 @@ const routes: Routes = [
     PanelMenuModule,
     StepsModule,
     SidebarModule,
+    AutoCompleteModule,
     RouterModule.forRoot(routes, { enableTracing: !environment.production })
   ],
   providers: [
@@ -139,6 +148,7 @@ const routes: Routes = [
     },
     ConfirmationService,
     GeneralRestService,
+    ConcreteService,
     MessageService,
     TreeDragDropService,
     JwtHelperService

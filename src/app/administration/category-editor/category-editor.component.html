@@ -2,7 +2,14 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-1">
-        <button type="button" class="btn btn-danger" (click)="toggleTree()">{{opened ? "Bezár" : "Kinyit"}}</button>
+        <i style="font-size: 2em" [ngClass]="{
+          '': opened,
+          'pi pi-angle-double-down': !opened
+          }" (click)="toggleTree()"></i>
+        <i style="font-size: 2em" [ngClass]="{
+            'pi pi-angle-double-up': opened,
+            '': !opened
+            }" (click)="toggleTree()"></i>
       </div>
     </div>
     <div class="row">
