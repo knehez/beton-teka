@@ -11,6 +11,9 @@ import { FormArray } from '@angular/forms';
 export class NewMeasurementComponent implements OnInit {
 
   showResult = false;
+  showDensity = false;
+  showStrength = false;
+  showStrength2 = false;
 
   profileForm = this.fb.group({
     mes: this.fb.array([this.createMesItem()])
@@ -20,10 +23,15 @@ export class NewMeasurementComponent implements OnInit {
 
   createMesItem(): FormGroup {
     return this.fb.group({
-      name: [''],
-      value: [''],
-      unit: [''],
-      note: [''],
+      serial: [''],
+      id: [''],
+      weight: [''],
+      surface1: [''],
+      surface2: [''],
+      height: [''],
+      density: [''],
+      force: [''],
+      strength: [''],
     });
   }
 
@@ -44,6 +52,24 @@ export class NewMeasurementComponent implements OnInit {
 
   searchClick() {
     this.showResult = true;
+  }
+
+  densityClick() {
+    this.showDensity = true;
+    this.showStrength = false;
+    this.showStrength2 = false;
+  }
+
+  strengthClick() {
+    this.showStrength = true;
+    this.showDensity = false;
+    this.showStrength2 = false;
+  }
+
+  strength2Click() {
+    this.showStrength2 = true;
+    this.showDensity = false;
+    this.showStrength = false;
   }
 
 }

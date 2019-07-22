@@ -4,8 +4,8 @@ import { RoleName } from './shared/roleName';
 import { Category } from './category';
 
 @Permissions({
-    read:   '*',
-    update: [ RoleName.Admin, RoleName.Manager ]
+    read: '*',
+    update: [RoleName.Admin, RoleName.Manager]
 })
 @Entity()
 export class Concrete {
@@ -41,7 +41,7 @@ export class Concrete {
     @Column()
     description: string;
 
-    @Column('json')
+    @Column({ type: 'json', nullable: true })
     properties: object;
 
     @ManyToMany(type => Category, category => category.concretes, {
