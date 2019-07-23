@@ -13,8 +13,6 @@
   <label for="description">Leírás:</label>
   <input [(ngModel)]="concrete.description" type="text" id="description" class="form-control" #ctrl="ngModel" [disabled]="readOnly" required>
   
-  <label for="description">Tulajdonságok (JSON):</label>
-  <input [(ngModel)]="concrete.properties" type="text" id="properties" class="form-control" #ctrl="ngModel" [disabled]="readOnly" required>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-success" *ngIf="!isNewConcrete && !readOnly" (click)="editConcrete()">Módosítás</button>
