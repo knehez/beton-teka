@@ -52,7 +52,7 @@ export class ConcreteManagementComponent implements OnInit {
 
 
   filterDataMultiple(event) {
-    const query = event.key;
+    const query = event.target.value;
     this.concreteService.getAllData().then(allConcreteData => {
       this.filteredConcreteData = this.filterData(query, allConcreteData as []);
     });
