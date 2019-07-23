@@ -26,7 +26,13 @@ export class AdministrationComponent {
           icon: 'pi pi-fw pi-folder-open',
           routerLink: '/categories',
           command: this.closePanelMenu.bind(this)
-        },
+        }
+      ]
+    },
+    {
+      label: 'Betonok',
+      icon: 'pi pi-pw pi-copy',
+      items: [
         {
           label: 'Keresés',
           icon: 'pi pi-fw pi-search',

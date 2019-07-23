@@ -13,4 +13,8 @@ export class ConcreteService {
         return await this._http.get(`${this.actionUrl}concrete/getAllNames`).toPromise();
     }
 
+    async getAllData() {
+        return await this._http.get(`${this.actionUrl}concrete/getAllData`).toPromise();
+    }
+
 }

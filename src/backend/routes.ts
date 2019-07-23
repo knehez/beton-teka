@@ -78,6 +78,10 @@ export default function setRoutes(app) {
   const concreteNames = new ConcreteCtrl();
   router.get('/concrete/getAllNames', concreteNames.getAllNames);
 
+   // GetConcreteData
+   const concreteData = new ConcreteCtrl();
+   router.get('/concrete/getAllData', concreteData.getAllData);
+
   app.use('/backend', router);
 }
 
