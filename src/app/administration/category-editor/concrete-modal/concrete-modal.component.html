@@ -8,7 +8,7 @@
 </div>
 <div class="modal-body">
   <label for="label">Név:</label>
-  <input [(ngModel)]="concrete.label" type="text" id="label" class="form-control" #ctrl="ngModel" [disabled]="readOnly" required>
+  <p-autoComplete [(ngModel)]="concrete.label" [style]="{'width' : '95%', 'margin-left': '0.7rem'}" [inputStyle]="{'width': '100%'}" type="text" id="label" class="row" #ctrl="ngModel" [suggestions]="suggestedConcreteNames" (completeMethod)="filterNamesMultiple($event)" [disabled]="readOnly"></p-autoComplete>
 
   <label for="description">Leírás:</label>
   <input [(ngModel)]="concrete.description" type="text" id="description" class="form-control" #ctrl="ngModel" [disabled]="readOnly" required>
