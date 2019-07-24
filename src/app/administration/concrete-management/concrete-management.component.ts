@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ConcreteService } from 'src/app/_services/concrete.service';
 import { Concrete } from 'src/backend/entities/concrete';
+import { MessageService } from 'primeng/api';
+import { GeneralRestService } from 'src/app/_services/general-rest.service';
+// import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-concrete-management',
@@ -8,6 +11,7 @@ import { Concrete } from 'src/backend/entities/concrete';
   styleUrls: ['./concrete-management.component.css']
 })
 export class ConcreteManagementComponent implements OnInit {
+  @Input() originalData: string;
   searchedConcreteName = '';
   concreteNames: string[];
   suggestedConcreteNames: any[];
@@ -15,17 +19,32 @@ export class ConcreteManagementComponent implements OnInit {
   allConcreteData: any[];
   filteredConcreteData: any[];
   searchedConcreteData: any[];
+  searchDetailedData = [];
   selectedConcrete = '';
-  cols: any[];
+  selectedConcrete2 = '';
+  headColumns: any[];
+  detailsColumns: any[];
 
-  constructor(private concreteService: ConcreteService) { }
+  constructor(
+    private concreteService: ConcreteService,
+    public restService: GeneralRestService,
+    public messageService: MessageService,
+    // public activeModal: NgbActiveModal,
+  ) { }
   showProperties = false;
 
   ngOnInit() {
-    this.cols = [
+
+
+    this.headColumns = [
       { field: 'id', header: 'Id', hidden: true },
       { field: 'label', header: 'Név', hidden: false },
       { field: 'description', header: 'Leírás', hidden: false },
+      { field: 'properties', header: 'Tulajdonságok', hidden: true }
+    ];
+    this.detailsColumns = [
+      { field: 'name', header: 'Név', hidden: false },
+      { field: 'value', header: 'Érték', hidden: false },
     ];
   }
 
@@ -45,11 +64,9 @@ export class ConcreteManagementComponent implements OnInit {
         filtered.push(concName);
       }
     }
-    this.selectedConcrete = query;
     return filtered;
 
   }
-
 
   filterDataMultiple(event) {
     const query = event.target.value;
@@ -90,7 +107,62 @@ export class ConcreteManagementComponent implements OnInit {
   }
 
   onRowSelect(event) {
+    this.searchDetailedData = [];
+    const properties = this.selectedConcrete2['properties'];
+    for (const key in properties) {
+      if (properties.hasOwnProperty(key)) {
+        const element = properties[key];
+        this.searchDetailedData.push({ name: key, value: element });
+      }
+    }
     // this.messageService.add({ severity: 'info', summary: 'Car Selected', detail: 'Vin: ' + event.data.vin });
   }
 
+  onDetailsRowSave(event) {
+    const obj = {};
+    for (const value of this.searchDetailedData) {
+      obj[value.name] = value.value;
+    }
+    this.selectedConcrete2['properties'] = obj;
+    this.editData();
+  }
+
+
+  editData() {
+    const concreteToSave = Object.assign({}, this.selectedConcrete2); // copy object
+
+    this.restService.objectName = 'concretes';
+
+    this.restService.update(concreteToSave)
+      .then(res => {
+        if (!res['success']) {
+          this.selectedConcrete2['properties'] = this.originalData;
+          return;
+        }
+
+        // this.activeModal.close();
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sikeres módosítás',
+          detail: 'A beton módosításra került.'
+        });
+      })
+      .catch(err => {
+        this.selectedConcrete2['properties'] = this.originalData;
+
+        // this.activeModal.close();
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Sikertelen módosítás',
+          detail: 'A beton módosítása nem sikerült.'
+        });
+      });
+  }
+
+  debug(obj) {
+    console.log(obj);
+    return obj;
+  }
 }

@@ -14,7 +14,7 @@ export default class ConcreteCtrl extends BaseCtrl {
     }
 
     getAllData = async (req, res) => {
-        const data = await this.model.find({ select: (['id', 'label', 'description']) });
+        const data = await this.model.find({ select: (['id', 'label', 'description', 'properties']) });
 
         const result = data.map(e => e);
 
