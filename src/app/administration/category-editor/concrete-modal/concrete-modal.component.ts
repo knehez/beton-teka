@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MessageService } from 'primeng/api';
 import { GeneralRestService } from 'src/app/_services/general-rest.service';
+import { ConcreteService } from 'src/app/_services/concrete.service';
 
 @Component({
   selector: 'app-concrete-modal',
@@ -15,11 +16,14 @@ export class ConcreteModalComponent implements OnInit {
   @Input() parentCategory;
   @Input() isNewConcrete: boolean;
   @Input() readOnly: boolean;
+  suggestedConcreteNames: any[];
+  selectedConcrete = '';
 
   constructor(
     public activeModal: NgbActiveModal,
     public messageService: MessageService,
-    public restService: GeneralRestService) { }
+    public restService: GeneralRestService,
+    private concreteService: ConcreteService) { }
 
   ngOnInit () {
     this.readOnly = this.readOnly || false;
@@ -112,5 +116,24 @@ export class ConcreteModalComponent implements OnInit {
     }
 
     this.activeModal.close();
+  }
+  filterNamesMultiple(event) {
+    const query = event.query;
+    this.concreteService.getAllNames().then(concreteNames => {
+      this.suggestedConcreteNames = this.filterName(query, concreteNames as []);
+    });
+  }
+
+  filterName(query, concreteNames: any[]): any[] {
+    const filtered: any[] = [];
+    for (let i = 0; i < concreteNames.length; i++) {
+      const concName = concreteNames[i];
+      if (concName.toLowerCase().includes(query.toLowerCase()) === true) {
+        filtered.push(concName);
+      }
+    }
+    this.selectedConcrete = query;
+    return filtered;
+
   }
 }
