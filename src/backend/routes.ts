@@ -16,6 +16,8 @@ import { Experiment } from './entities/experiment';
 import ExperimentCtrl from './controllers/experiment.controller';
 import { Measurement } from './entities/measurement';
 import MeasurementCtrl from './controllers/measurement.controller';
+import { MeasurementType } from './entities/measurementType';
+import MeasurementTypeCtrl from './controllers/measurementType.controller';
 
 export default function setRoutes(app) {
 
@@ -68,6 +70,15 @@ export default function setRoutes(app) {
     entity: new Measurement,
     ctrl: new MeasurementCtrl
   });
+
+  // MeasurementType
+  getGeneralRoutes({
+    router,
+    entityName: 'measurementTypes',
+    entity: new MeasurementType,
+    ctrl: new MeasurementTypeCtrl
+  });
+
 
 
   // Authentication

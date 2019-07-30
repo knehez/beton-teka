@@ -51,7 +51,7 @@ export class NewMeasurementComponent implements OnInit {
   }
 
   searchClick() {
-    this.showResult = true;
+    this.showResult = !this.showResult;
   }
 
   densityClick() {

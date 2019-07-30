@@ -20,6 +20,12 @@ export class Experiment {
     @Column()
     description: string;
 
+    @Column()
+    date: Date;
+
+    @Column({ type : 'json'})
+    adds: Object;
+
     @OneToMany(type => Measurement, measurement => measurement.experiment)
     measurements: Measurement[];
 }

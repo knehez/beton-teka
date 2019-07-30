@@ -15,6 +15,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TreeModule } from 'primeng/tree';
 import { TreeDragDropService } from 'primeng/api';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -52,6 +53,7 @@ import { AuthGuard } from './auth.guard';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ConcreteManagementComponent } from './administration/concrete-management/concrete-management.component';
 import { ConcreteService } from './_services/concrete.service';
+import { MeasurementTypeService } from './_services/measurement-type.service';
 
 
 const routes: Routes = [
@@ -108,6 +110,7 @@ const routes: Routes = [
     ConcreteManagementComponent
   ],
   imports: [
+    MultiSelectModule,
     BrowserModule,
     BrowserAnimationsModule,
     CrudTableLibModule,
@@ -147,6 +150,7 @@ const routes: Routes = [
       multi: true
     },
     ConfirmationService,
+    MeasurementTypeService,
     GeneralRestService,
     ConcreteService,
     MessageService,
