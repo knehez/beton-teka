@@ -1,58 +1,50 @@
 <p-card>
-  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="profileForm">
 
-    <h3>Új kísérlet betonokkal:</h3>
-    <h4>Az új beton:<br /></h4>
+    <h4>Új kísérlet betonokkal</h4>
+
+    <h5>Új beton</h5>
 
     <div class="form-inline">
-      Az új kísérlet neve :
+      Új kísérlet neve:
       <input type="text" class="form-control" formControlName="newname">
-      Minták száma :
+      Minták száma:
       <input type="number" class="form-control" formControlName="cups">
-      Dátum :
-      <p-calendar formControlName="date"></p-calendar>
+      Dátum:
+      <p-calendar formControlName="date" dateFormat="yy-mm-dd"></p-calendar>
     </div>
 
 
 
 
     <div formArrayName="exp">
-
-
-
+      <h5>Adalékok</h5>
       <button type="button" class="btn btn-outline-primary" (click)="addItem()">Új adalék</button>
-      <div><br /> </div>
       <div class="form-inline" *ngFor="let exp of exp.controls; let i=index" [formGroupName]="i">
-        <label>
-          Adalék Név:
-          <input type="text" class="form-control" formControlName="name">
-          Adalék mennyisége:
-          <input type="number" class="form-control" formControlName="quantity">
-          Mértékegység:
-          <input type="text" class="form-control" formControlName="unit">
+        <label>Adalék - Név:</label>
+        <input type="text" class="form-control" formControlName="name">
 
-          <button class="btn btn-outline-success" (click)="onItemDeleted(i)">-</button>
+        <label>Mennyiség:</label>
+        <input type="number" class="form-control" formControlName="quantity">
 
-        </label>
+        <label>Mértékegység:</label>
+        <input type="text" class="form-control" formControlName="unit">
 
+        <button class="btn btn-outline-success" (click)="onItemDeleted(i)">-</button>
+      </div>
+    </div>
 
+    <div>
+      <h5>Kísérlet leírása</h5>
+      <div class="form-group">
+        <textarea class="form-control" id="experimentDescription" rows="3"></textarea>
       </div>
 
-      <div>
-        <h4>A kísérlet leírása:</h4>
-        <div class="form-group">
-          <textarea class="form-control" id="experimentDescription" rows="3"></textarea>
-        </div>
-        <div>
-          <button class="btn btn-outline-primary" (click)="showCreate()" [disabled]="!profileForm.valid">Kísérlet
-            hozzárendelése</button>
-        </div>
-        <p-multiSelect [options]="types"></p-multiSelect>
-        <div>
-          <button type="submit" class="btn btn-outline-primary" [disabled]="!show">Létrehoz</button>
-        </div>
-
-      </div>
+      <h5>Kísérlet mérései</h5>
+      <p-multiSelect [options]="types" defaultLabel="Méréstípusok" formControlName="measurementTypes"></p-multiSelect>
+      
+      <br>
+      <button type="submit" class="btn btn-outline-primary mt-3">Létrehoz</button>
     </div>
   </form>
 </p-card>

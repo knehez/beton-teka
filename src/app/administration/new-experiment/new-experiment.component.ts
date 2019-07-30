@@ -12,17 +12,15 @@ import { MeasurementTypeService } from 'src/app/_services/measurement-type.servi
   styleUrls: ['./new-experiment.component.css']
 })
 export class NewExperimentComponent implements OnInit {
-
-  show = false;
   types;
-  selectedTypes: any;
 
   profileForm = this.fb.group({
     newname: ['', Validators.minLength(3)],
     cups: ['', Validators.required],
     exp: this.fb.array([this.createExpItem()]),
     date: [new Date()],
-    desription: ['']
+    desription: [''],
+    measurementTypes: []
   });
 
 
@@ -68,9 +66,4 @@ export class NewExperimentComponent implements OnInit {
   onItemDeleted(index) {
     this.exp.removeAt(index);
   }
-
-  showCreate() {
-    this.show = true;
-  }
-
 }
