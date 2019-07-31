@@ -54,6 +54,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { ConcreteManagementComponent } from './administration/concrete-management/concrete-management.component';
 import { ConcreteService } from './_services/concrete.service';
 import { MeasurementTypeService } from './_services/measurement-type.service';
+import { ExperimentService } from './_services/experiment.service';
 
 
 const routes: Routes = [
@@ -155,7 +156,8 @@ const routes: Routes = [
     ConcreteService,
     MessageService,
     TreeDragDropService,
-    JwtHelperService
+    JwtHelperService,
+    ExperimentService
   ],
   entryComponents: [
     CategoryModalComponent,

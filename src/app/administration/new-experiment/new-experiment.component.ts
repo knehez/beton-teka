@@ -4,6 +4,8 @@ import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { FormArray } from '@angular/forms';
 import { MeasurementTypeService } from 'src/app/_services/measurement-type.service';
+import { ExperimentService } from 'src/app/_services/experiment.service';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
@@ -15,18 +17,20 @@ export class NewExperimentComponent implements OnInit {
   types;
 
   profileForm = this.fb.group({
-    newname: ['', Validators.minLength(3)],
+    experimentName: ['', Validators.minLength(3)],
     cups: ['', Validators.required],
-    exp: this.fb.array([this.createExpItem()]),
+    adds: this.fb.array([this.createExpItem()]),
     date: [new Date()],
-    desription: [''],
-    measurementTypes: []
+    description: [''],
+    measurements: []
   });
 
 
   constructor(
     private fb: FormBuilder,
-    private measurementTypeService: MeasurementTypeService
+    private measurementTypeService: MeasurementTypeService,
+    private experimentService: ExperimentService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit() {
@@ -38,7 +42,10 @@ export class NewExperimentComponent implements OnInit {
         if (1 > 0) {
           types.push({
             label: res[i].name,
-            value: res[i]
+            value: {
+              measurementTypeId: res[i].id,
+              measurementData: {}
+            }
           });
         }
       }
@@ -55,15 +62,34 @@ export class NewExperimentComponent implements OnInit {
     });
   }
 
-  get exp() {
-    return this.profileForm.get('exp') as FormArray;
+  get adds() {
+    return this.profileForm.get('adds') as FormArray;
   }
 
   addItem() {
-    this.exp.push(this.createExpItem());
+    this.adds.push(this.createExpItem());
   }
 
   onItemDeleted(index) {
-    this.exp.removeAt(index);
+    this.adds.removeAt(index);
+  }
+
+  saveExperiment() {
+    const experiment = this.profileForm.value;
+    this.experimentService.saveExperiment(experiment)
+      .then(res => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sikeres hozzáadás',
+          detail: 'A kísérlet hozzáadásra került.'
+        });
+      })
+      .catch(err => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Sikertelen hozzáadás',
+          detail: 'A kísérlet hozzáadása nem sikerült.'
+        });
+      });
   }
 }
