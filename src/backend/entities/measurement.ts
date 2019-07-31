@@ -15,8 +15,10 @@ export class Measurement {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
     measurementTypeId: number;
 
+    @Column()
     experimentId: number;
 
     @Column({ type: 'json' })

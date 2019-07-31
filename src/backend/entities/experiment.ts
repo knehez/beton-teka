@@ -30,7 +30,8 @@ export class Experiment {
     adds: Object;
 
     @OneToMany((type) => Measurement, (measurement) => measurement.experiment, {
-        eager: true
+        eager: true,
+        cascade: true
     })
     public measurements: Measurement[];
 }
