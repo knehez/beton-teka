@@ -18,10 +18,13 @@ export class Experiment {
     experimentName: string;
 
     @Column()
-    description: string;
+    cups: number;
 
     @Column()
     date: Date;
+
+    @Column()
+    description: string;
 
     @Column({ type : 'json'})
     adds: Object;
