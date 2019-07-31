@@ -29,6 +29,8 @@ export class Experiment {
     @Column({ type : 'json'})
     adds: Object;
 
-    @OneToMany(type => Measurement, measurement => measurement.experiment)
-    measurements: Measurement[];
+    @OneToMany((type) => Measurement, (measurement) => measurement.experiment, {
+        eager: true
+    })
+    public measurements: Measurement[];
 }
