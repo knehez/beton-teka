@@ -14,4 +14,8 @@ export class ExperimentService {
   saveExperiment(experiment) {
     return this._http.post(`${this.actionUrl}experiments`, experiment).toPromise();
   }
+
+  searchExperiment(id) {
+    return this._http.get(`${this.actionUrl}experiments/${id}`).toPromise();
+  }
 }
