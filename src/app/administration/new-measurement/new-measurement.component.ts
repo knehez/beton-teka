@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
-import { FormArray } from '@angular/forms';
+import { ExperimentService } from 'src/app/_services/experiment.service';
+import { MeasurementService } from 'src/app/_services/measurement.service';
+import { MessageService } from 'primeng/api';
+
 
 @Component({
   selector: 'app-new-measurement',
@@ -10,66 +12,83 @@ import { FormArray } from '@angular/forms';
 })
 export class NewMeasurementComponent implements OnInit {
 
-  showResult = false;
-  showDensity = false;
-  showStrength = false;
-  showStrength2 = false;
+  measurementColumns: any[];
+  searchedExperimentId: string;
+  measurementType = [];
 
-  profileForm = this.fb.group({
-    mes: this.fb.array([this.createMesItem()])
+  measurementForm = this.formBuilder.group({
+    selectedMeasurementType: [{
+      measurementData: {
+        data: []
+      }
+    }],
+
+    newMeasurementData: this.createMeasurementData()
   });
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private messageServices: MessageService,
+    private experimentServices: ExperimentService,
+    private measurementServices: MeasurementService
+  ) { }
 
-  createMesItem(): FormGroup {
-    return this.fb.group({
-      serial: [''],
-      id: [''],
-      weight: [''],
-      surface1: [''],
-      surface2: [''],
-      height: [''],
-      density: [''],
-      force: [''],
-      strength: [''],
+  ngOnInit() {
+    this.measurementColumns = [
+      { field: 'name', header: 'Név' },
+      { field: 'value', header: 'Érték' },
+      { field: 'unit', header: 'Mértékegység' },
+      { field: 'note', header: 'Megjegyzés' }
+    ];
+  }
+
+  createMeasurementData() {
+    return this.formBuilder.group({
+      name: [''],
+      value: [''],
+      unit: [''],
+      note: ['']
     });
   }
 
-  get mes() {
-    return this.profileForm.get('mes') as FormArray;
+  get selectedMeasurementType() {
+    return this.measurementForm.get('selectedMeasurementType').value;
   }
 
-  addItem() {
-    this.mes.push(this.createMesItem());
+  searchExperiment() {
+    this.measurementType = [];
+
+    this.experimentServices.searchExperiment(this.searchedExperimentId)
+      .then(res => {
+        const measurements = res['measurements'];
+        for (const measurement of measurements) {
+          this.measurementType.push({
+            label: measurement.measurementType.name,
+            value: measurement
+          });
+        }
+      });
   }
 
-  onItemDeleted(index) {
-    this.mes.removeAt(index);
+  addMeasurementData() {
+    const data = this.measurementForm.get('newMeasurementData').value;
+    const selectedMeasurementType = this.measurementForm.get('selectedMeasurementType').value;
+
+    selectedMeasurementType.measurementData.data.push(data);
+    this.measurementForm.setControl('newMeasurementData', this.createMeasurementData());
   }
 
-  ngOnInit() {
-  }
+  saveMeasurement() {
+    const measurementToSave = this.selectedMeasurementType;
 
-  searchClick() {
-    this.showResult = !this.showResult;
-  }
-
-  densityClick() {
-    this.showDensity = true;
-    this.showStrength = false;
-    this.showStrength2 = false;
-  }
-
-  strengthClick() {
-    this.showStrength = true;
-    this.showDensity = false;
-    this.showStrength2 = false;
-  }
-
-  strength2Click() {
-    this.showStrength2 = true;
-    this.showDensity = false;
-    this.showStrength = false;
+    this.measurementServices.saveMeasurement(measurementToSave)
+      .then(res => {
+        this.messageServices.add({
+          severity: 'success',
+          summary: 'Sikeres módosítás',
+          detail: 'A mérés módosításra került.'
+        });
+      });
   }
 
 }
