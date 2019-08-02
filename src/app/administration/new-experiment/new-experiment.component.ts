@@ -14,20 +14,20 @@ import { MessageService } from 'primeng/api';
   styleUrls: ['./new-experiment.component.css']
 })
 export class NewExperimentComponent implements OnInit {
+
   types;
 
-  profileForm = this.fb.group({
+  newExperimentForm = this.formBuilder.group({
     experimentName: ['', Validators.minLength(3)],
     cups: ['', Validators.required],
-    adds: this.fb.array([this.createExpItem()]),
+    adds: this.formBuilder.array([this.createExpItem()]),
     date: [new Date()],
     description: [''],
     measurements: []
   });
 
-
   constructor(
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private measurementTypeService: MeasurementTypeService,
     private experimentService: ExperimentService,
     private messageService: MessageService
@@ -38,16 +38,15 @@ export class NewExperimentComponent implements OnInit {
 
       const types = [];
 
+      // tslint:disable-next-line: forin
       for (const i in res) {
-        if (1 > 0) {
-          types.push({
-            label: res[i].name,
-            value: {
-              measurementTypeId: res[i].id,
-              measurementData: {}
-            }
-          });
-        }
+        types.push({
+          label: res[i].name,
+          value: {
+            measurementTypeId: res[i].id,
+            measurementData: {}
+          }
+        });
       }
 
       this.types = types;
@@ -55,7 +54,7 @@ export class NewExperimentComponent implements OnInit {
   }
 
   createExpItem(): FormGroup {
-    return this.fb.group({
+    return this.formBuilder.group({
       name: [''],
       quantity: [''],
       unit: [''],
@@ -63,7 +62,7 @@ export class NewExperimentComponent implements OnInit {
   }
 
   get adds() {
-    return this.profileForm.get('adds') as FormArray;
+    return this.newExperimentForm.get('adds') as FormArray;
   }
 
   addItem() {
@@ -75,7 +74,7 @@ export class NewExperimentComponent implements OnInit {
   }
 
   saveExperiment() {
-    const experiment = this.profileForm.value;
+    const experiment = this.newExperimentForm.value;
     this.experimentService.saveExperiment(experiment)
       .then(res => {
         this.messageService.add({

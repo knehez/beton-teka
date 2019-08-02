@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ExperimentService } from 'src/app/_services/experiment.service';
-import { Experiment } from 'src/backend/entities/experiment';
-import { months } from 'moment';
 
 @Component({
   selector: 'app-search-experiment',
@@ -10,7 +8,7 @@ import { months } from 'moment';
 })
 export class SearchExperimentComponent implements OnInit {
 
-  experimentId: String;
+  experimentId: string;
   headColumns: any[];
   searchedExperiment = [];
 
@@ -21,7 +19,7 @@ export class SearchExperimentComponent implements OnInit {
   ngOnInit() {
 
     this.headColumns = [
-      { field: 'id', header: 'Id', hidden: false },
+      { field: 'id', header: 'Azonosító', hidden: false },
       { field: 'experimentName', header: 'Név', hidden: false },
       { field: 'cups', header: 'Mintaszám', hidden: false },
       { field: 'date', header: 'Dátum', hidden: false },
@@ -30,28 +28,29 @@ export class SearchExperimentComponent implements OnInit {
     ];
   }
 
-  searchExperiment() {
-    this.experimentService.searchExperiment(this.experimentId).then(res => {
-      console.log(res);
-      const arr = [];
-      arr.push(res);
-      for (const experiment of arr) {
-        experiment.adds = this.convertAdds(experiment.adds);
-        experiment.date = new Date(experiment.date).toLocaleDateString('hu-HU', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        });
-      }
-      this.searchedExperiment = arr;
-    });
-  }
-
   convertAdds(adds) {
     let str = '';
     for (const add of adds) {
       str += ` -- ${add.quantity} ${add.unit} ${add.name}`;
     }
     return str;
+  }
+
+  convertDate (date) {
+    return new Date(date).toLocaleDateString('hu-HU');
+  }
+
+  searchExperiment() {
+    this.experimentService.searchExperiment(this.experimentId).then(res => {
+
+      const experiments = [];
+      experiments.push(res);
+
+      for (const experiment of experiments) {
+        experiment.adds = this.convertAdds(experiment.adds);
+        experiment.date = this.convertDate(experiment.date);
+      }
+      this.searchedExperiment = experiments;
+    });
   }
 }

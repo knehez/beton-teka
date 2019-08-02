@@ -1,61 +1,58 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-12">
-      <p-card class="mb-2">
-        <h3>Kísérlet keresése</h3>
+<p-card class="mb-2">
+  <h3>Kísérlet keresése</h3>
+  <small>Adja meg a keresni kívánt kísérlet azonosítóját!</small>
 
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-default">Keresés</span>
-          </div>
-          <input type="text" class="form-control" aria-label="Default" [(ngModel)]="searchedExperimentId"
-            aria-describedby="inputGroup-sizing-default">
-        </div>
-        <button type="button" (click)="searchExperiment()" class="btn btn-outline-primary">Keresés</button>
-      </p-card>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroup-sizing-default">Keresés</span>
     </div>
-
-    <p-card>
-      <div class="row">
-        <form [formGroup]="measurementForm">
-          <div class="col-md-4">
-            <p-listbox [options]="measurementType" formControlName="selectedMeasurementType"></p-listbox>
-          </div>
-          <div class="col-md-8">
-            <p-table [value]="selectedMeasurementType.measurementData.data">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>
-                    Műveletek
-                  </th>
-                  <th *ngFor="let col of measurementColumns" >
-                    {{col.header}}
-                  </th>
-                </tr>
-                <tr>
-                  <td>
-                   <button class="btn btn-success" (click)="addMeasurementData()">Hozzáad</button>
-                  </td>
-                  <td *ngFor="let col of measurementColumns" formGroupName="newMeasurementData">
-                    <input class="form-control" type="text" [placeholder]="col.header" [formControlName]="col.field">
-                  </td>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-measurementData>
-                <tr>
-                  <td>
-                    +
-                  </td>
-                  <td *ngFor="let col of measurementColumns">
-                    {{measurementData[col.field]}}
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
-
-            <button class="btn btn-success" (click)='saveMeasurement()'>Mentés</button>
-          </div>
-        </form>
-      </div>
-    </p-card>
+    <input type="text" class="form-control" aria-label="Default" [(ngModel)]="searchedExperimentId"
+      aria-describedby="inputGroup-sizing-default">
   </div>
+  <button type="button" (click)="searchExperiment()" class="btn btn-outline-primary">Keresés</button>
+</p-card>
+
+<p-card styleClass="mt-2" *ngIf="measurementTypes.length > 0">
+  <form [formGroup]="measurementForm">
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <h4>Méréstípusok</h4>
+        <p-listbox [options]="measurementTypes" formControlName="selectedMeasurementType"></p-listbox>
+      </div>
+
+      <div class="form-group col-md-10">
+        <p-table [value]="selectedMeasurementType.measurementData.data">
+          <ng-template pTemplate="header">
+            <tr>
+              <th *ngFor="let col of measurementColumns">
+                {{col.header}}
+              </th>
+              <th>Műveletek</th>
+            </tr>
+            <tr>
+              <td *ngFor="let col of measurementColumns" formGroupName="newMeasurementData">
+                <input class="form-control form-control-sm" type="text" [placeholder]="col.header"
+                  [formControlName]="col.field">
+              </td>
+              <td>
+                <button class="btn btn-sm btn-success" (click)="addMeasurementData()">Hozzáad</button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-measurementData>
+            <tr>
+              <td *ngFor="let col of measurementColumns">
+                {{measurementData[col.field]}}
+              </td>
+              <td>Szerkeszt / Töröl</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <div class="text-right">
+          <button class="btn btn-success" (click)='saveMeasurement()'>Mentés</button>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</p-card>

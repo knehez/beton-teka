@@ -14,7 +14,7 @@ export class NewMeasurementComponent implements OnInit {
 
   measurementColumns: any[];
   searchedExperimentId: string;
-  measurementType = [];
+  measurementTypes = [];
 
   measurementForm = this.formBuilder.group({
     selectedMeasurementType: [{
@@ -22,15 +22,14 @@ export class NewMeasurementComponent implements OnInit {
         data: []
       }
     }],
-
     newMeasurementData: this.createMeasurementData()
   });
 
   constructor(
     private formBuilder: FormBuilder,
-    private messageServices: MessageService,
-    private experimentServices: ExperimentService,
-    private measurementServices: MeasurementService
+    private messageService: MessageService,
+    private experimentService: ExperimentService,
+    private measurementService: MeasurementService
   ) { }
 
   ngOnInit() {
@@ -56,13 +55,17 @@ export class NewMeasurementComponent implements OnInit {
   }
 
   searchExperiment() {
-    this.measurementType = [];
+    this.measurementTypes = [];
 
-    this.experimentServices.searchExperiment(this.searchedExperimentId)
+    this.experimentService.searchExperiment(this.searchedExperimentId)
       .then(res => {
+
+        // TODO: error msg when no measurement is defined for experiment
+        // TODO: error msg when no experiment is found with the given id
+
         const measurements = res['measurements'];
         for (const measurement of measurements) {
-          this.measurementType.push({
+          this.measurementTypes.push({
             label: measurement.measurementType.name,
             value: measurement
           });
@@ -81,9 +84,9 @@ export class NewMeasurementComponent implements OnInit {
   saveMeasurement() {
     const measurementToSave = this.selectedMeasurementType;
 
-    this.measurementServices.saveMeasurement(measurementToSave)
+    this.measurementService.saveMeasurement(measurementToSave)
       .then(res => {
-        this.messageServices.add({
+        this.messageService.add({
           severity: 'success',
           summary: 'Sikeres módosítás',
           detail: 'A mérés módosításra került.'

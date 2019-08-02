@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Measurement } from 'src/backend/entities/measurement';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({

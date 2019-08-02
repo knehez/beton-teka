@@ -1,10 +1,9 @@
 <p-card>
-  <form [formGroup]="profileForm">
+  <h4>Új kísérlet betonokkal</h4>
 
-    <h4>Új kísérlet betonokkal</h4>
+  <form [formGroup]="newExperimentForm">
 
     <h5>Új beton</h5>
-
     <div class="form-inline">
       Új kísérlet neve:
       <input type="text" class="form-control" formControlName="experimentName">
@@ -14,14 +13,11 @@
       <p-calendar formControlName="date" dateFormat="yy-mm-dd"></p-calendar>
     </div>
 
-
-
-
+    <h5>Adalékok</h5>
     <div formArrayName="adds">
-      <h5>Adalékok</h5>
       <button type="button" class="btn btn-outline-primary" (click)="addItem()">Új adalék</button>
       <div class="form-inline" *ngFor="let adds of adds.controls; let i=index" [formGroupName]="i">
-        <label>Adalék - Név:</label>
+        <label>Adalék – Név:</label>
         <input type="text" class="form-control" formControlName="name">
 
         <label>Mennyiség:</label>
@@ -34,17 +30,15 @@
       </div>
     </div>
 
-    <div>
-      <h5>Kísérlet leírása</h5>
-      <div class="form-group">
-        <textarea class="form-control" id="experimentDescription" formControlName="description" rows="3"></textarea>
-      </div>
-
-      <h5>Kísérlet mérései</h5>
-      <p-multiSelect [options]="types" defaultLabel="Méréstípusok" formControlName="measurements"></p-multiSelect>
-
-      <br>
-      <button type="submit" (click)="saveExperiment()" class="btn btn-outline-primary mt-3">Létrehoz</button>
+    <h5>Kísérlet leírása</h5>
+    <div class="form-group">
+      <textarea class="form-control" id="experimentDescription" formControlName="description" rows="3"></textarea>
     </div>
+
+    <h5>Kísérlet mérései</h5>
+    <p-multiSelect [options]="types" defaultLabel="Méréstípusok" formControlName="measurements"></p-multiSelect>
+
+    <br>
+    <button type="submit" (click)="saveExperiment()" class="btn btn-outline-primary mt-3">Létrehoz</button>
   </form>
 </p-card>
