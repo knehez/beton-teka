@@ -79,6 +79,7 @@ export class NewMeasurementComponent implements OnInit {
 
     selectedMeasurementType.measurementData.data.push(data);
     this.measurementForm.setControl('newMeasurementData', this.createMeasurementData());
+    this.saveMeasurement();
   }
 
   saveMeasurement() {
@@ -93,5 +94,12 @@ export class NewMeasurementComponent implements OnInit {
         });
       });
   }
+
+  deleteRow(index) {
+    const selectedMeasurementType = this.measurementForm.get('selectedMeasurementType').value;
+    selectedMeasurementType.measurementData.data.splice(index, 1);
+    this.saveMeasurement();
+  }
+
 
 }
