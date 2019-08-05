@@ -2,8 +2,6 @@ import { MeasurementType } from '../entities/measurementType';
 import { Initializer } from './initializer';
 import { getRepository } from 'typeorm';
 
-
-
 export default class MeasurementTypeInitializer extends Initializer {
     repository = getRepository(MeasurementType);
 

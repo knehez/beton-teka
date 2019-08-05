@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Permissions } from '../../../projects/crud-table-lib/src/public_api';
 import { RoleName } from './shared/roleName';
 import { Experiment } from './experiment';
@@ -20,6 +20,9 @@ export class Measurement {
 
     @Column()
     experimentId: number;
+
+    @Column()
+    group: number;
 
     @Column({ type: 'json' })
     measurementData: object;

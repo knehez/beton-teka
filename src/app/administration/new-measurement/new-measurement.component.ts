@@ -59,6 +59,7 @@ export class NewMeasurementComponent implements OnInit {
 
     this.experimentService.searchExperiment(this.searchedExperimentId)
       .then(res => {
+        const experiment = res;
         const measurements = res['measurements'];
 
         if (!measurements || !Array.isArray(measurements) || measurements.length === 0) {
@@ -71,7 +72,7 @@ export class NewMeasurementComponent implements OnInit {
 
         for (const measurement of measurements) {
           this.measurementTypes.push({
-            label: measurement.measurementType.name,
+            label: `${experiment['id']}-${measurement.group} - ${measurement.measurementType.name}`,
             value: measurement
           });
         }

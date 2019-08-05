@@ -64,11 +64,21 @@ export default function setRoutes(app) {
   });
 
   // Measurement
+  const measurementEntityName = 'measurements';
+  const measurementEntity = new Measurement();
+  const measurementCtrl = new MeasurementCtrl();
+  const measurementPermissions = Reflect.getMetadata(CLASS_PERMISSION_METADATA_KEY, measurementEntity.constructor);
+  router.post(
+    `/${measurementEntityName}/group`,
+    getRoleChecker(measurementPermissions.read),
+    measurementCtrl.createNewMeasurementGroup
+  );
+
   getGeneralRoutes({
     router,
     entityName: 'measurements',
-    entity: new Measurement,
-    ctrl: new MeasurementCtrl
+    entity: measurementEntity,
+    ctrl: measurementCtrl
   });
 
   // MeasurementType
@@ -78,8 +88,6 @@ export default function setRoutes(app) {
     entity: new MeasurementType,
     ctrl: new MeasurementTypeCtrl
   });
-
-
 
   // Authentication
   const authenticationCtrl = new AuthenticationCtrl();
