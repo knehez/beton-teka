@@ -59,14 +59,24 @@ export class NewMeasurementComponent implements OnInit {
 
     this.experimentService.searchExperiment(this.searchedExperimentId)
       .then(res => {
-
         const measurements = res['measurements'];
+
+        if (!measurements || !Array.isArray(measurements) || measurements.length === 0) {
+          return this.messageService.add({
+            severity: 'warn',
+            summary: 'Hiba',
+            detail: 'A kísérlethez nem tartozik mérés.'
+          });
+        }
+
         for (const measurement of measurements) {
           this.measurementTypes.push({
             label: measurement.measurementType.name,
             value: measurement
           });
         }
+
+        this.measurementForm.get('selectedMeasurementType').setValue(this.measurementTypes[0].value);
       })
       .catch(err => {
         if (err.status === 404) {
