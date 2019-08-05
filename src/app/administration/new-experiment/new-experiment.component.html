@@ -3,7 +3,6 @@
 
   <form [formGroup]="newExperimentForm">
 
-    <h5>Új beton</h5>
     <div class="form-inline">
       Új kísérlet neve:
       <input type="text" class="form-control" formControlName="experimentName">
@@ -35,7 +34,7 @@
       <textarea class="form-control" id="experimentDescription" formControlName="description" rows="3"></textarea>
     </div>
 
-    <h5>Kísérlet mérései</h5>
+    <h5>Lehetséges méréstípusok hozzárendelése</h5>
     <p-multiSelect [options]="types" defaultLabel="Méréstípusok" formControlName="measurements"></p-multiSelect>
 
     <br>

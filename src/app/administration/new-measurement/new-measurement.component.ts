@@ -60,14 +60,20 @@ export class NewMeasurementComponent implements OnInit {
     this.experimentService.searchExperiment(this.searchedExperimentId)
       .then(res => {
 
-        // TODO: error msg when no measurement is defined for experiment
-        // TODO: error msg when no experiment is found with the given id
-
         const measurements = res['measurements'];
         for (const measurement of measurements) {
           this.measurementTypes.push({
             label: measurement.measurementType.name,
             value: measurement
+          });
+        }
+      })
+      .catch(err => {
+        if (err.status === 404) {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Azonosító hiba',
+            detail: 'A megadott azonosítóval nem létezik mérés.'
           });
         }
       });
