@@ -36,6 +36,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 import { CrudTableLibModule } from 'projects/crud-table-lib/src/public_api';
 import { CalendarModule } from 'primeng/calendar';
@@ -130,6 +131,7 @@ const routes: Routes = [
     ListboxModule,
     InputSwitchModule,
     SliderModule,
+    TabMenuModule,
     TreeModule,
     CardModule,
     NgbModule,

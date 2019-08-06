@@ -70,7 +70,7 @@ export default function setRoutes(app) {
   const measurementPermissions = Reflect.getMetadata(CLASS_PERMISSION_METADATA_KEY, measurementEntity.constructor);
   router.post(
     `/${measurementEntityName}/group`,
-    getRoleChecker(measurementPermissions.read),
+    getRoleChecker(measurementPermissions.update),
     measurementCtrl.createNewMeasurementGroup
   );
 

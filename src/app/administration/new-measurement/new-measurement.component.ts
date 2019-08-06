@@ -4,7 +4,6 @@ import { ExperimentService } from 'src/app/_services/experiment.service';
 import { MeasurementService } from 'src/app/_services/measurement.service';
 import { MessageService } from 'primeng/api';
 
-
 @Component({
   selector: 'app-new-measurement',
   templateUrl: './new-measurement.component.html',
@@ -15,6 +14,8 @@ export class NewMeasurementComponent implements OnInit {
   measurementColumns: any[];
   searchedExperimentId: string;
   measurementTypes = [];
+  filteredMeasurementTypes = [];
+  tabs = [];
 
   measurementForm = this.formBuilder.group({
     selectedMeasurementType: [{
@@ -61,6 +62,7 @@ export class NewMeasurementComponent implements OnInit {
       .then(res => {
         const experiment = res;
         const measurements = res['measurements'];
+        const tabMenus = [];
 
         if (!measurements || !Array.isArray(measurements) || measurements.length === 0) {
           return this.messageService.add({
@@ -75,9 +77,21 @@ export class NewMeasurementComponent implements OnInit {
             label: `${experiment['id']}-${measurement.group} - ${measurement.measurementType.name}`,
             value: measurement
           });
+
+          if (!tabMenus.includes(measurement.group)) {
+            tabMenus.push(measurement.group);
+          }
+        }
+
+        for (const measurementGroup of tabMenus) {
+          this.tabs.push({
+            label: `${experiment['id']}-${measurementGroup}`,
+            data: measurementGroup
+          });
         }
 
         this.measurementForm.get('selectedMeasurementType').setValue(this.measurementTypes[0].value);
+        this.filterMeasurements(this.measurementTypes[0].value.group);
       })
       .catch(err => {
         if (err.status === 404) {
@@ -118,5 +132,12 @@ export class NewMeasurementComponent implements OnInit {
     this.saveMeasurement();
   }
 
+  filterMeasurements (groupId) {
+    this.filteredMeasurementTypes = this.measurementTypes.filter(type => type.value.group === groupId);
+  }
 
+  filterMeasurementsOnTabClick (tabMenu) {
+    const groupId = tabMenu.activeItem.data;
+    this.filterMeasurements(groupId);
+  }
 }

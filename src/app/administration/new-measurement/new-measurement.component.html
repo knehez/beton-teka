@@ -13,11 +13,14 @@
 </p-card>
 
 <p-card styleClass="mt-2" *ngIf="measurementTypes.length > 0">
+  <p-tabMenu #tabMenu [model]="tabs" [activeItem]="tabs[0]"
+    (click)="filterMeasurementsOnTabClick(tabMenu)" styleClass="mb-2"></p-tabMenu>
+  
   <form [formGroup]="measurementForm">
     <div class="form-row">
       <div class="form-group col-md-2">
         <h4>Méréstípusok</h4>
-        <p-listbox [options]="measurementTypes" formControlName="selectedMeasurementType"></p-listbox>
+        <p-listbox [options]="filteredMeasurementTypes" formControlName="selectedMeasurementType"></p-listbox>
       </div>
 
       <div class="form-group col-md-10">
