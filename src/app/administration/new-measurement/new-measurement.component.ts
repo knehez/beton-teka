@@ -13,10 +13,11 @@ export class NewMeasurementComponent implements OnInit {
 
   measurementColumns: any[];
   searchedExperimentId: string;
+  experiment: any;
+
   measurementTypes = [];
   filteredMeasurementTypes = [];
   tabs = [];
-  experiment: any;
 
   measurementForm = this.formBuilder.group({
     selectedMeasurementType: [{
@@ -56,6 +57,32 @@ export class NewMeasurementComponent implements OnInit {
     return this.measurementForm.get('selectedMeasurementType').value;
   }
 
+  putMeasurementsToFormControl (measurements) {
+    for (const measurement of measurements) {
+      this.measurementTypes.push({
+        label: `${this.experiment['id']}-${measurement.group} - ${measurement.measurementType.name}`,
+        value: measurement
+      });
+    }
+  }
+
+  createTabMenus (measurements) {
+    const registeredGroupIds = [];
+
+    for (const measurement of measurements) {
+      const groupId = measurement.group;
+
+      if (!registeredGroupIds.includes(groupId)) {
+        registeredGroupIds.push(groupId);
+
+        this.tabs.push({
+          label: `${this.experiment['id']}-${groupId}`,
+          data: groupId
+        });
+      }
+    }
+  }
+
   searchExperiment() {
     this.measurementTypes = [];
     this.filteredMeasurementTypes = [];
@@ -64,8 +91,7 @@ export class NewMeasurementComponent implements OnInit {
     this.experimentService.searchExperiment(this.searchedExperimentId)
       .then(res => {
         this.experiment = res;
-        const measurements = res['measurements'];
-        const tabMenus = [];
+        const measurements = this.experiment.measurements;
 
         if (!measurements || !Array.isArray(measurements) || measurements.length === 0) {
           return this.messageService.add({
@@ -75,23 +101,8 @@ export class NewMeasurementComponent implements OnInit {
           });
         }
 
-        for (const measurement of measurements) {
-          this.measurementTypes.push({
-            label: `${this.experiment['id']}-${measurement.group} - ${measurement.measurementType.name}`,
-            value: measurement
-          });
-
-          if (!tabMenus.includes(measurement.group)) {
-            tabMenus.push(measurement.group);
-          }
-        }
-
-        for (const measurementGroup of tabMenus) {
-          this.tabs.push({
-            label: `${this.experiment['id']}-${measurementGroup}`,
-            data: measurementGroup
-          });
-        }
+        this.putMeasurementsToFormControl(measurements);
+        this.createTabMenus(measurements);
 
         this.measurementForm.get('selectedMeasurementType').setValue(this.measurementTypes[0].value);
         this.filterMeasurements(this.measurementTypes[0].value.group);
@@ -109,9 +120,8 @@ export class NewMeasurementComponent implements OnInit {
 
   addMeasurementData() {
     const data = this.measurementForm.get('newMeasurementData').value;
-    const selectedMeasurementType = this.measurementForm.get('selectedMeasurementType').value;
 
-    selectedMeasurementType.measurementData.data.push(data);
+    this.selectedMeasurementType.measurementData.data.push(data);
     this.measurementForm.setControl('newMeasurementData', this.createMeasurementData());
     this.saveMeasurement();
   }
@@ -126,22 +136,33 @@ export class NewMeasurementComponent implements OnInit {
           summary: 'Sikeres módosítás',
           detail: 'A mérés módosításra került.'
         });
+      })
+      .catch(err => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Sikertelen módosítás',
+          detail: 'A mérés módosítása nem sikerült.'
+        });
       });
   }
 
   deleteRow(index) {
-    const selectedMeasurementType = this.measurementForm.get('selectedMeasurementType').value;
-    selectedMeasurementType.measurementData.data.splice(index, 1);
+    this.selectedMeasurementType.measurementData.data.splice(index, 1);
     this.saveMeasurement();
+  }
+
+  setSelectedMeasurementToDefault () {
+    this.measurementForm.get('selectedMeasurementType').setValue(this.filteredMeasurementTypes[0].value);
   }
 
   filterMeasurements(groupId) {
     this.filteredMeasurementTypes = this.measurementTypes.filter(type => type.value.group === groupId);
   }
 
-  filterMeasurementsOnTabClick(tabMenu) {
+  switchTab(tabMenu) {
     const groupId = tabMenu.activeItem.data;
     this.filterMeasurements(groupId);
+    this.setSelectedMeasurementToDefault();
   }
 
   createMeasurementGroup() {
@@ -151,13 +172,29 @@ export class NewMeasurementComponent implements OnInit {
           return;
         }
 
-        this.searchedExperimentId = this.experiment.id;
-        this.searchExperiment();
+        const groupId = res['data'].groupId;
+
+        // refresh UI
+        this.experimentService.searchExperiment(this.experiment.id)
+          .then(experiment => {
+            const measurements = experiment['measurements'];
+            const newMeasurements = measurements.filter(measurement => measurement.group === groupId);
+
+            this.putMeasurementsToFormControl(newMeasurements);
+            this.createTabMenus(newMeasurements);
+          });
 
         this.messageService.add({
           severity: 'success',
           summary: 'Sikeres hozzáadás',
           detail: 'A méréscsoport hozzáadásra került.'
+        });
+      })
+      .catch(err => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Sikertelen hozzáadás',
+          detail: 'A méréscsoport hozzáadása nem sikerült.'
         });
       });
   }

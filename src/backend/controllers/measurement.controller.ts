@@ -1,9 +1,12 @@
 import { getRepository, getConnection } from 'typeorm';
 import BaseCtrl from './base.controller';
 import { Measurement } from '../entities/measurement';
+import { Experiment } from '../entities/experiment';
 
 export default class MeasurementCtrl extends BaseCtrl {
     model = getRepository(Measurement);
+
+    experimentRepository = getRepository(Experiment);
 
     private getDefaultMeasurementData () {
         return {
@@ -19,6 +22,8 @@ export default class MeasurementCtrl extends BaseCtrl {
         const nextGroup = await getConnection()
             .query('SELECT MAX(\`group\`)+1 AS id FROM measurement WHERE experimentId=?', [ experimentId ]);
 
+        const nextGroupId = Number(nextGroup[0].id);
+
         await getConnection()
             .query(
                 `INSERT INTO measurement (\`group\`, experimentId, measurementTypeId, measurementData)
@@ -31,11 +36,14 @@ export default class MeasurementCtrl extends BaseCtrl {
                     measurement
                 WHERE
                     experimentId=?`,
-                [ nextGroup[0].id, measurementData, experimentId ]
+                [ nextGroupId, measurementData, experimentId ]
             );
 
         res.json({
-            success: true
+            success: true,
+            data: {
+                groupId: nextGroupId
+            }
         });
     }
 }

@@ -14,10 +14,10 @@
 
 <p-card styleClass="mt-2" *ngIf="measurementTypes.length > 0">
   <div class="float-right">
-      <button class="btn btn-sm mb-2 btn-success" (click)="createMeasurementGroup()">Új méréscsport</button>
+      <button class="btn btn-sm mb-2 btn-success" (click)="createMeasurementGroup()">Új méréscsoport</button>
   </div>
   <p-tabMenu #tabMenu [model]="tabs" [activeItem]="tabs[0]"
-    (click)="filterMeasurementsOnTabClick(tabMenu)" styleClass="mb-2"></p-tabMenu>
+    (click)="switchTab(tabMenu)" styleClass="mb-2"></p-tabMenu>
   
   <form [formGroup]="measurementForm">
     <div class="form-row">
