@@ -166,35 +166,36 @@ export class NewMeasurementComponent implements OnInit {
   }
 
   createMeasurementGroup() {
+    let groupId;
+
     this.measurementService.createMeasurementGroup(this.experiment.id)
       .then(res => {
         if (!res['success']) {
           return;
         }
 
-        const groupId = res['data'].groupId;
+        groupId = res['data'].groupId;
 
-        // refresh UI
-        this.experimentService.searchExperiment(this.experiment.id)
-          .then(experiment => {
-            const measurements = experiment['measurements'];
-            const newMeasurements = measurements.filter(measurement => measurement.group === groupId);
-
-            this.putMeasurementsToFormControl(newMeasurements);
-            this.createTabMenus(newMeasurements);
-          });
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Sikeres hozzáadás',
-          detail: 'A méréscsoport hozzáadásra került.'
-        });
+        return this.experimentService.searchExperiment(this.experiment.id);
       })
       .catch(err => {
         this.messageService.add({
           severity: 'error',
           summary: 'Sikertelen hozzáadás',
           detail: 'A méréscsoport hozzáadása nem sikerült.'
+        });
+      })
+      .then(experiment => {
+        const measurements = experiment['measurements'];
+        const newMeasurements = measurements.filter(measurement => measurement.group === groupId);
+
+        this.putMeasurementsToFormControl(newMeasurements);
+        this.createTabMenus(newMeasurements);
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sikeres hozzáadás',
+          detail: 'A méréscsoport hozzáadásra került.'
         });
       });
   }
