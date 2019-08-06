@@ -16,4 +16,8 @@ export class MeasurementService {
     const id = measurement.id;
     return this.http.put(`${this.actionUrl}/${id}`, measurement).toPromise();
   }
+
+  createMeasurementGroup(experimentId) {
+    return this.http.post(`${this.actionUrl}/group`, { experimentId }).toPromise();
+  }
 }

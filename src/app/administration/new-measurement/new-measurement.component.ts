@@ -16,6 +16,7 @@ export class NewMeasurementComponent implements OnInit {
   measurementTypes = [];
   filteredMeasurementTypes = [];
   tabs = [];
+  experiment: any;
 
   measurementForm = this.formBuilder.group({
     selectedMeasurementType: [{
@@ -62,7 +63,7 @@ export class NewMeasurementComponent implements OnInit {
 
     this.experimentService.searchExperiment(this.searchedExperimentId)
       .then(res => {
-        const experiment = res;
+        this.experiment = res;
         const measurements = res['measurements'];
         const tabMenus = [];
 
@@ -76,7 +77,7 @@ export class NewMeasurementComponent implements OnInit {
 
         for (const measurement of measurements) {
           this.measurementTypes.push({
-            label: `${experiment['id']}-${measurement.group} - ${measurement.measurementType.name}`,
+            label: `${this.experiment['id']}-${measurement.group} - ${measurement.measurementType.name}`,
             value: measurement
           });
 
@@ -87,7 +88,7 @@ export class NewMeasurementComponent implements OnInit {
 
         for (const measurementGroup of tabMenus) {
           this.tabs.push({
-            label: `${experiment['id']}-${measurementGroup}`,
+            label: `${this.experiment['id']}-${measurementGroup}`,
             data: measurementGroup
           });
         }
@@ -134,12 +135,30 @@ export class NewMeasurementComponent implements OnInit {
     this.saveMeasurement();
   }
 
-  filterMeasurements (groupId) {
+  filterMeasurements(groupId) {
     this.filteredMeasurementTypes = this.measurementTypes.filter(type => type.value.group === groupId);
   }
 
-  filterMeasurementsOnTabClick (tabMenu) {
+  filterMeasurementsOnTabClick(tabMenu) {
     const groupId = tabMenu.activeItem.data;
     this.filterMeasurements(groupId);
+  }
+
+  createMeasurementGroup() {
+    this.measurementService.createMeasurementGroup(this.experiment.id)
+      .then(res => {
+        if (!res['success']) {
+          return;
+        }
+
+        this.searchedExperimentId = this.experiment.id;
+        this.searchExperiment();
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sikeres hozzáadás',
+          detail: 'A méréscsoport hozzáadásra került.'
+        });
+      });
   }
 }
