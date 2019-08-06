@@ -57,6 +57,8 @@ export class NewMeasurementComponent implements OnInit {
 
   searchExperiment() {
     this.measurementTypes = [];
+    this.filteredMeasurementTypes = [];
+    this.tabs = [];
 
     this.experimentService.searchExperiment(this.searchedExperimentId)
       .then(res => {
