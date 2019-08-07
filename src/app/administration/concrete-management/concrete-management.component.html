@@ -1,83 +1,57 @@
 <p-card>
     <h4>Beton keresése</h4>
-    <!-- Beton adata: <p-autoComplete [(ngModel)]="selectedConcreteName" [suggestions]="suggestedConcreteNames"
-        (completeMethod)="filterNamesMultiple($event)"></p-autoComplete> -->
-    Beton adata: <input [(ngModel)]="selectedConcrete" class="" (keyup)="filterDataMultiple($event)"
-        type="text">
-    <button type="button" class="btn btn-outline-primary" (click)="propertiesClick()">Keresés</button>
+    Beton adata: <input type="text" class="form-control" [(ngModel)]="searchedConcreteName">
+    <button type="button" (click)="searchConcrete()" class="btn btn-outline-primary mt-2">Keresés</button>
 </p-card>
-
-<div class="row">
-    <div class="col-md-12">
-        <p-card *ngIf="showProperties">
-            <div class="container">
-                <br />
-                <p-table [columns]="headColumns" [value]="searchedConcreteData" [paginator]="true" [rows]="5"
-                    selectionMode="single" [(selection)]="selectedConcrete2" (onRowSelect)="onRowSelect($event)">
-                    <ng-template pTemplate="header" let-columns>
-                        <tr>
-                            <ng-container *ngFor="let col of columns">
-                                <th *ngIf="!col.hidden">{{col.header}}</th>
-                            </ng-container>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-rowData let-columns="columns">
-                        <tr [pSelectableRow]="rowData">
-                            <ng-container *ngFor="let col of columns">
-                                <td *ngIf="!col.hidden">{{rowData[col.field]}}</td>
-                            </ng-container>
-                        </tr>
-                    </ng-template>
-                </p-table>
-            </div>
-            <br />
-            <div class="container">
-                <br />
-                <p-table [value]="searchDetailedData" [columns]="detailsColumns" editMode="row">
-                    <ng-template pTemplate="header" let-columns>
-                        <tr>
-                            <ng-container *ngFor="let col of columns">
-                                <th *ngIf="!col.hidden">{{col.header}}</th>
-                            </ng-container>
-                            <th style="width:8em"></th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
-                        <tr [pEditableRow]="rowData">
-                            <td>
-                                <p-cellEditor>
-                                    <ng-template pTemplate="input">
-                                        <input pInputText type="text" [(ngModel)]="rowData.name" required>
-                                    </ng-template>
-                                    <ng-template pTemplate="output">
-                                        {{rowData.name}}
-                                    </ng-template>
-                                </p-cellEditor>
-                            </td>
-                            <td>
-                                <p-cellEditor>
-                                    <ng-template pTemplate="input">
-                                        <input pInputText type="text" [(ngModel)]="rowData.value" required>
-                                    </ng-template>
-                                    <ng-template pTemplate="output">
-                                        {{rowData.value}}
-                                    </ng-template>
-                                </p-cellEditor>
-                            </td>
-                            <td style="text-align:center">
-                                <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil"
-                                    class="ui-button-info"></button>
-                                <button *ngIf="editing"  pButton type="button" pSaveEditableRow icon="pi pi-check"
-                                    class="ui-button-success" style="margin-right: .5em"
-                                    (click)="onDetailsRowSave(selectedConcrete2)"></button>
-                                <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times"
-                                    class="ui-button-danger"></button>
-                            </td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-            </div>
-        </p-card>
-    </div>
-</div>
-<!--app-concrete-management></app-concrete-management-->
+<p-card *ngIf="concretes.length > 0" styleClass="mt-2">
+    <p-table [value]="concretes" [columns]="headColumns" selectionMode="single" [(selection)]="selectedConcrete"
+        (onRowSelect)="onConcreteSelect($event)">
+        <ng-template pTemplate="header">
+            <tr>
+                <th *ngFor="let col of headColumns">
+                    {{col.header}}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="headColumns">
+            <tr [pSelectableRow]="rowData">
+                <td *ngFor="let col of headColumns">
+                    {{rowData[col.field]}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-card>
+<p-card *ngIf="concretes.length > 0 && selectedConcreteData.id" styleClass="mt-2">
+    <form [formGroup]="concreteForm">
+        <p-table [value]="selectedConcreteData.properties">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th *ngFor="let col of concretePropertyColumns">
+                        {{col.header}}
+                    </th>
+                    <th>Műveletek</th>
+                </tr>
+                <tr>
+                    <td *ngFor="let col of concretePropertyColumns" formGroupName="newConcreteData">
+                        <input class="form-control form-control-sm" type="text" [placeholder]="col.header"
+                            [formControlName]="col.field">
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-success ml-2" (click)="addConcreteData()">Hozzáad</button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-concreteData let-rowIndex="rowIndex">
+                <tr>
+                    <td *ngFor="let col of concretePropertyColumns">
+                        {{concreteData[col.field]}}
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-danger ml-2" (click)="deleteRow(rowIndex)">Töröl</button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </form>
+</p-card>
