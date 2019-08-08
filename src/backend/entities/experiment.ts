@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, JoinTable, ManyToMany, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, JoinTable, ManyToMany, OneToMany, Unique } from 'typeorm';
 import { FormField, Permissions } from '../../../projects/crud-table-lib/src/public_api';
 import { RoleName } from './shared/roleName';
 import { Measurement } from './measurement';
@@ -9,6 +9,7 @@ import { Measurement } from './measurement';
     update: [ RoleName.Admin, RoleName.Manager ]
 })
 @Entity()
+@Unique(['experimentName'])
 export class Experiment {
 
     @PrimaryGeneratedColumn()

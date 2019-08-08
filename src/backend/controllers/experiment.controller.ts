@@ -20,7 +20,7 @@ export default class ExperimentCtrl extends BaseCtrl {
         id: entity['id']
       });
     } catch (err) {
-      return this.handleError(res);
+      return this.handleError(res, err.code);
     }
   }
 

@@ -84,6 +84,15 @@ export class NewExperimentComponent implements OnInit {
         });
       })
       .catch(err => {
+
+        if (err.error.message === 'ER_DUP_ENTRY') {
+          return this.messageService.add({
+            severity: 'error',
+            summary: 'Sikertelen hozzáadás',
+            detail: 'A kísérlet azonosítóval már létezik egy kísérlet.'
+          });
+        }
+
         this.messageService.add({
           severity: 'error',
           summary: 'Sikertelen hozzáadás',
