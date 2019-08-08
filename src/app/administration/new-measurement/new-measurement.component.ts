@@ -88,7 +88,7 @@ export class NewMeasurementComponent implements OnInit {
     this.filteredMeasurementTypes = [];
     this.tabs = [];
 
-    this.experimentService.searchExperiment(this.searchedExperimentId)
+    this.experimentService.searchExperimentById(this.searchedExperimentId)
       .then(res => {
         this.experiment = res;
         const measurements = this.experiment.measurements;
@@ -176,7 +176,7 @@ export class NewMeasurementComponent implements OnInit {
 
         groupId = res['data'].groupId;
 
-        return this.experimentService.searchExperiment(this.experiment.id);
+        return this.experimentService.searchExperimentById(this.experiment.id);
       })
       .catch(err => {
         this.messageService.add({

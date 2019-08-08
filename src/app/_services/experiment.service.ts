@@ -15,6 +15,10 @@ export class ExperimentService {
     return this._http.post(`${this.actionUrl}`, experiment).toPromise();
   }
 
+  searchExperimentById (id) {
+    return this._http.get(`${this.actionUrl}/${id}`).toPromise();
+  }
+
   searchExperiment(experimentName) {
     return this._http.get(this.actionUrl, {
       params: {
