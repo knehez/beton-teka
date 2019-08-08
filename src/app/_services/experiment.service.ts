@@ -6,16 +6,20 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ExperimentService {
 
-  private actionUrl = 'backend/';
+  private actionUrl = 'backend/experiments';
 
 
   constructor(protected _http: HttpClient) { }
 
   saveExperiment(experiment) {
-    return this._http.post(`${this.actionUrl}experiments`, experiment).toPromise();
+    return this._http.post(`${this.actionUrl}`, experiment).toPromise();
   }
 
-  searchExperiment(id) {
-    return this._http.get(`${this.actionUrl}experiments/${id}`).toPromise();
+  searchExperiment(experimentName) {
+    return this._http.get(this.actionUrl, {
+      params: {
+        experimentName
+      }
+    }).toPromise();
   }
 }

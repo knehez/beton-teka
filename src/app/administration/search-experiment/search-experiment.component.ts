@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ExperimentService } from 'src/app/_services/experiment.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-search-experiment',
@@ -8,12 +9,13 @@ import { ExperimentService } from 'src/app/_services/experiment.service';
 })
 export class SearchExperimentComponent implements OnInit {
 
-  experimentId: string;
+  experimentName = '';
   headColumns: any[];
-  searchedExperiment = [];
+  experiments = [];
 
   constructor(
-    private experimentService: ExperimentService
+    private experimentService: ExperimentService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit() {
@@ -36,21 +38,32 @@ export class SearchExperimentComponent implements OnInit {
     return str;
   }
 
-  convertDate (date) {
+  convertDate(date) {
     return new Date(date).toLocaleDateString('hu-HU');
   }
 
   searchExperiment() {
-    this.experimentService.searchExperiment(this.experimentId).then(res => {
 
-      const experiments = [];
-      experiments.push(res);
+    this.experiments = [];
+
+    this.experimentService.searchExperiment(this.experimentName).then(res => {
+
+      const experiments = res['data'];
 
       for (const experiment of experiments) {
         experiment.adds = this.convertAdds(experiment.adds);
         experiment.date = this.convertDate(experiment.date);
       }
-      this.searchedExperiment = experiments;
-    });
+      this.experiments = experiments;
+    })
+      .catch(err => {
+        if (err.status === 404) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Sikertelen keresés',
+            detail: 'A keresett névre nem található kísérlet.'
+          });
+        }
+      });
   }
 }
