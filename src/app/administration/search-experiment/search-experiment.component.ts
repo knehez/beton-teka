@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ExperimentService } from 'src/app/_services/experiment.service';
 import { MessageService } from 'primeng/api';
 
@@ -12,6 +12,12 @@ export class SearchExperimentComponent implements OnInit {
   experimentName = '';
   headColumns: any[];
   experiments = [];
+  selectedExperiments = [];
+  experimentsToPrint = [];
+  printTemplateVisible = false;
+
+  @ViewChild('printTemplateSection')
+  printSectionRef: ElementRef;
 
   constructor(
     private experimentService: ExperimentService,
@@ -19,21 +25,20 @@ export class SearchExperimentComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.headColumns = [
-      { field: 'id', header: 'Azonosító', hidden: false },
-      { field: 'experimentName', header: 'Név', hidden: false },
+      { field: 'id', header: 'ID', hidden: true },
+      { field: 'experimentName', header: 'Azonosító', hidden: false },
       { field: 'cups', header: 'Mintaszám', hidden: false },
       { field: 'date', header: 'Dátum', hidden: false },
       { field: 'description', header: 'Leírás', hidden: false },
-      { field: 'adds', header: 'Adalékok', hidden: false },
+      { field: 'addsList', header: 'Adalékok', hidden: false },
     ];
   }
 
   convertAdds(adds) {
     let str = '';
     for (const add of adds) {
-      str += ` -- ${add.quantity} ${add.unit} ${add.name}`;
+      str += `- ${add.quantity} ${add.unit} ${add.name}\n`;
     }
     return str;
   }
@@ -43,15 +48,16 @@ export class SearchExperimentComponent implements OnInit {
   }
 
   searchExperiment() {
-
     this.experiments = [];
+    this.selectedExperiments = [];
+    this.printTemplateVisible = false;
 
     this.experimentService.searchExperiment(this.experimentName).then(res => {
 
       const experiments = res['data'];
 
       for (const experiment of experiments) {
-        experiment.adds = this.convertAdds(experiment.adds);
+        experiment.addsList = this.convertAdds(experiment.adds);
         experiment.date = this.convertDate(experiment.date);
       }
       this.experiments = experiments;
@@ -65,5 +71,51 @@ export class SearchExperimentComponent implements OnInit {
           });
         }
       });
+  }
+
+  getMeasurementTypesOfExperiment(experiment) {
+    const measurementTypes = [];
+
+    experiment.measurements.forEach(measurement => {
+      const measurementType = measurement.measurementType.name;
+      if (!measurementTypes.includes(measurementType)) {
+        measurementTypes.push(measurementType);
+      }
+    });
+
+    return measurementTypes;
+  }
+
+  convertMeasurementArrayToPrint(measurements) {
+    const measurementsToPrint = {};
+
+    measurements.forEach(measurement => {
+      if (!measurementsToPrint.hasOwnProperty(measurement.group)) {
+        measurementsToPrint[measurement.group] = [];
+      }
+
+      measurementsToPrint[measurement.group].push(measurement);
+    });
+
+    return measurementsToPrint;
+  }
+
+  convertSelectedExperimentsToPrint() {
+    const experimentsToPrint = this.selectedExperiments.map(
+      experiment => Object.assign({}, experiment) // copy object
+    );
+
+    for (const experiment of experimentsToPrint) {
+      experiment.measurementTypes = this.getMeasurementTypesOfExperiment(experiment);
+      experiment.measurements = this.convertMeasurementArrayToPrint(experiment.measurements);
+    }
+
+    return experimentsToPrint;
+  }
+
+  showPrintTemplate() {
+    this.experimentsToPrint = this.convertSelectedExperimentsToPrint();
+    this.printTemplateVisible = true;
+    this.printSectionRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
