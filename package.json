@@ -49,6 +49,7 @@
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "mysql": "^2.16.0",
+    "ngx-print": "^1.2.0-beta.2",
     "primeicons": "^1.0.0",
     "primeng": "^7.0.5",
     "reflect-metadata": "^0.1.13",

@@ -22,6 +22,7 @@ import { LoginComponent } from './login/login.component';
 import { AdministrationComponent } from './administration/administration.component';
 import { environment } from 'src/environments/environment';
 import { AuthHttpInterceptorService } from './_services/auth-http-interceptor.service';
+import { NgxPrintModule } from 'ngx-print';
 import { PickListModule } from 'primeng/picklist';
 import { ListboxModule } from 'primeng/listbox';
 import { SliderModule } from 'primeng/slider';
@@ -141,6 +142,7 @@ const routes: Routes = [
     CalendarModule,
     FullCalendarModule,
     PanelMenuModule,
+    NgxPrintModule,
     StepsModule,
     SidebarModule,
     AutoCompleteModule,
