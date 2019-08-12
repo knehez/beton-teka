@@ -12,7 +12,7 @@ import { MessageService } from 'primeng/api';
 export class NewMeasurementComponent implements OnInit {
 
   measurementColumns: any[];
-  searchedExperimentId: string;
+  searchedExperimentName = '';
   experiment: any;
 
   measurementTypes = [];
@@ -57,7 +57,7 @@ export class NewMeasurementComponent implements OnInit {
     return this.measurementForm.get('selectedMeasurementType').value;
   }
 
-  putMeasurementsToFormControl (measurements) {
+  putMeasurementsToFormControl(measurements) {
     for (const measurement of measurements) {
       this.measurementTypes.push({
         label: `${this.experiment['id']}-${measurement.group} - ${measurement.measurementType.name}`,
@@ -66,7 +66,7 @@ export class NewMeasurementComponent implements OnInit {
     }
   }
 
-  createTabMenus (measurements) {
+  createTabMenus(measurements) {
     const registeredGroupIds = [];
 
     for (const measurement of measurements) {
@@ -88,9 +88,9 @@ export class NewMeasurementComponent implements OnInit {
     this.filteredMeasurementTypes = [];
     this.tabs = [];
 
-    this.experimentService.searchExperimentById(this.searchedExperimentId)
+    this.experimentService.searchExperiment(this.searchedExperimentName)
       .then(res => {
-        this.experiment = res;
+        this.experiment = res['data'][0]; // TODO
         const measurements = this.experiment.measurements;
 
         if (!measurements || !Array.isArray(measurements) || measurements.length === 0) {
@@ -112,7 +112,7 @@ export class NewMeasurementComponent implements OnInit {
           this.messageService.add({
             severity: 'warn',
             summary: 'Azonosító hiba',
-            detail: 'A megadott azonosítóval nem létezik mérés.'
+            detail: 'A megadott azonosítóval nem létezik kísérlet.'
           });
         }
       });
@@ -151,7 +151,7 @@ export class NewMeasurementComponent implements OnInit {
     this.saveMeasurement();
   }
 
-  setSelectedMeasurementToDefault () {
+  setSelectedMeasurementToDefault() {
     this.measurementForm.get('selectedMeasurementType').setValue(this.filteredMeasurementTypes[0].value);
   }
 
