@@ -1,8 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Permissions } from '../../../projects/crud-table-lib/src/public_api';
 import { RoleName } from './shared/roleName';
 import { Experiment } from './experiment';
 import { MeasurementType } from './measurementType';
+import { MeasurementFile } from './measurementFile';
 
 
 @Permissions({
@@ -34,4 +35,9 @@ export class Measurement {
 
     @ManyToOne(type => Experiment, experiment => experiment.measurements)
     public experiment: Experiment;
+
+    @OneToMany(type => MeasurementFile, measurementFile => measurementFile.measurement, {
+        eager: true
+    })
+    files: MeasurementFile;
 }

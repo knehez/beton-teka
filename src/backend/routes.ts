@@ -18,6 +18,8 @@ import { Measurement } from './entities/measurement';
 import MeasurementCtrl from './controllers/measurement.controller';
 import { MeasurementType } from './entities/measurementType';
 import MeasurementTypeCtrl from './controllers/measurementType.controller';
+import MeasurementFileCtrl from './controllers/measurementFile.controller';
+import { MeasurementFile } from './entities/measurementFile';
 
 export default function setRoutes(app) {
 
@@ -79,6 +81,14 @@ export default function setRoutes(app) {
     entityName: 'measurements',
     entity: measurementEntity,
     ctrl: measurementCtrl
+  });
+
+  // MeasurementType
+  getGeneralRoutes({
+    router,
+    entityName: 'measurements/:measurementId/files',
+    entity: new MeasurementFile,
+    ctrl: new MeasurementFileCtrl
   });
 
   // MeasurementType
