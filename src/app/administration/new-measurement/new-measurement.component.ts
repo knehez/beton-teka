@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { ExperimentService } from 'src/app/_services/experiment.service';
 import { MeasurementService } from 'src/app/_services/measurement.service';
 import { MessageService } from 'primeng/api';
+import { MeasurementFileService } from 'src/app/_services/measurement-file.service';
 
 @Component({
   selector: 'app-new-measurement',
@@ -25,14 +26,16 @@ export class NewMeasurementComponent implements OnInit {
         data: []
       }
     }],
-    newMeasurementData: this.createMeasurementData()
+    newMeasurementData: this.createMeasurementData(),
+    file: [[]]
   });
 
   constructor(
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     private experimentService: ExperimentService,
-    private measurementService: MeasurementService
+    private measurementService: MeasurementService,
+    private measurementFileService: MeasurementFileService
   ) { }
 
   ngOnInit() {
@@ -76,7 +79,7 @@ export class NewMeasurementComponent implements OnInit {
         registeredGroupIds.push(groupId);
 
         this.tabs.push({
-          label: `${this.experiment['id']}-${groupId}`,
+          label: `${this.experiment['experimentName']}-${groupId}`,
           data: groupId
         });
       }
@@ -198,5 +201,27 @@ export class NewMeasurementComponent implements OnInit {
           detail: 'A méréscsoport hozzáadásra került.'
         });
       });
+  }
+
+  uploadNewFile(event) {
+    this.measurementFileService.saveFile(this.selectedMeasurementType.id, event.files[0])
+      .then(res => {
+
+        this.selectedMeasurementType.files.push(event.files[0]);
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sikeres hozzáadás',
+          detail: 'A fájl hozzáadásra került.'
+        });
+      })
+      .catch(err => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Sikertelen hozzáadás',
+          detail: 'A fájl hozzáadása nem sikerült.'
+        });
+      });
+
   }
 }

@@ -38,6 +38,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { FileUploadModule } from 'primeng/fileupload';
+
 
 import { CrudTableLibModule } from 'projects/crud-table-lib/src/public_api';
 import { CalendarModule } from 'primeng/calendar';
@@ -146,7 +148,8 @@ const routes: Routes = [
     StepsModule,
     SidebarModule,
     AutoCompleteModule,
-    RouterModule.forRoot(routes, { enableTracing: !environment.production })
+    RouterModule.forRoot(routes, { enableTracing: !environment.production }),
+    FileUploadModule
   ],
   providers: [
     {
