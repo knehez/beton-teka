@@ -5,7 +5,6 @@ import { MeasurementFile } from '../entities/measurementFile';
 export default class MeasurementFileCtrl extends BaseCtrl {
     model = getRepository(MeasurementFile);
 
-    // Insert
     insert = async (req, res) => {
         try {
 
@@ -26,5 +25,21 @@ export default class MeasurementFileCtrl extends BaseCtrl {
         } catch (err) {
             return this.handleError(res);
         }
+    }
+
+    get = async (req, res) => {
+        const file = await this.model.createQueryBuilder('file')
+            .select([ 'file.name', 'file.lastModifiedDate', 'file.size', 'file.type', 'file.data' ])
+            .where('file.id = :id', { id: req.params.id })
+            .getOne();
+
+        if (!file) {
+            return res.status(404).send();
+        }
+
+        res.send({
+            success: true,
+            data: file
+        });
     }
 }
