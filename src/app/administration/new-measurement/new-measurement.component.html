@@ -14,16 +14,16 @@
 
 <p-card styleClass="mt-2" *ngIf="measurementTypes.length > 0">
   <div class="float-right">
-      <button class="btn btn-sm mb-2 btn-success" (click)="createMeasurementGroup()">Új méréscsoport</button>
+    <button class="btn btn-sm mb-2 btn-success" (click)="createMeasurementGroup()">Új méréscsoport</button>
   </div>
-  <p-tabMenu #tabMenu [model]="tabs" [activeItem]="tabs[0]"
-    (click)="switchTab(tabMenu)" styleClass="mb-2"></p-tabMenu>
-  
+  <p-tabMenu #tabMenu [model]="tabs" [activeItem]="tabs[0]" (click)="switchTab(tabMenu)" styleClass="mb-2"></p-tabMenu>
+
   <form [formGroup]="measurementForm">
     <div class="form-row">
       <div class="form-group col-md-2">
         <h4>Méréstípusok</h4>
-        <p-listbox styleClass="w-100" [options]="filteredMeasurementTypes" formControlName="selectedMeasurementType"></p-listbox>
+        <p-listbox styleClass="w-100" [options]="filteredMeasurementTypes" formControlName="selectedMeasurementType">
+        </p-listbox>
       </div>
 
       <div class="form-group col-md-10">
@@ -62,14 +62,22 @@
     <div class="form-row">
       <div class="col-md-10 offset-md-2">
         <h4>Fájlok</h4>
-        <div>
-          <p-fileUpload maxFileSize="30000000" fileLimit="1" mode="basic" [auto]="true" chooseLabel="Új hozzáadása" customUpload="true" (uploadHandler)="uploadNewFile($event)"></p-fileUpload>
+        <div class="d-flex align-items-center ml-2">
+          <p-fileUpload #fileUpload fileLimit="1" mode="basic" [auto]="true" chooseLabel="Új hozzáadása"
+            customUpload="true" (uploadHandler)="uploadNewFile($event)" [disabled]="fileUploadInProgress">
+          </p-fileUpload>
+          <div class="ml-2" *ngIf="fileUploadInProgress">
+            <i class="pi pi-spin pi-spinner"></i> Feltöltés folyamatban ...
+          </div>
         </div>
+
         <div class="list-group">
-          <a href="#" class="list-group-item list-group-item-action"
-            *ngFor="let file of selectedMeasurementType.files">
-            {{file.name}}
-          </a>
+          <div *ngFor="let file of selectedMeasurementType.files" class="mt-1">
+            <a href="#" class="list-group-item list-group-item-action">
+              {{file.name}}
+              <button class="btn btn-sm btn-danger float-right">Töröl</button>
+            </a>
+          </div>
         </div>
       </div>
     </div>

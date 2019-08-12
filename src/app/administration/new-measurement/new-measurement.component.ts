@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ExperimentService } from 'src/app/_services/experiment.service';
 import { MeasurementService } from 'src/app/_services/measurement.service';
@@ -15,10 +15,13 @@ export class NewMeasurementComponent implements OnInit {
   measurementColumns: any[];
   searchedExperimentName = '';
   experiment: any;
+  fileUploadInProgress = false;
 
   measurementTypes = [];
   filteredMeasurementTypes = [];
   tabs = [];
+
+  @ViewChild('fileUpload') fileUpload: any;
 
   measurementForm = this.formBuilder.group({
     selectedMeasurementType: [{
@@ -203,9 +206,37 @@ export class NewMeasurementComponent implements OnInit {
       });
   }
 
+  clearAfterFileUpload () {
+    this.fileUploadInProgress = false;
+    this.fileUpload.clear();
+  }
+
   uploadNewFile(event) {
+    if (event.files.length === 0 || event.files.length > 1) {
+      this.clearAfterFileUpload();
+      return this.messageService.add({
+        severity: 'error',
+        summary: 'Sikertelen hozzáadás',
+        detail: 'Csak egy fájl tölthető fel egyszerre.'
+      });
+    }
+
+    const file: File = event.files[0];
+
+    if (file.size > 15000000) {
+      this.clearAfterFileUpload();
+      return this.messageService.add({
+        severity: 'error',
+        summary: 'Sikertelen hozzáadás',
+        detail: 'A maximális feltölthető fájlméret 15 MB.'
+      });
+    }
+
+    this.fileUploadInProgress = true;
+
     this.measurementFileService.saveFile(this.selectedMeasurementType.id, event.files[0])
       .then(res => {
+        this.clearAfterFileUpload();
 
         this.selectedMeasurementType.files.push(event.files[0]);
 
@@ -216,6 +247,8 @@ export class NewMeasurementComponent implements OnInit {
         });
       })
       .catch(err => {
+        this.clearAfterFileUpload();
+
         this.messageService.add({
           severity: 'error',
           summary: 'Sikertelen hozzáadás',
