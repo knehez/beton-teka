@@ -208,7 +208,7 @@ export class NewMeasurementComponent implements OnInit {
       });
   }
 
-  clearAfterFileUpload () {
+  clearAfterFileUpload() {
     this.fileUploadInProgress = false;
     this.fileUpload.clear();
   }
@@ -255,6 +255,55 @@ export class NewMeasurementComponent implements OnInit {
           severity: 'error',
           summary: 'Sikertelen hozzáadás',
           detail: 'A fájl hozzáadása nem sikerült.'
+        });
+      });
+
+  }
+
+  deleteFile(index) {
+    const fileToDelete = this.selectedMeasurementType.files[index];
+
+    this.measurementFileService.deleteFile(this.selectedMeasurementType.id, fileToDelete.id)
+      .then(res => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sikeres törlés',
+          detail: 'A fájl törlésre került.'
+        });
+
+        this.selectedMeasurementType.files.splice(index, 1);
+      })
+      .catch(err => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Sikertelen törlés',
+          detail: 'A fájl törlése nem sikerült.'
+        });
+      });
+  }
+
+  downloadFile(index) {
+    const fileToDownload = this.selectedMeasurementType.files[index];
+
+    this.measurementFileService.downloadFile(this.selectedMeasurementType.id, fileToDownload.id)
+      .then(res => {
+        const file = res['data'];
+
+        const downloadLink = document.createElement('a');
+        downloadLink.href = file.data;
+        downloadLink.download = file.name;
+        downloadLink.setAttribute('type', 'hidden');
+        document.body.appendChild(downloadLink);
+
+
+        downloadLink.click();
+        downloadLink.remove();
+      })
+      .catch(err => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Sikertelen letöltés',
+          detail: 'A fájl letöltése nem sikerült.'
         });
       });
 

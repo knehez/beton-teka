@@ -72,11 +72,11 @@
         </div>
 
         <div class="list-group">
-          <div *ngFor="let file of selectedMeasurementType.files" class="mt-1">
-            <a href="#" class="list-group-item list-group-item-action">
+          <div *ngFor="let file of selectedMeasurementType.files; let i = index" class="mt-1">
+            <button class="list-group-item list-group-item-action" (click) = "downloadFile(i)">
               {{file.name}}
-              <button class="btn btn-sm btn-danger float-right">Töröl</button>
-            </a>
+              <button class="btn btn-sm btn-danger float-right" (click)="deleteFile(i)">Töröl</button>
+            </button>
           </div>
         </div>
       </div>

@@ -35,4 +35,12 @@ export class MeasurementFileService {
       return this.http.post(`${this.actionUrl}/${measurementId}/files`, fileToSave).toPromise();
     });
   }
+
+  deleteFile(measurementId, fileId) {
+    return this.http.delete(`${this.actionUrl}/${measurementId}/files/${fileId}`).toPromise();
+  }
+
+  downloadFile(measurementId, fileId) {
+    return this.http.get(`${this.actionUrl}/${measurementId}/files/${fileId}`).toPromise();
+  }
 }
