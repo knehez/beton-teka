@@ -13,13 +13,15 @@ import { MeasurementFileService } from 'src/app/_services/measurement-file.servi
 export class NewMeasurementComponent implements OnInit {
 
   measurementColumns: any[];
-  searchedExperimentName = '';
+  searchedExperimentName: string;
   experiment: any;
   fileUploadInProgress = false;
 
   measurementTypes = [];
   filteredMeasurementTypes = [];
   tabs = [];
+
+  allowedFileSize = 15000000;
 
   @ViewChild('fileUpload') fileUpload: any;
 
@@ -94,9 +96,9 @@ export class NewMeasurementComponent implements OnInit {
     this.filteredMeasurementTypes = [];
     this.tabs = [];
 
-    this.experimentService.searchExperiment(this.searchedExperimentName)
+    this.experimentService.searchExperimentById(this.searchedExperimentName)
       .then(res => {
-        this.experiment = res['data'][0]; // TODO
+        this.experiment = res['data'];
         const measurements = this.experiment.measurements;
 
         if (!measurements || !Array.isArray(measurements) || measurements.length === 0) {
@@ -182,7 +184,7 @@ export class NewMeasurementComponent implements OnInit {
 
         groupId = res['data'].groupId;
 
-        return this.experimentService.searchExperimentById(this.experiment.id);
+        return this.experimentService.searchExperimentById(this.experiment.experimentName);
       })
       .catch(err => {
         this.messageService.add({
@@ -191,8 +193,8 @@ export class NewMeasurementComponent implements OnInit {
           detail: 'A méréscsoport hozzáadása nem sikerült.'
         });
       })
-      .then(experiment => {
-        const measurements = experiment['measurements'];
+      .then(res => {
+        const measurements = res['data'].measurements;
         const newMeasurements = measurements.filter(measurement => measurement.group === groupId);
 
         this.putMeasurementsToFormControl(newMeasurements);
@@ -223,7 +225,7 @@ export class NewMeasurementComponent implements OnInit {
 
     const file: File = event.files[0];
 
-    if (file.size > 15000000) {
+    if (file.size > this.allowedFileSize) {
       this.clearAfterFileUpload();
       return this.messageService.add({
         severity: 'error',

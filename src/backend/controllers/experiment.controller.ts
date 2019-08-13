@@ -45,4 +45,19 @@ export default class ExperimentCtrl extends BaseCtrl {
       data
     });
   }
+
+  get = async (req, res) => {
+    const experiment = await this.model.findOne({
+      experimentName: req.params.id
+    });
+
+    if (!experiment) {
+      return res.status(404).send();
+    }
+
+    res.json({
+      success: true,
+      data: experiment
+    });
+  }
 }
