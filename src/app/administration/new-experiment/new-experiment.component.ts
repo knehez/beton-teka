@@ -38,6 +38,8 @@ export class NewExperimentComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    const fillMeasurementTypes = this.getMeasurementTypes()
+      .then(measurementTypes => this.fillMultiSelectWithMeasurementTypes(measurementTypes));
 
     this.route.params.subscribe(params => {
       const experimentId = params['id'];
@@ -46,53 +48,59 @@ export class NewExperimentComponent implements OnInit {
         return;
       }
 
-      this.isNewExperiment = false,
+      this.isNewExperiment = false;
 
-        this.experimentService.searchExperimentById(experimentId)
-          .then(res => {
-            const experiment = res['data'];
-            experiment.date = new Date(experiment.date);
+      fillMeasurementTypes
+        .then(() => this.getExperimentData(experimentId))
+        .then(experiment => this.fillFormWithExperimentData(experiment));
+    });
+  }
 
-            this.newExperimentForm.patchValue({
-              id: experiment.id,
-              experimentName: experiment.experimentName,
-              cups: experiment.cups,
-              date: new Date(experiment.date),
-              description: experiment.description
-            });
+  getMeasurementTypes() {
+    return this.measurementTypeService.getTypes();
+  }
 
-            const adds = [];
-            experiment.adds.forEach(add => {
-              adds.push(this.formBuilder.group({
-                name: [add.name],
-                quantity: [add.quantity],
-                unit: [add.unit],
-              }));
-            });
+  fillMultiSelectWithMeasurementTypes(measurementTypes) {
+    const types = [];
 
-            this.newExperimentForm.setControl('adds', this.formBuilder.array(adds));
-            this.newExperimentForm.controls['experimentName'].disable();
-            this.newExperimentForm.controls['measurements'].disable();
-          });
+    // tslint:disable-next-line: forin
+    for (const i in measurementTypes) {
+      types.push({
+        label: measurementTypes[i].name,
+        value: {
+          measurementTypeId: measurementTypes[i].id,
+          measurementData: {}
+        }
+      });
+    }
+
+    this.types = types;
+  }
+
+  getExperimentData(experimentId) {
+    return this.experimentService.searchExperimentById(experimentId)
+      .then(res => {
+        const experiment = res['data'];
+        experiment.date = new Date(experiment.date);
+        return experiment;
+      });
+  }
+
+  fillFormWithExperimentData(experiment) {
+    this.newExperimentForm.patchValue(experiment);
+
+    const adds = [];
+    experiment.adds.forEach(add => {
+      adds.push(this.formBuilder.group({
+        name: [add.name],
+        quantity: [add.quantity],
+        unit: [add.unit],
+      }));
     });
 
-    this.measurementTypeService.getTypes().then(res => {
-
-      const types = [];
-
-      // tslint:disable-next-line: forin
-      for (const i in res) {
-        types.push({
-          label: res[i].name,
-          value: {
-            measurementTypeId: res[i].id,
-            measurementData: {}
-          }
-        });
-      }
-
-      this.types = types;
-    });
+    this.newExperimentForm.setControl('adds', this.formBuilder.array(adds));
+    this.newExperimentForm.controls['experimentName'].disable();
+    this.newExperimentForm.controls['measurements'].disable();
   }
 
   createExpItem(): FormGroup {
@@ -111,7 +119,7 @@ export class NewExperimentComponent implements OnInit {
     this.adds.push(this.createExpItem());
   }
 
-  onItemDeleted(index) {
+  deleteItem(index) {
     this.adds.removeAt(index);
   }
 
@@ -126,19 +134,14 @@ export class NewExperimentComponent implements OnInit {
         });
       })
       .catch(err => {
-
-        if (err.error.message === 'ER_DUP_ENTRY') {
-          return this.messageService.add({
-            severity: 'error',
-            summary: 'Sikertelen hozzáadás',
-            detail: 'A kísérlet azonosítóval már létezik egy kísérlet.'
-          });
-        }
+        const { message } = err.error;
 
         this.messageService.add({
           severity: 'error',
           summary: 'Sikertelen hozzáadás',
-          detail: 'A kísérlet hozzáadása nem sikerült.'
+          detail: (message === 'ER_DUP_ENTRY')
+            ? 'A kísérlet azonosítóval már létezik egy kísérlet.'
+            : 'A kísérlet hozzáadása nem sikerült.'
         });
       });
   }

@@ -22,7 +22,6 @@ export class NewMeasurementComponent implements OnInit {
   tabs = [];
 
   allowedFileSize = 15000000;
-
   @ViewChild('fileUpload') fileUpload: any;
 
   measurementForm = this.formBuilder.group({

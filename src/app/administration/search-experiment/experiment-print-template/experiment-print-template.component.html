@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-10">
+      <h4>Nyomtatási előnézet</h4>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary" printSectionId="print-section" printTitle="Mérési jegyzőkönyv"
+        [useExistingCss]="true" ngxPrint>Nyomtatás</button>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-md-12">
+      <div id="print-section">
+        <div *ngFor="let experiment of experimentsToPrint">
+          <table class="table table-striped table-bordered table-sm mt-4">
+            <tr>
+              <th>Kísérlet azonosító</th>
+              <th>Vizsgálat dátuma</th>
+            </tr>
+            <tr>
+              <td>{{ experiment.experimentName }}</td>
+              <td>{{ experiment.date }}</td>
+            </tr>
+            <tr>
+              <th>Méréstípusok</th>
+              <th>Adalékok</th>
+            </tr>
+            <tr>
+              <td>
+                <ul>
+                  <li *ngFor="let measurementType of experiment.measurementTypes">
+                    {{ measurementType }}
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li *ngFor="let add of experiment.adds">
+                    {{add.quantity}} {{ add.unit }} {{ add.name }}
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2">Leírás</th>
+            </tr>
+            <tr>
+              <td class="line-break" colspan="2">
+                {{ experiment.description }}
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2">Mérések</th>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <ul>
+                  <li *ngFor="let measurementGroup of experiment.measurements | keyvalue">
+                    {{ experiment.experimentName }}-{{ measurementGroup.key }}:
+                    <ul>
+                      <li *ngFor="let measurement of measurementGroup.value">
+                        {{ measurement.measurementType.name }}:
+                        <ul>
+                          <li *ngFor="let measurementData of measurement.measurementData.data">
+                            {{ measurementData.name }}: {{ measurementData.value }} {{ measurementData.unit }}
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

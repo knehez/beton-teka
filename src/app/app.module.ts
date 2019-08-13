@@ -59,6 +59,9 @@ import { ConcreteManagementComponent } from './administration/concrete-managemen
 import { ConcreteService } from './_services/concrete.service';
 import { MeasurementTypeService } from './_services/measurement-type.service';
 import { ExperimentService } from './_services/experiment.service';
+import {
+  ExperimentPrintTemplateComponent
+} from './administration/search-experiment/experiment-print-template/experiment-print-template.component';
 
 
 const routes: Routes = [
@@ -116,7 +119,8 @@ const routes: Routes = [
     NewMeasurementComponent,
     CategoryModalComponent,
     ConcreteModalComponent,
-    ConcreteManagementComponent
+    ConcreteManagementComponent,
+    ExperimentPrintTemplateComponent
   ],
   imports: [
     MultiSelectModule,

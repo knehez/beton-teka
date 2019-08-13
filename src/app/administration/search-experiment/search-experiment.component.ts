@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ExperimentService } from 'src/app/_services/experiment.service';
 import { MessageService } from 'primeng/api';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-experiment',
@@ -54,16 +54,16 @@ export class SearchExperimentComponent implements OnInit {
     this.selectedExperiments = [];
     this.printTemplateVisible = false;
 
-    this.experimentService.searchExperiment(this.experimentName).then(res => {
+    this.experimentService.searchExperiment(this.experimentName)
+      .then(res => {
+        const experiments = res['data'];
 
-      const experiments = res['data'];
-
-      for (const experiment of experiments) {
-        experiment.addsList = this.convertAdds(experiment.adds);
-        experiment.date = this.convertDate(experiment.date);
-      }
-      this.experiments = experiments;
-    })
+        for (const experiment of experiments) {
+          experiment.addsList = this.convertAdds(experiment.adds);
+          experiment.date = this.convertDate(experiment.date);
+        }
+        this.experiments = experiments;
+      })
       .catch(err => {
         if (err.status === 404) {
           this.messageService.add({

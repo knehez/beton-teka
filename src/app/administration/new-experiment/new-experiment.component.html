@@ -25,7 +25,7 @@
         <label>Mértékegység:</label>
         <input type="text" class="form-control" formControlName="unit">
 
-        <button class="btn btn-outline-danger" (click)="onItemDeleted(i)">-</button>
+        <button class="btn btn-outline-danger" (click)="deleteItem(i)">-</button>
       </div>
     </div>
 
@@ -34,9 +34,11 @@
       <textarea class="form-control" id="experimentDescription" formControlName="description" rows="3"></textarea>
     </div>
 
-    <h5>Lehetséges méréstípusok hozzárendelése</h5>
-    <p-multiSelect [options]="types" defaultLabel="Méréstípusok" formControlName="measurements"></p-multiSelect>
-
+    <div *ngIf="isNewExperiment">
+      <h5>Lehetséges méréstípusok hozzárendelése</h5>
+      <p-multiSelect [options]="types" defaultLabel="Méréstípusok" formControlName="measurements"></p-multiSelect>
+    </div>
+    
     <br>
     <button type="submit" (click)="isNewExperiment ? saveExperiment() : editExperiment()" class="btn btn-outline-primary mt-3">{{isNewExperiment ? 'Létrehoz' : 'Mentés'}}</button>
   </form>
