@@ -15,7 +15,7 @@ export class ExperimentService {
     return this._http.post(`${this.actionUrl}`, experiment).toPromise();
   }
 
-  searchExperimentById (id) {
+  searchExperimentById(id) {
     return this._http.get(`${this.actionUrl}/${id}`).toPromise();
   }
 
@@ -25,5 +25,9 @@ export class ExperimentService {
         experimentName
       }
     }).toPromise();
+  }
+
+  editExperiment(experiment) {
+    return this._http.put(`${this.actionUrl}/${experiment.id}`, experiment).toPromise();
   }
 }

@@ -81,6 +81,10 @@ const routes: Routes = [
         component: NewExperimentComponent
       },
       {
+        path: 'experiment/:id',
+        component: NewExperimentComponent
+      },
+      {
         path: 'searchExperiment',
         component: SearchExperimentComponent
       },
@@ -88,16 +92,16 @@ const routes: Routes = [
         path: 'newMeasurement',
         component: NewMeasurementComponent
       },
-      {
-        path: 'concreteManagement',
-        component: ConcreteManagementComponent
-      }
-    ]
-  },
   {
-    path: 'login',
-    component: LoginComponent
+    path: 'concreteManagement',
+    component: ConcreteManagementComponent
   }
+]
+  },
+{
+  path: 'login',
+    component: LoginComponent
+}
 ];
 
 @NgModule({

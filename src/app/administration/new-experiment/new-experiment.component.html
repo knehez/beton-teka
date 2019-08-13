@@ -38,6 +38,6 @@
     <p-multiSelect [options]="types" defaultLabel="Méréstípusok" formControlName="measurements"></p-multiSelect>
 
     <br>
-    <button type="submit" (click)="saveExperiment()" class="btn btn-outline-primary mt-3">Létrehoz</button>
+    <button type="submit" (click)="isNewExperiment ? saveExperiment() : editExperiment()" class="btn btn-outline-primary mt-3">{{isNewExperiment ? 'Létrehoz' : 'Mentés'}}</button>
   </form>
 </p-card>

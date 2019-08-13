@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ExperimentService } from 'src/app/_services/experiment.service';
 import { MessageService } from 'primeng/api';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-experiment',
@@ -21,7 +22,8 @@ export class SearchExperimentComponent implements OnInit {
 
   constructor(
     private experimentService: ExperimentService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -117,5 +119,9 @@ export class SearchExperimentComponent implements OnInit {
     this.experimentsToPrint = this.convertSelectedExperimentsToPrint();
     this.printTemplateVisible = true;
     this.printSectionRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  navigateToEdit(experimentName) {
+    this.router.navigate(['experiment', experimentName]);
   }
 }
