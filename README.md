@@ -1,8 +1,9 @@
 # Beton Teka
 Beton Teka
 
-## Prerequistences
+## Prerequisites
 - mySQL server
+  - the `max_allowed_packet` system variable's value must be set at least `20M` size
 - node >= 10.x
 
 ## Installation steps
