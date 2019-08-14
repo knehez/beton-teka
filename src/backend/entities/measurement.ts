@@ -39,5 +39,5 @@ export class Measurement {
     @OneToMany(type => MeasurementFile, measurementFile => measurementFile.measurement, {
         eager: true
     })
-    files: MeasurementFile;
+    files: MeasurementFile[];
 }

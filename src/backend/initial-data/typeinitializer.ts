@@ -5,13 +5,6 @@ import { getRepository } from 'typeorm';
 export default class MeasurementTypeInitializer extends Initializer {
     repository = getRepository(MeasurementType);
 
-    measurementTypes = [
-       'testsűrűség meghatározása',
-       'nyomószilárdság meghatározása',
-       'törőerő meghatározása'
-    ];
-
-
     async initialize() {
         const entityCount = await this.repository.createQueryBuilder().getCount();
 
@@ -19,10 +12,22 @@ export default class MeasurementTypeInitializer extends Initializer {
             return;
         }
 
-        for (const measurementType of this.measurementTypes) {
-            const type = new MeasurementType();
-            type.name = measurementType;
-            await this.repository.save(type);
-        }
+        const type1 = this.repository.create({
+            id: 1,
+            name: 'testsűrűség meghatározása'
+        });
+        await this.repository.save(type1);
+
+        const type2 = this.repository.create({
+            id: 2,
+            name: 'nyomószilárdság meghatározása'
+        });
+        await this.repository.save(type2);
+
+        const type3 = this.repository.create({
+            id: 3,
+            name: 'törőerő meghatározása'
+        });
+        await this.repository.save(type3);
     }
 }
