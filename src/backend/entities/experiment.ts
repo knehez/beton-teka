@@ -24,7 +24,7 @@ export class Experiment {
     @Column()
     date: Date;
 
-    @Column()
+    @Column({ type: 'text' })
     description: string;
 
     @Column({ type : 'json'})
