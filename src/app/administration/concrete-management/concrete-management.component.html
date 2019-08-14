@@ -1,57 +1,65 @@
 <p-card>
-    <h4>Beton keresése</h4>
-    Beton adata: <input type="text" class="form-control" [(ngModel)]="searchedConcreteName">
-    <button type="button" (click)="searchConcrete()" class="btn btn-outline-primary mt-2">Keresés</button>
+  <h3>Beton keresése</h3>
+  <small>Adja meg a keresni kívánt beton nevét!</small>
+
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroup-sizing-default">Keresés</span>
+    </div>
+    <input type="text" class="form-control" [(ngModel)]="searchedConcreteName">
+  </div>
+  <button type="button" (click)="searchConcrete()" class="btn btn-outline-primary mt-2">Keresés</button>
 </p-card>
+
 <p-card *ngIf="concretes.length > 0" styleClass="mt-2">
-    <p-table [value]="concretes" [columns]="headColumns" selectionMode="single" [(selection)]="selectedConcrete"
-        (onRowSelect)="onConcreteSelect($event)">
-        <ng-template pTemplate="header">
-            <tr>
-                <th *ngFor="let col of headColumns">
-                    {{col.header}}
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-columns="headColumns">
-            <tr [pSelectableRow]="rowData">
-                <td *ngFor="let col of headColumns">
-                    {{rowData[col.field]}}
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+  <p-table [value]="concretes" [columns]="headColumns" selectionMode="single" [(selection)]="selectedConcrete"
+    (onRowSelect)="onConcreteSelect($event)" [paginator]="true" [rows]="5">
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngFor="let col of headColumns">
+          {{col.header}}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="headColumns">
+      <tr [pSelectableRow]="rowData">
+        <td *ngFor="let col of headColumns">
+          {{rowData[col.field]}}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </p-card>
 <p-card *ngIf="concretes.length > 0 && selectedConcreteData.id" styleClass="mt-2">
-    <form [formGroup]="concreteForm">
-        <p-table [value]="selectedConcreteData.properties">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th *ngFor="let col of concretePropertyColumns">
-                        {{col.header}}
-                    </th>
-                    <th>Műveletek</th>
-                </tr>
-                <tr>
-                    <td *ngFor="let col of concretePropertyColumns" formGroupName="newConcreteData">
-                        <input class="form-control form-control-sm" type="text" [placeholder]="col.header"
-                            [formControlName]="col.field">
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-success ml-2" (click)="addConcreteData()">Hozzáad</button>
-                    </td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-concreteData let-rowIndex="rowIndex">
-                <tr>
-                    <td *ngFor="let col of concretePropertyColumns">
-                        {{concreteData[col.field]}}
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-danger ml-2" (click)="deleteRow(rowIndex)">Töröl</button>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </form>
+  <form [formGroup]="concreteForm">
+    <p-table [value]="selectedConcreteData.properties">
+      <ng-template pTemplate="header">
+        <tr>
+          <th *ngFor="let col of concretePropertyColumns">
+            {{col.header}}
+          </th>
+          <th>Műveletek</th>
+        </tr>
+        <tr>
+          <td *ngFor="let col of concretePropertyColumns" formGroupName="newConcreteData">
+            <input class="form-control form-control-sm" type="text" [placeholder]="col.header"
+              [formControlName]="col.field">
+          </td>
+          <td>
+            <button class="btn btn-sm btn-success ml-2" (click)="addConcreteData()">Hozzáad</button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-concreteData let-rowIndex="rowIndex">
+        <tr>
+          <td *ngFor="let col of concretePropertyColumns">
+            {{concreteData[col.field]}}
+          </td>
+          <td>
+            <button class="btn btn-sm btn-danger ml-2" (click)="deleteRow(rowIndex)">Töröl</button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </form>
 </p-card>

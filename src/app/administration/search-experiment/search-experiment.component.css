@@ -1,3 +1,7 @@
 .line-break {
     white-space: pre-line;
 }
+
+.checkbox-column {
+    width: 3em;
+}

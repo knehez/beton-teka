@@ -43,24 +43,26 @@ export default class ExperimentInitializer extends Initializer {
         const experiment1 = this.experimentRepository.create({
             id: 1,
             experimentName: 'B215',
-            description: 'testsűrűség meghatározása (MSZ EN 12390-7:2009)\n'
-                + 'Minta kora: 115 nap\n'
-                + 'Próbatest víztelítettségi állapota: átadáskori állapot\n',
+            description: `
+                testsűrűség meghatározása (MSZ EN 12390-7:2009)
+                Minta kora: 115 nap
+                Próbatest víztelítettségi állapota: átadáskori állapot
+                Térfogatmeghatározás módszere: tényleges méretek felhasználásával végzett számítások`,
             cups: 3,
             date: new Date('2016-01-18'),
             adds: [
                 {
-                    name: 'Cement',
+                    name: 'cement',
                     quantity: 480,
                     unit: 'kg'
                 },
                 {
-                    name: 'Homokos kavics',
+                    name: 'homokos kavics',
                     quantity: 1611,
                     unit: 'kg'
                 },
                 {
-                    name: 'Keverővíz',
+                    name: 'keverővíz',
                     quantity: 215,
                     unit: 'kg'
                 }
@@ -89,7 +91,7 @@ export default class ExperimentInitializer extends Initializer {
                                 unit: 'mm'
                             },
                             {
-                                name: 'hosszúsg',
+                                name: 'hosszúság',
                                 value: 152.4,
                                 unit: 'mm'
                             },
@@ -152,7 +154,7 @@ export default class ExperimentInitializer extends Initializer {
                                 unit: 'mm'
                             },
                             {
-                                name: 'hosszúsg',
+                                name: 'hosszúság',
                                 value: 151.3,
                                 unit: 'mm'
                             },
@@ -214,7 +216,7 @@ export default class ExperimentInitializer extends Initializer {
                                 unit: 'mm'
                             },
                             {
-                                name: 'hosszúsg',
+                                name: 'hosszúság',
                                 value: 151.3,
                                 unit: 'mm'
                             },
@@ -262,25 +264,26 @@ export default class ExperimentInitializer extends Initializer {
         const experiment2 = this.experimentRepository.create({
             id: 2,
             experimentName: 'B216',
-            description: 'testsűrűség meghatározása (MSZ EN 12390-7:2009)\n'
-                + 'Minta kora: 112 nap\n'
-                + 'Próbatest víztelítettségi állapota: átadáskori állapot\n'
-                + 'Térfogatmeghatározás módszere: tényleges méretek felhasználásával végzett számítások\n',
+            description: `
+                testsűrűség meghatározása (MSZ EN 12390-7:2009)
+                Minta kora: 115 nap
+                Próbatest víztelítettségi állapota: átadáskori állapot
+                Térfogatmeghatározás módszere: tényleges méretek felhasználásával végzett számítások`,
             cups: 3,
             date: new Date('2016-01-18'),
             adds: [
                 {
-                    name: 'Cement',
+                    name: 'cement',
                     quantity: 430,
                     unit: 'kg'
                 },
                 {
-                    name: 'Homokos kavics',
+                    name: 'homokos kavics',
                     quantity: 1654,
                     unit: 'kg'
                 },
                 {
-                    name: 'Keverővíz',
+                    name: 'keverővíz',
                     quantity: 215,
                     unit: 'kg'
                 }
@@ -308,7 +311,7 @@ export default class ExperimentInitializer extends Initializer {
                                 unit: 'mm'
                             },
                             {
-                                name: 'hosszúsg',
+                                name: 'hosszúság',
                                 value: 149.9,
                                 unit: 'mm'
                             },
@@ -370,7 +373,7 @@ export default class ExperimentInitializer extends Initializer {
                                 unit: 'mm'
                             },
                             {
-                                name: 'hosszúsg',
+                                name: 'hosszúság',
                                 value: 151,
                                 unit: 'mm'
                             },
@@ -432,7 +435,7 @@ export default class ExperimentInitializer extends Initializer {
                                 unit: 'mm'
                             },
                             {
-                                name: 'hosszúsg',
+                                name: 'hosszúság',
                                 value: 151.3,
                                 unit: 'mm'
                             },

@@ -12,7 +12,7 @@
   <button type="button" class="btn btn-outline-primary" (click)="searchExperiment()">Keresés</button>
 </p-card>
 <p-card *ngIf="experiments.length > 0" styleClass="mt-2">
-  <div class="container">
+  <div class="container-fluid">
 
     <div class="row">
       <div class="col-md-10">
@@ -20,7 +20,7 @@
           [(selection)]="selectedExperiments">
           <ng-template pTemplate="header" let-columns>
             <tr>
-              <th>
+              <th class="checkbox-column">
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
               <ng-container *ngFor="let col of columns">
@@ -47,6 +47,9 @@
         </p-table>
       </div>
       <div class="col-md-2">
+        <div *ngIf="selectedExperiments.length === 0">
+          Nyomtatáshoz jelöljön ki kísérleteket!
+        </div>
         <div *ngIf="selectedExperiments.length > 0">
           Nyomtatásra kijelölt kísérletek:
           <ul>
