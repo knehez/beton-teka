@@ -27,6 +27,25 @@ export default class ConcreteCtrl extends BaseCtrl {
         });
     }
 
+    insert = async (req, res) => {
+        try {
+          const entity = this.model.create(req.body);
+
+          if (!Array.isArray(entity['properties'])) {
+            entity['properties'] = [];
+          }
+
+          await this.model.save(entity);
+
+          res.json({
+            success: true,
+            id: entity['id']
+          });
+        } catch (err) {
+          return this.handleError(res);
+        }
+      }
+
     getAllNames = async (req, res) => {
         const names = await this.model.find({ select: (['label']) });
 
