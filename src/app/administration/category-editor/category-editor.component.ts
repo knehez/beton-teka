@@ -6,6 +6,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryModalComponent } from './category-modal/category-modal.component';
 import { ConcreteModalComponent } from './concrete-modal/concrete-modal.component';
 
+export enum TreeErrorCodes {
+  emptyNode
+}
+
 @Component({
   selector: 'app-category-editor',
   templateUrl: './category-editor.component.html',
@@ -63,6 +67,7 @@ export class CategoryEditorComponent implements OnInit {
         if (Array.isArray(event.node.children) && event.node.children.length === 0) {
           event.node.children.push({
             label: 'Nincs beton vagy alkategória.',
+            data: { error: true, code: TreeErrorCodes.emptyNode },
             selectable: false,
             droppable: false,
             draggable: false

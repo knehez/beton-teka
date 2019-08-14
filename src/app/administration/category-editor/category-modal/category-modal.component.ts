@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { GeneralRestService } from 'src/app/_services/general-rest.service';
 import { MessageService } from 'primeng/api';
+import { TreeErrorCodes } from '../category-editor.component';
 
 @Component({
   selector: 'app-category-modal',
@@ -77,10 +78,20 @@ export class CategoryModalComponent implements OnInit {
           return;
         }
 
-        // add category to tree
         categoryToSave['id'] = res['id'];
         categoryToSave['leaf'] = false;
         categoryToSave['children'] = [];
+
+        // remove empty node error message
+        this.category.children = this.category.children.filter(node => {
+          if (!node.data) {
+            return true;
+          }
+
+          return !node.data.error || node.data.code !== TreeErrorCodes.emptyNode;
+        });
+
+        // add category to tree
         this.category.children.push(categoryToSave);
 
         this.activeModal.close();

@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MessageService } from 'primeng/api';
 import { GeneralRestService } from 'src/app/_services/general-rest.service';
 import { ConcreteService } from 'src/app/_services/concrete.service';
+import { TreeErrorCodes } from '../category-editor.component';
 
 @Component({
   selector: 'app-concrete-modal',
@@ -53,6 +54,16 @@ export class ConcreteModalComponent implements OnInit {
         concreteToSave.isConcrete = true;
         concreteToSave.icon = 'pi pi-info-circle';
         concreteToSave.droppable = false;
+
+        // remove empty node error message
+        this.parentCategory.children = this.parentCategory.children.filter(node => {
+          if (!node.data) {
+            return true;
+          }
+
+          return !node.data.error || node.data.code !== TreeErrorCodes.emptyNode;
+        });
+
         this.parentCategory.children.push(concreteToSave);
 
         this.activeModal.close();
@@ -117,6 +128,7 @@ export class ConcreteModalComponent implements OnInit {
 
     this.activeModal.close();
   }
+
   filterNamesMultiple(event) {
     const query = event.query;
     this.concreteService.getAllNames().then(concreteNames => {
