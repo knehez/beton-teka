@@ -238,6 +238,7 @@ export class NewMeasurementComponent implements OnInit {
     this.measurementFileService.saveFile(this.selectedMeasurementType.id, event.files[0])
       .then(res => {
         this.clearAfterFileUpload();
+        event.files[0].id = res['id'];
 
         this.selectedMeasurementType.files.push(event.files[0]);
 

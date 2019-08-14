@@ -71,14 +71,14 @@
           </div>
         </div>
 
-        <div class="list-group">
+        <ul class="list-group">
           <div *ngFor="let file of selectedMeasurementType.files; let i = index" class="mt-1">
-            <button class="list-group-item list-group-item-action" (click) = "downloadFile(i)">
-              {{file.name}}
+            <li class="list-group-item">
+              <a (click)="downloadFile(i)">{{file.name}}</a>
               <button class="btn btn-sm btn-danger float-right" (click)="deleteFile(i)">Töröl</button>
-            </button>
+            </li>
           </div>
-        </div>
+        </ul>
       </div>
     </div>
   </form>
