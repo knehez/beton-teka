@@ -1,7 +1,6 @@
 import { getRepository } from 'typeorm';
 import { User } from '../entities/user';
 import BaseCtrl from './base.controller';
-import { environment } from '../../environments/environment';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { Role } from '../entities/role';
@@ -45,8 +44,10 @@ export default class AuthenticationCtrl extends BaseCtrl {
             id: user.id,
             roles: this.getRoleNames(roles)
         };
-        const jwtSecret = environment.jwt_secret;
-        const options = { expiresIn: environment.jwt_expires_in };
+
+        const { JWT_SECRET, JWT_EXPIRES_IN } = process.env;
+        const jwtSecret = JWT_SECRET;
+        const options = { expiresIn: JWT_EXPIRES_IN };
 
         jwt.sign(payload, jwtSecret, options, (err, token) => {
             if (err) {

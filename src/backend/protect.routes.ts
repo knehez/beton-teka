@@ -1,10 +1,9 @@
 import * as jwt from 'express-jwt';
-import { environment } from '../environments/environment';
 import errorCodes from '../utils/error.codes';
 
 export function protectRoutes (app) {
     app.use(jwt({
-        secret: environment.jwt_secret,
+        secret: process.env.JWT_SECRET,
         credentialsRequired: true
     })
     .unless({ path: ['/backend/login'] }));

@@ -2,7 +2,6 @@ import { getRepository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import BaseCtrl from './base.controller';
 import { User } from '../entities/user';
-import { environment } from '../../environments/environment';
 
 export default class UserCtrl extends BaseCtrl {
 
@@ -56,6 +55,6 @@ export default class UserCtrl extends BaseCtrl {
     }
 
     hashPassword (password: string) {
-        return bcrypt.hash(password, environment.bcrypt_salt_rounds);
+        return bcrypt.hash(password, process.env.BCRYPT_SALT_ROUNDS);
     }
 }

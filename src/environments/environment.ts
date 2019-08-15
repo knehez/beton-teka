@@ -3,10 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  bcrypt_salt_rounds: 10,
-  jwt_secret: 'soLongAndSecretKey',
-  jwt_expires_in: '2d'
+  production: false
 };
 
 /*
