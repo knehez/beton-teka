@@ -17,8 +17,8 @@ dotenv.config({
 app.set('port', (process.env.PORT || 3001));
 
 app.use('/', express.static(path.join(__dirname, '../public')));
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
+app.use(bodyParser.json({ limit: process.env.MAXIMUM_FILE_SIZE_BYTES }));
+app.use(bodyParser.urlencoded({ extended: false, limit: process.env.MAXIMUM_FILE_SIZE_BYTES }));
 
 protectRoutes(app);
 
