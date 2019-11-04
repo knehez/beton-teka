@@ -55,6 +55,7 @@ export default class UserCtrl extends BaseCtrl {
     }
 
     hashPassword (password: string) {
-        return bcrypt.hash(password, process.env.BCRYPT_SALT_ROUNDS);
+        const salt = bcrypt.genSaltSync(+process.env.BCRYPT_SALT_ROUNDS);
+        return bcrypt.hash(password, salt);
     }
 }
