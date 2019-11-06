@@ -2,14 +2,13 @@
   <h3>Kísérlet keresése</h3>
   <small>Adja meg a keresni kívánt kísérlet azonosítóját!</small>
 
-  <div class="input-group mb-3">
+  <div class="input-group mb-3 mt-3">
     <div class="input-group-prepend">
-      <span class="input-group-text" id="inputGroup-sizing-default">Keresés</span>
+      <button type="button" (click)="searchExperiment()" class="btn btn-outline-primary">Keresés</button>
     </div>
     <input type="text" class="form-control" aria-label="Default" [(ngModel)]="searchedExperimentName"
       aria-describedby="inputGroup-sizing-default">
   </div>
-  <button type="button" (click)="searchExperiment()" class="btn btn-outline-primary">Keresés</button>
 </p-card>
 
 <p-card styleClass="mt-2" *ngIf="measurementTypes.length > 0">

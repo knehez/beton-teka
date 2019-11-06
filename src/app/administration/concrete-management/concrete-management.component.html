@@ -2,13 +2,13 @@
   <h3>Beton keresése</h3>
   <small>Adja meg a keresni kívánt beton nevét!</small>
 
-  <div class="input-group">
+  <div class="input-group mt-2">
     <div class="input-group-prepend">
-      <span class="input-group-text" id="inputGroup-sizing-default">Keresés</span>
+      <button type="button" (click)="searchConcrete()" class="btn btn-outline-primary">Keresés</button>
     </div>
     <input type="text" class="form-control" [(ngModel)]="searchedConcreteName">
   </div>
-  <button type="button" (click)="searchConcrete()" class="btn btn-outline-primary mt-2">Keresés</button>
+  
 </p-card>
 
 <p-card *ngIf="concretes.length > 0" styleClass="mt-2">
