@@ -52,7 +52,10 @@ export class CategoryEditorComponent implements OnInit {
     this.restService.objectName = 'categories';
     this.restService.getOne(event.node.id)
       .subscribe(res => {
-        const concretes = res['data']['concretes'];
+        let concretes = res['data']['concretes'];
+        if (concretes === undefined) {
+          concretes = [];
+        }
         concretes.forEach(concrete => {
           concrete.isConcrete = true;
           concrete.icon = 'pi pi-info-circle';

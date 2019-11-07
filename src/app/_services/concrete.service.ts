@@ -4,13 +4,13 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ConcreteService {
-    private actionUrl = 'backend/concretes';
+    private actionUrl = 'backend/concrete';
 
     constructor(protected _http: HttpClient) {
     }
 
     async getAllNames() {
-        return await this._http.get(`${this.actionUrl}concrete/getAllNames`).toPromise();
+        return await this._http.get(`${this.actionUrl}/getAllNames`).toPromise();
     }
 
     saveConcrete(concrete) {
