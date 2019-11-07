@@ -10,7 +10,7 @@ export class ConcreteService {
     }
 
     async getAllNames() {
-        return await this._http.get(`${this.actionUrl}/getAllNames`).toPromise();
+        return await this._http.get(`${this.actionUrl}` + '/getAllNames').toPromise();
     }
 
     saveConcrete(concrete) {

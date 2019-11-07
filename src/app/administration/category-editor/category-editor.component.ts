@@ -45,17 +45,15 @@ export class CategoryEditorComponent implements OnInit {
   }
 
   loadConcretes(event) {
-    if (!event.node) {
+    if (!event.node || event.node.id === undefined) {
       return;
     }
 
     this.restService.objectName = 'categories';
+
     this.restService.getOne(event.node.id)
       .subscribe(res => {
-        let concretes = res['data']['concretes'];
-        if (concretes === undefined) {
-          concretes = [];
-        }
+        const concretes = res['data']['concretes'];
         concretes.forEach(concrete => {
           concrete.isConcrete = true;
           concrete.icon = 'pi pi-info-circle';
@@ -76,10 +74,13 @@ export class CategoryEditorComponent implements OnInit {
             draggable: false
           });
         }
-      });
+      }, err => { console.log(err); });
   }
 
   removeConcretes(array) {
+    if (array === undefined) {
+      return [];
+    }
     return array.filter(elem => !elem.isConcrete);
   }
 
@@ -106,7 +107,7 @@ export class CategoryEditorComponent implements OnInit {
     });
   }
 
-  toggleTree () {
+  toggleTree() {
     if (this.opened) {
       this.collapseAll();
     } else {

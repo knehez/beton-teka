@@ -25,6 +25,10 @@ export default function setRoutes(app) {
 
   const router = express.Router();
 
+  // GetConcreteNames
+  const concreteNames = new ConcreteCtrl();
+  router.get('/concretes/getAllNames', concreteNames.getAllNames);
+
   // Users
   getGeneralRoutes({
     router,
@@ -102,10 +106,6 @@ export default function setRoutes(app) {
   // Authentication
   const authenticationCtrl = new AuthenticationCtrl();
   router.post('/login', authenticationCtrl.login);
-
-  // GetConcreteNames
-  const concreteNames = new ConcreteCtrl();
-  router.get('/concretes/getAllNames', concreteNames.getAllNames);
 
    // GetConcreteData
    const concreteData = new ConcreteCtrl();
