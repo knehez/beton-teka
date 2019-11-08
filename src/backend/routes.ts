@@ -25,9 +25,9 @@ export default function setRoutes(app) {
 
   const router = express.Router();
 
-  // GetConcreteNames
-  const concreteNames = new ConcreteCtrl();
-  router.get('/concretes/getAllNames', concreteNames.getAllNames);
+  const concreteCtrl = new ConcreteCtrl();
+  router.get('/concretes/getAllNames', concreteCtrl.getAllNames);
+  router.get('/concretes/getByName/:id', concreteCtrl.getByName);
 
   // Users
   getGeneralRoutes({

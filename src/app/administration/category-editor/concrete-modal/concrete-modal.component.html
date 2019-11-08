@@ -15,7 +15,7 @@
   
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-success" *ngIf="!isNewConcrete && !readOnly" (click)="editConcrete()">Módosítás</button>
-  <button type="button" class="btn btn-outline-success" *ngIf="isNewConcrete && !readOnly" (click)="createConcrete()">Hozzáadás</button>
+  <button type="button" class="btn btn-outline-success" *ngIf="!isNewConcrete && !readOnly" (click)="editConcrete()">Ok</button>
+  <button type="button" class="btn btn-outline-success" *ngIf="isNewConcrete && !readOnly" (click)="assignConcrete()">Ok</button>
   <button type="button" class="btn btn-outline-dark" (click)="closeModal()">Mégse</button>
 </div>

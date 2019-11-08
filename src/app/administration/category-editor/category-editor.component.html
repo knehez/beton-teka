@@ -25,13 +25,14 @@
           <hr>
           <button type="button" class="btn btn-primary" (click)="readConcreteProfile()">Adatlap</button>
           <button type="button" class="btn btn-warning" (click)="editSelectedConcrete()">Beton módosítás</button>
+          <button type="button" class="btn btn-danger" (click)="deleteConcreteAssignation()">Hozzárendelés törlése</button>
           <button type="button" class="btn btn-danger" (click)="deleteSelectedConcrete()">Beton törlés</button>
         </div>
         <div class="controls" *ngIf="selectedNode && !selectedNode['isConcrete']">
           <h5 class="text-center">Kategória</h5>
           <hr>
           <button type="button" class="btn btn-primary" (click)="createNewCategory()">Új alkategória</button>
-          <button type="button" class="btn btn-primary" (click)="createNewConcrete()">Új beton</button>
+          <button type="button" class="btn btn-primary" (click)="assignConcrete()">Beton hozzárendelés</button>
           <button type="button" class="btn btn-warning" (click)="editSelectedCategory()">Kategória módosítás</button>
 
           <div class="row ml-1 mt-2 mb-2">

@@ -71,6 +71,10 @@ export class GeneralRestService {
         });
     }
 
+    getByName(name: string): Observable<any> {
+        return this._http.get(`${this.actionUrl}${this.objectName}/getByName/${name}`) as Observable<any>;
+    }
+
     getOne(id: number): Observable<any> {
         return this._http.get(`${this.actionUrl}${this.objectName}/${id}`) as Observable<any>;
     }

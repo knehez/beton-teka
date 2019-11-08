@@ -149,6 +149,38 @@ export class CategoryEditorComponent implements OnInit {
       });
   }
 
+  deleteConcreteAssignation() {
+    const concrete: any = Object.assign({}, this.selectedNode);
+    const parentNode = concrete.parent;
+    concrete.categories = concrete.categories.filter((obj) => {
+      return obj.id !== parentNode.id;
+    });
+    delete concrete.parent;
+    delete concrete.children;
+    this.restService.objectName = 'concretes';
+    this.restService.update(concrete)
+      .then(res => {
+        if (!res['success']) {
+          return;
+        }
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sikeres módosítás',
+          detail: 'A kategória módosításra került.'
+        });
+      })
+      .catch(err => {
+        console.log(err);
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Sikertelen módosítás',
+          detail: 'A módosítása nem sikerült.'
+        });
+      });
+  }
+
   deleteSelectedConcrete() {
     const concrete = this.selectedNode;
 
@@ -199,7 +231,7 @@ export class CategoryEditorComponent implements OnInit {
     modal.componentInstance.isNewCategory = true;
   }
 
-  createNewConcrete() {
+  assignConcrete() {
     const parent = this.selectedNode;
     const modal = this.modalService.open(ConcreteModalComponent);
     modal.componentInstance.parentCategory = parent;

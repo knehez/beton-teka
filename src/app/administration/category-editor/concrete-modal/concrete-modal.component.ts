@@ -26,68 +26,79 @@ export class ConcreteModalComponent implements OnInit {
     public restService: GeneralRestService,
     private concreteService: ConcreteService) { }
 
-  ngOnInit () {
+  ngOnInit() {
     this.readOnly = this.readOnly || false;
     this.concrete = this.concrete || {};
   }
 
-  createConcrete () {
+  assignConcrete() {
     const concreteToSave = Object.assign({}, this.concrete);
 
     const category = Object.assign({}, this.parentCategory);
     delete category.parent;
     delete category.children;
 
-    concreteToSave.categories = [ category ];
+    concreteToSave.categories = [category];
 
     this.restService.objectName = 'concretes';
 
-    this.restService.save(concreteToSave)
-      .then(res => {
-        if (!res['success']) {
-          this.concrete.label = this.originalName;
-          return;
+
+    this.restService.getByName(concreteToSave.label)
+      .subscribe(res => {
+        if (!res.id) {
+          this.restService.save(concreteToSave).then(res2 => {
+            if (!res2['success']) {
+              this.concrete.label = this.originalName;
+              return;
+            }
+            this.addConcreteToTree(concreteToSave, res['id']);
+          }).catch(err => {
+            this.concrete.label = this.originalName;
+
+            this.activeModal.close();
+
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Sikertelen mentés',
+              detail: 'A beton mentése nem sikerült.'
+            });
+          });
+        } else {
+          res.categories.push(category);
+          this.restService.update(res).then(res3 => {
+            this.addConcreteToTree(res, res['id']);
+          });
         }
-
-        // add concrete to tree
-        concreteToSave.id = res['id'];
-        concreteToSave.isConcrete = true;
-        concreteToSave.icon = 'pi pi-info-circle';
-        concreteToSave.droppable = false;
-
-        // remove empty node error message
-        this.parentCategory.children = this.parentCategory.children.filter(node => {
-          if (!node.data) {
-            return true;
-          }
-
-          return !node.data.error || node.data.code !== TreeErrorCodes.emptyNode;
-        });
-
-        this.parentCategory.children.push(concreteToSave);
-
-        this.activeModal.close();
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Sikeres mentés',
-          detail: 'A beton mentésre került.'
-        });
-      })
-      .catch(err => {
-        this.concrete.label = this.originalName;
-
-        this.activeModal.close();
-
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Sikertelen mentés',
-          detail: 'A beton mentése nem sikerült.'
-        });
       });
   }
 
-  editConcrete () {
+  addConcreteToTree(concreteToSave, id) {
+    // add concrete to tree
+    concreteToSave.id = id;
+    concreteToSave.isConcrete = true;
+    concreteToSave.icon = 'pi pi-info-circle';
+    concreteToSave.droppable = false;
+    // remove empty node error message
+    this.parentCategory.children = this.parentCategory.children.filter(node => {
+      if (!node.data) {
+        return true;
+      }
+
+      return !node.data.error || node.data.code !== TreeErrorCodes.emptyNode;
+    });
+
+    this.parentCategory.children.push(concreteToSave);
+
+    this.activeModal.close();
+
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Sikeres mentés',
+      detail: 'A beton mentésre került.'
+    });
+  }
+
+  editConcrete() {
     const concreteToSave = Object.assign({}, this.concrete); // copy object
     delete concreteToSave.parent;
 
@@ -121,7 +132,7 @@ export class ConcreteModalComponent implements OnInit {
       });
   }
 
-  closeModal () {
+  closeModal() {
     if (this.originalName) {
       this.concrete.label = this.originalName;
     }

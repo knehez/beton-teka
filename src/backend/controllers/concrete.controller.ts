@@ -3,62 +3,74 @@ import BaseCtrl from './base.controller';
 import { Concrete } from '../entities/concrete';
 
 export default class ConcreteCtrl extends BaseCtrl {
-    model = getRepository(Concrete);
+  model = getRepository(Concrete);
 
-    getAll = async (req, res) => {
-        const params = {};
-        const query = req.query || [];
+  getAll = async (req, res) => {
+    const params = {};
+    const query = req.query || [];
 
-        if (query.label) {
-            params['label'] = Like(`%${query.label}%`);
-        }
-
-        const data = await this.model.find(params);
-
-        if (!data) {
-            return res.status(404).json({
-                success: false
-            });
-        }
-
-        res.json({
-            success: true,
-            data
-        });
+    if (query.label) {
+      params['label'] = Like(`%${query.label}%`);
     }
 
-    insert = async (req, res) => {
-        try {
-          const entity = this.model.create(req.body);
+    const data = await this.model.find(params);
 
-          if (!Array.isArray(entity['properties'])) {
-            entity['properties'] = [];
-          }
+    if (!data) {
+      return res.status(404).json({
+        success: false
+      });
+    }
 
-          await this.model.save(entity);
+    res.json({
+      success: true,
+      data
+    });
+  }
 
-          res.json({
-            success: true,
-            id: entity['id']
-          });
-        } catch (err) {
-          return this.handleError(res);
-        }
+  insert = async (req, res) => {
+    try {
+      const entity = this.model.create(req.body);
+
+      if (!Array.isArray(entity['properties'])) {
+        entity['properties'] = [];
       }
 
-    getAllNames = async (req, res) => {
-        const names = await this.model.find({ select: (['label']) });
+      await this.model.save(entity);
 
-        const result = names.map(e => e.label);
+      res.json({
+        success: true,
+        id: entity['id']
+      });
+    } catch (err) {
+      return this.handleError(res);
+    }
+  }
 
-        res.json(result);
+  getByName = async (req, res) => {
+    const concrete = await this.model.findOne({
+      label: req.params.id
+    });
+
+    if (!concrete) {
+      return res.json({});
     }
 
-    getAllData = async (req, res) => {
-        const data = await this.model.find({ select: (['id', 'label', 'description', 'properties']) });
+    res.json(concrete);
+  }
 
-        const result = data.map(e => e);
+  getAllNames = async (req, res) => {
+    const names = await this.model.find({ select: (['label']) });
 
-        res.json(result);
-    }
+    const result = names.map(e => e.label);
+
+    res.json(result);
+  }
+
+  getAllData = async (req, res) => {
+    const data = await this.model.find({ select: (['id', 'label', 'description', 'properties']) });
+
+    const result = data.map(e => e);
+
+    res.json(result);
+  }
 }
