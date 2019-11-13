@@ -72,7 +72,7 @@ describe('LoginComponent', () => {
     const login = fixture.debugElement.componentInstance;
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h3').textContent).toContain('Beton Téka');
+    expect(compiled.querySelector('h3').textContent).toContain('Beton Tár');
    });
 
    it('should display h4 properly', () => {
