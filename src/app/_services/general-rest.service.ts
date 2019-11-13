@@ -72,6 +72,7 @@ export class GeneralRestService {
     }
 
     getByName(name: string): Observable<any> {
+        name = encodeURIComponent(name);
         return this._http.get(`${this.actionUrl}${this.objectName}/getByName/${name}`) as Observable<any>;
     }
 
