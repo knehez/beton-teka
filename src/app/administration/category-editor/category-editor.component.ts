@@ -21,7 +21,7 @@ export class CategoryEditorComponent implements OnInit {
 
   selectedNode: TreeNode;
 
-  loading: boolean;
+
 
   opened = false;
 
@@ -32,15 +32,11 @@ export class CategoryEditorComponent implements OnInit {
     public modalService: NgbModal) { }
 
   ngOnInit() {
-
-    this.loading = true;
-
     this.restService.objectName = 'categories';
 
     this.restService.getAll('')
       .then(res => {
         this.concreteTree = [res.data];
-        this.loading = false;
       });
   }
 
@@ -197,7 +193,7 @@ export class CategoryEditorComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Sikeres törlés',
-          detail: 'A beton törlésre került.'
+          detail: 'Az elem törlésre került.'
         });
       })
       .catch(err => {
