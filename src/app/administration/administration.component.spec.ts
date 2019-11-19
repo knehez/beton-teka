@@ -25,9 +25,13 @@ import { FullCalendarModule } from 'primeng/fullcalendar';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DropdownModule } from 'primeng/dropdown';
 import { By } from '@angular/platform-browser';
+import { MenubarModule } from 'primeng/menubar';
+import { SidebarModule } from 'primeng/sidebar';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const DEFAULT_ACCESS_TOKEN = 'someNiceToken';
-const DEFAULT_ROLES = [ 'admin' ];
+const DEFAULT_ROLES = ['admin'];
 
 class AuthenticationServiceMock {
 
@@ -36,25 +40,25 @@ class AuthenticationServiceMock {
     roles: DEFAULT_ROLES
   };
 
-  login (username, password) {
+  login(username, password) {
     this.store = {
       accessToken: DEFAULT_ACCESS_TOKEN,
       roles: DEFAULT_ROLES
     };
   }
 
-  logout () {
+  logout() {
     this.store = {
       accessToken: null,
       roles: null
     };
   }
 
-  getToken () {
+  getToken() {
     return this.store.accessToken;
   }
 
-  getRoles () {
+  getRoles() {
     return this.store.roles;
   }
 }
@@ -69,8 +73,12 @@ describe('AdministrationComponent', () => {
         AdministrationComponent
       ],
       imports: [
-        RouterTestingModule.withRoutes([{ path: 'login', component: AdministrationComponent }]),
+        RouterTestingModule.withRoutes([
+          { path: 'login', component: AdministrationComponent },
+          { path: 'users', component: AdministrationComponent }]
+        ),
         NgbModule,
+        BrowserAnimationsModule,
         FormsModule,
         CrudTableLibModule,
         CardModule,
@@ -85,11 +93,14 @@ describe('AdministrationComponent', () => {
         ChartModule,
         TableModule,
         DialogModule,
+        MenubarModule,
         ConfirmDialogModule,
         ButtonModule,
         CalendarModule,
         FullCalendarModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        SidebarModule,
+        PanelMenuModule
       ],
       providers: [
         MessageService,
@@ -98,20 +109,20 @@ describe('AdministrationComponent', () => {
         ConfirmationService
       ]
     })
-    .overrideComponent(AdministrationComponent, {
-      set: {
-        providers: [
-          {
-            provide: AuthenticationService,
-            useClass: AuthenticationServiceMock
-          },
-          MessageService,
-          InputService,
-          ConfirmationService
-        ]
-      }
-    })
-    .compileComponents();
+      .overrideComponent(AdministrationComponent, {
+        set: {
+          providers: [
+            {
+              provide: AuthenticationService,
+              useClass: AuthenticationServiceMock
+            },
+            MessageService,
+            InputService,
+            ConfirmationService
+          ]
+        }
+      })
+      .compileComponents();
   }), 15000);
 
   beforeEach(() => {
@@ -146,15 +157,18 @@ describe('AdministrationComponent', () => {
     const title = 'Successful operation';
     const message = 'Great success occured.';
 
-    const crudTable = fixture.debugElement.query(By.css('.crud-table'));
-    crudTable.triggerEventHandler('operationResult', { success: true, title, message });
-    fixture.detectChanges();
+    component.router.navigate(['users'])
+      .then(() => {
+        const crudTable = fixture.debugElement.query(By.css('.crud-table'));
+        crudTable.triggerEventHandler('operationResult', { success: true, title, message });
+        fixture.detectChanges();
 
-    expect(MessageService.prototype.add).toHaveBeenCalledWith({
-      severity: 'success',
-      summary: title,
-      detail: message
-    });
+        expect(MessageService.prototype.add).toHaveBeenCalledWith({
+          severity: 'success',
+          summary: title,
+          detail: message
+        });
+      });
   });
 
   it('should show error toast message when failed event is emitted from CRUD table', () => {

@@ -13,7 +13,7 @@ export class MeasurementFileService {
   private fileToBase64(file: File): Promise<string> {
     return new Promise(resolve => {
       const reader = new FileReader();
-      reader.onload = function (event) {
+      reader.onload = function (event: any) {
         resolve(event.target['result']);
       };
 

@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CategoryEditorComponent } from './category-editor.component';
+import { TreeModule } from 'primeng/tree';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 describe('CategoryEditorComponent', () => {
   let component: CategoryEditorComponent;
@@ -8,9 +10,15 @@ describe('CategoryEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CategoryEditorComponent ]
+      declarations: [
+        CategoryEditorComponent
+      ],
+      imports: [
+        TreeModule,
+        InputSwitchModule
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
