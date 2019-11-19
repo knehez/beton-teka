@@ -1,19 +1,19 @@
 <p-card>
   <h3>Beton keresése</h3>
   <small>Adja meg a keresni kívánt beton nevét!</small>
-
+  <!-- search items from the backend-->
   <div class="input-group mt-2">
     <div class="input-group-prepend">
-      <button type="button" (click)="searchConcrete()" class="btn btn-outline-primary">Keresés</button>
+      <button type="button" (click)="search()" class="btn btn-outline-primary">Keresés</button>
     </div>
-    <input type="text" class="form-control" [(ngModel)]="searchedConcreteName">
+    <input type="text" class="form-control" [(ngModel)]="searchName" (keydown.enter)="search()">
   </div>
-  
 </p-card>
 
-<p-card *ngIf="concretes.length > 0" styleClass="mt-2">
-  <p-table [value]="concretes" [columns]="headColumns" selectionMode="single" [(selection)]="selectedConcrete"
-    (onRowSelect)="onConcreteSelect($event)" [paginator]="true" [rows]="5">
+<!-- search results table -->
+<p-card *ngIf="concretes.length" styleClass="mt-2">
+  <p-table [value]="concretes" [columns]="headColumns" selectionMode="single" (onRowSelect)="onConcreteSelect($event)"
+    [paginator]="true" [rows]="5">
     <ng-template pTemplate="header">
       <tr>
         <th *ngFor="let col of headColumns">
@@ -30,33 +30,47 @@
     </ng-template>
   </p-table>
 </p-card>
-<p-card *ngIf="concretes.length > 0 && selectedConcreteData.id" styleClass="mt-2">
-  <form [formGroup]="concreteForm">
-    <p-table [value]="selectedConcreteData.properties">
-      <ng-template pTemplate="header">
+
+<!-- conctrete details (name-values) table -->
+<p-card *ngIf="selectedConcrete" styleClass="mt-2">
+  <form [formGroup]="nameValueForm">
+    <p-table [value]="selectedConcrete.properties" editMode="row">
+      <ng-template pTemplate="header" let-i="rowIndex">
         <tr>
-          <th *ngFor="let col of concretePropertyColumns">
+          <th *ngFor="let col of propertiesColumns">
             {{col.header}}
           </th>
-          <th>Műveletek</th>
+          <th style="text-align:center">Műveletek</th>
         </tr>
         <tr>
-          <td *ngFor="let col of concretePropertyColumns" formGroupName="newConcreteData">
+          <td *ngFor="let col of propertiesColumns; let i = index;">
             <input class="form-control form-control-sm" type="text" [placeholder]="col.header"
-              [formControlName]="col.field">
+            [formControlName]="col.field">
           </td>
-          <td>
-            <button class="btn btn-sm btn-success ml-2" (click)="addConcreteData()">Hozzáad</button>
+          <td style="text-align:center">
+            <button type="button" class="btn btn-sm btn-success ml-2" (click)="addConcreteData()" [disabled]="!nameValueForm.valid">Hozzáad</button>
           </td>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-concreteData let-rowIndex="rowIndex">
-        <tr>
-          <td *ngFor="let col of concretePropertyColumns">
-            {{concreteData[col.field]}}
+      <ng-template pTemplate="body" let-concreteData let-editing="editing" let-rowIndex="rowIndex">
+        <tr [pEditableRow]="concreteData">
+          <td *ngFor="let col of propertiesColumns; let i = index;">
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText type="text" class="form-control form-control-sm">
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{concreteData[col.field]}}
+              </ng-template>
+            </p-cellEditor>
           </td>
-          <td>
-            <button class="btn btn-sm btn-danger ml-2" (click)="deleteRow(rowIndex)">Töröl</button>
+          <td style="text-align:center">
+            <button *ngIf="!editing" pInitEditableRow class="btn btn-sm btn-success ml-2">Módosít</button>
+            <button *ngIf="editing" pSaveEditableRow pButton type="button" pSaveEditableRow
+              class="btn btn-sm btn-success ml-2">Elment</button>
+            <button *ngIf="editing" pCancelEditableRow pButton type="button" pCancelEditableRow
+              class="btn btn-sm btn-danger ml-2">Mégsem</button>
+            <button *ngIf="!editing" class="btn btn-sm btn-danger ml-2" (click)="deleteRow(rowIndex)">Töröl</button>
           </td>
         </tr>
       </ng-template>
