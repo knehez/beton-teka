@@ -177,14 +177,17 @@ describe('AdministrationComponent', () => {
     const title = 'Failed operation';
     const message = 'Unexpected failure occured.';
 
-    const crudTable = fixture.debugElement.query(By.css('.crud-table'));
-    crudTable.triggerEventHandler('operationResult', { success: false, title, message });
-    fixture.detectChanges();
+    component.router.navigate(['users'])
+      .then(() => {
+        const crudTable = fixture.debugElement.query(By.css('.crud-table'));
+        crudTable.triggerEventHandler('operationResult', { success: false, title, message });
+        fixture.detectChanges();
 
-    expect(MessageService.prototype.add).toHaveBeenCalledWith({
-      severity: 'error',
-      summary: title,
-      detail: message
-    });
+        expect(MessageService.prototype.add).toHaveBeenCalledWith({
+          severity: 'error',
+          summary: title,
+          detail: message
+        });
+      });
   });
 });

@@ -14,7 +14,7 @@
     </div>
     <div class="row">
       <div class="col-md-10">
-        <p-tree [value]="concreteTree" [(selection)]="selectedNode" [loading]="loading" [validateDrop]="true"
+        <p-tree [value]="concreteTree" [(selection)]="selectedNode" [validateDrop]="true"
           draggableNodes="true" droppableNodes="true" selectionMode="single" styleClass="w-100"
           (onNodeExpand)="loadConcretes($event)" (onNodeDrop)="validateNodeDrop($event)">
         </p-tree>
