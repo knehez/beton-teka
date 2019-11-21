@@ -70,7 +70,7 @@
               class="btn btn-sm btn-success ml-2">Elment</button>
             <button *ngIf="editing" pCancelEditableRow pButton type="button" pCancelEditableRow
               class="btn btn-sm btn-danger ml-2">Mégsem</button>
-            <button *ngIf="!editing" class="btn btn-sm btn-danger ml-2" (click)="deleteRow(rowIndex)">Töröl</button>
+            <button id="{{'deleteButton_' + rowIndex}}"*ngIf="!editing" class="btn btn-sm btn-danger ml-2" (click)="deleteRow(rowIndex)">Töröl</button>
           </td>
         </tr>
       </ng-template>
