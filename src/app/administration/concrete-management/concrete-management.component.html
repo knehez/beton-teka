@@ -44,11 +44,11 @@
         </tr>
         <tr>
           <td *ngFor="let col of propertiesColumns; let i = index;">
-            <input class="form-control form-control-sm" type="text" [placeholder]="col.header"
+            <input id="{{'input_' + col.header}}"class="form-control form-control-sm" type="text" [placeholder]="col.header"
             [formControlName]="col.field">
           </td>
           <td style="text-align:center">
-            <button type="button" class="btn btn-sm btn-success ml-2" (click)="addConcreteData()" [disabled]="!nameValueForm.valid">Hozzáad</button>
+            <button id="concreteDetailsAdd" type="button" class="btn btn-sm btn-success ml-2" (click)="addConcreteData()" [disabled]="!nameValueForm.valid">Hozzáad</button>
           </td>
         </tr>
       </ng-template>

@@ -17,6 +17,7 @@ import { By } from '@angular/platform-browser';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { element } from 'protractor';
+import { tick } from '@angular/core/src/render3';
 
 describe('ConcreteManagementComponent', () => {
   let component: ConcreteManagementComponent;
@@ -106,4 +107,36 @@ describe('ConcreteManagementComponent', () => {
     expect(inputs.length).toBe(5);
   });
 
+  it('in details table add button must be disabled', async () => {
+    // click on the second row
+    const row = fixture.debugElement.queryAll(By.css('.ui-selectable-row'))[1];
+    row.nativeElement.click();
+    fixture.detectChanges();
+
+    const deleteButton = fixture.debugElement.query(By.css('#concreteDetailsAdd'));
+
+    expect(deleteButton.nativeElement.disabled).toBe(true);
+  });
+
+  /*
+  it('new details can be added', async () => {
+    // click on the second row
+    const row = fixture.debugElement.queryAll(By.css('.ui-selectable-row'))[1];
+    row.nativeElement.click();
+    fixture.detectChanges();
+
+    const name = fixture.nativeElement.querySelector('#input_Név');
+    const value = fixture.nativeElement.querySelector('#input_Érték');
+
+    name.value = 'új név';
+    name.dispatchEvent(new Event('input'));
+
+    value.value = 'új érték';
+    value.dispatchEvent(new Event('input'));
+    const addButton = fixture.nativeElement.querySelector('#concreteDetailsAdd');
+    addButton.click();
+
+    fixture.detectChanges();
+  });
+*/
 });
