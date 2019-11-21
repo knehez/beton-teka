@@ -14,7 +14,7 @@ describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(async() => {
     TestBed.configureTestingModule({
       declarations: [LoginComponent],
       imports: [
@@ -31,7 +31,7 @@ describe('LoginComponent', () => {
       ]
     })
       .compileComponents();
-  }));
+  });
 
   beforeEach(async() => {
     fixture = TestBed.createComponent(LoginComponent);

@@ -19,7 +19,7 @@ describe('ModalImgComponent', () => {
     .compileComponents();
   }));
 
-  beforeEach(() => {
+  beforeEach(async () => {
     fixture = TestBed.createComponent(ModalImgComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -36,7 +36,7 @@ describe('ModalImgComponent', () => {
 
     component.imgDataB64 = b64ImageToRender;
     fixture.detectChanges();
-    const b64ImageRendered = fixture.nativeElement.querySelector('.modal-body>img').attributes['src'].value;
+    const b64ImageRendered = fixture.nativeElement.querySelector('.modal-body img').attributes['src'].value;
 
     expect(b64ImageRendered).toBe(b64ImageToRender);
   });

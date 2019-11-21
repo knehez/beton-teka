@@ -12,12 +12,13 @@ import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MessageService } from 'primeng/api';
 import { ConcreteService } from 'src/app/_services/concrete.service';
 import { GeneralRestService } from 'src/app/_services/general-rest.service';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 describe('ConcreteModalComponent', () => {
   let component: ConcreteModalComponent;
   let fixture: ComponentFixture<ConcreteModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [
         ConcreteModalComponent,
@@ -31,7 +32,8 @@ describe('ConcreteModalComponent', () => {
         CardModule,
         RouterTestingModule,
         HttpClientTestingModule,
-        NgbModule
+        NgbModule,
+        AutoCompleteModule
       ]
     }).overrideComponent(ConcreteModalComponent, {
       set: {
@@ -44,9 +46,9 @@ describe('ConcreteModalComponent', () => {
       }
     })
       .compileComponents();
-  }));
+  });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     fixture = TestBed.createComponent(ConcreteModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

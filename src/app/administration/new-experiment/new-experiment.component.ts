@@ -42,8 +42,8 @@ export class NewExperimentComponent implements OnInit {
       .then(measurementTypes => this.fillMultiSelectWithMeasurementTypes(measurementTypes));
 
     this.route.params.subscribe(params => {
-      const experimentId = params['id'];
 
+      const experimentId = params['id'];
       if (!experimentId) {
         return;
       }
