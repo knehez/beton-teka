@@ -34,9 +34,10 @@ describe('ModalImgComponent', () => {
     const b64ImageToRender =
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
 
-    component.imgDataB64 = b64ImageToRender;
+    component.type = 'image';
+    component.imgDataB64 = { data: b64ImageToRender };
     fixture.detectChanges();
-    const b64ImageRendered = fixture.nativeElement.querySelector('.modal-body img').attributes['src'].value;
+    const b64ImageRendered = fixture.nativeElement.querySelector('.modal-body>img').attributes['src'].value;
 
     expect(b64ImageRendered).toBe(b64ImageToRender);
   });
