@@ -16,8 +16,12 @@ import { TableModule } from 'primeng/table';
 import { By } from '@angular/platform-browser';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { element } from 'protractor';
-import { tick } from '@angular/core/src/render3';
+
+class ConcreteServiceMock extends ConcreteService {
+  saveConcrete(concrete) {
+    return Promise.resolve({});
+  }
+}
 
 describe('ConcreteManagementComponent', () => {
   let component: ConcreteManagementComponent;
@@ -45,7 +49,10 @@ describe('ConcreteManagementComponent', () => {
     }).overrideComponent(ConcreteManagementComponent, {
       set: {
         providers: [
-          ConcreteService,
+          {
+            provide: ConcreteService,
+            useClass: ConcreteServiceMock
+          },
           GeneralRestService,
           MessageService,
           FormBuilder
@@ -118,7 +125,6 @@ describe('ConcreteManagementComponent', () => {
     expect(deleteButton.nativeElement.disabled).toBe(true);
   });
 
-  /*
   it('new details can be added', async () => {
     // click on the second row
     const row = fixture.debugElement.queryAll(By.css('.ui-selectable-row'))[1];
@@ -128,15 +134,24 @@ describe('ConcreteManagementComponent', () => {
     const name = fixture.nativeElement.querySelector('#input_Név');
     const value = fixture.nativeElement.querySelector('#input_Érték');
 
-    name.value = 'új név';
-    name.dispatchEvent(new Event('input'));
+    const expectedName = 'új név';
+    const expectedValue = 'új érték';
 
-    value.value = 'új érték';
+    name.value = expectedName;
+    name.dispatchEvent(new Event('input'));
+    value.value = expectedValue;
     value.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
     const addButton = fixture.nativeElement.querySelector('#concreteDetailsAdd');
     addButton.click();
-
     fixture.detectChanges();
+
+    // PrimeNG puts whitespaces to both sides of the strings, so trim is necessary
+    const actualName = fixture.nativeElement.querySelector('#data-row-3>td>p-celleditor').textContent.trim();
+    const actualValue = fixture.nativeElement.querySelector('#data-row-3>td+td>p-celleditor').textContent.trim();
+
+    expect(actualName).toEqual(expectedName);
+    expect(actualValue).toEqual(expectedValue);
   });
-*/
 });
