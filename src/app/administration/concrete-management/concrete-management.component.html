@@ -34,7 +34,7 @@
 <!-- conctrete details (name-values) table -->
 <p-card *ngIf="selectedConcrete" styleClass="mt-2">
   <form [formGroup]="nameValueForm">
-    <p-table [value]="selectedConcrete.properties" editMode="row">
+    <p-table [value]="selectedConcrete.properties" dataKey="name" editMode="row">
       <ng-template pTemplate="header" let-i="rowIndex">
         <tr>
           <th *ngFor="let col of propertiesColumns">
@@ -44,11 +44,12 @@
         </tr>
         <tr>
           <td *ngFor="let col of propertiesColumns; let i = index;">
-            <input id="{{'input_' + col.header}}"class="form-control form-control-sm" type="text" [placeholder]="col.header"
-            [formControlName]="col.field">
+            <input id="{{'input_' + col.header}}" class="form-control form-control-sm" type="text"
+              [placeholder]="col.header" [formControlName]="col.field">
           </td>
           <td style="text-align:center">
-            <button id="concreteDetailsAdd" type="button" class="btn btn-sm btn-success ml-2" (click)="addConcreteData()" [disabled]="!nameValueForm.valid">Hozzáad</button>
+            <button id="concreteDetailsAdd" type="button" class="btn btn-sm btn-success ml-2"
+              (click)="addConcreteData()" [disabled]="!nameValueForm.valid">Hozzáad</button>
           </td>
         </tr>
       </ng-template>
@@ -57,7 +58,8 @@
           <td *ngFor="let col of propertiesColumns; let i = index;">
             <p-cellEditor>
               <ng-template pTemplate="input">
-                <input pInputText type="text" class="form-control form-control-sm">
+                <input pInputText type="text" class="form-control form-control-sm"
+                  formControlName="{{col.field}}">
               </ng-template>
               <ng-template pTemplate="output">
                 {{concreteData[col.field]}}
@@ -66,11 +68,12 @@
           </td>
           <td style="text-align:center">
             <button *ngIf="!editing" pInitEditableRow class="btn btn-sm btn-success ml-2">Módosít</button>
-            <button *ngIf="editing" pSaveEditableRow pButton type="button" pSaveEditableRow
-              class="btn btn-sm btn-success ml-2">Elment</button>
+            <button *ngIf="editing" pSaveEditableRow pButton type="button" class="btn btn-sm btn-success ml-2"
+              (click)="onRowEditSave(rowIndex)">Elment</button>
             <button *ngIf="editing" pCancelEditableRow pButton type="button" pCancelEditableRow
               class="btn btn-sm btn-danger ml-2">Mégsem</button>
-            <button id="{{'deleteButton_' + rowIndex}}"*ngIf="!editing" class="btn btn-sm btn-danger ml-2" (click)="deleteRow(rowIndex)">Töröl</button>
+            <button id="{{'deleteButton_' + rowIndex}}" *ngIf="!editing" class="btn btn-sm btn-danger ml-2"
+              (click)="deleteRow(rowIndex)">Töröl</button>
           </td>
         </tr>
       </ng-template>

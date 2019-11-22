@@ -32,7 +32,6 @@ export class ConcreteManagementComponent {
   });
 
   constructor(private concreteService: ConcreteService,
-    private restService: GeneralRestService,
     private messageService: MessageService,
     private fb: FormBuilder
   ) { }
@@ -78,5 +77,15 @@ export class ConcreteManagementComponent {
           detail: 'A tulajdonságok módosítása nem sikerült.'
         });
       });
+  }
+
+  onRowEditSave (rowIndex) {
+    if (rowIndex < 0 && this.selectedConcrete.properties.length < rowIndex) {
+      return;
+    }
+
+    this.selectedConcrete.properties[rowIndex] = this.nameValueForm.value;
+    this.saveConcrete();
+    this.nameValueForm.reset();
   }
 }
