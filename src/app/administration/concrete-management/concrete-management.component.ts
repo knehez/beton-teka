@@ -46,7 +46,6 @@ export class ConcreteManagementComponent {
     this.concreteService.searchConcretes(this.searchName)
       .then(res => {
         this.concretes = res['data'] as [];
-        console.log(this.concretes);
       });
   }
 
