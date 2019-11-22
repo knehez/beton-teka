@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ConcreteService {
-    private actionUrl = 'backend/concretes';
+    readonly actionUrl = 'backend/concretes';
 
     constructor(protected _http: HttpClient) {
     }

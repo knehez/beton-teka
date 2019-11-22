@@ -4,7 +4,7 @@
   <!-- search items from the backend-->
   <div class="input-group mt-2">
     <div class="input-group-prepend">
-      <button type="button" (click)="search()" class="btn btn-outline-primary">Keresés</button>
+      <button type="button" id="searchButton" (click)="search()" class="btn btn-outline-primary">Keresés</button>
     </div>
     <input type="text" class="form-control" [(ngModel)]="searchName" (keydown.enter)="search()">
   </div>
