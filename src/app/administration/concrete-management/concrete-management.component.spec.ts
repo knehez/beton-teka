@@ -96,7 +96,7 @@ describe('ConcreteManagementComponent', () => {
     fixture.detectChanges();
 
     const inputs = fixture.debugElement.queryAll(By.css('tbody tr'));
-
+    // 3 + 3 rows
     expect(inputs.length).toBe(6);
   });
 
@@ -110,7 +110,7 @@ describe('ConcreteManagementComponent', () => {
     deleteButton.nativeElement.click();
     fixture.detectChanges();
     const inputs = fixture.debugElement.queryAll(By.css('tbody tr'));
-    // egy sorral kevesebb lesz
+    // 6 - 1 = 5 rows
     expect(inputs.length).toBe(5);
   });
 
@@ -153,5 +153,9 @@ describe('ConcreteManagementComponent', () => {
 
     expect(actualName).toEqual(expectedName);
     expect(actualValue).toEqual(expectedValue);
+
+    const inputs = fixture.debugElement.queryAll(By.css('tbody tr'));
+    // number of rows: 3 + 4 = 7
+    expect(inputs.length).toBe(7);
   });
 });

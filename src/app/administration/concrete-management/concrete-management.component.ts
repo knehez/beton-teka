@@ -50,7 +50,6 @@ export class ConcreteManagementComponent {
   }
 
   addConcreteData() {
-    console.log('hhhhhhhhhhhh');
     this.selectedConcrete.properties.push(this.nameValueForm.value);
     this.nameValueForm.reset();
     this.saveConcrete();
